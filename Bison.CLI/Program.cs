@@ -40,16 +40,16 @@ class Program
     
     public static void observe(string observation)
     {
-        DateTimeOffset localTime = DateTimeOffset.Now;
-        long unixTime = localTime.ToUnixTimeSeconds();
-        string tidspunkt = unixTime.ToString();
-
-        string author = Environment.UserName;
-
-
-        using(StreamWriter sw = File.AppendText("bison_observe_cli_db.csv"))
+        using (var writer = new StreamWriter(pathToCsvFile, append: true))
+        using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
         {
-            sw.WriteLine(author + "," + '"' + observation + '"' + "," + tidspunkt);
+            string author = Environment.UserName;
+            long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+            csv.WriteField(author);
+            csv.WriteField(observation, true);
+            csv.WriteField(timestamp);
+            csv.NextRecord();
         }
     }
 }
