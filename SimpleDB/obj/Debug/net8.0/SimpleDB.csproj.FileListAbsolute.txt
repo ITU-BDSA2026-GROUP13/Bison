@@ -1,0 +1,13 @@
+/home/jacob/BDSA/BisonProject/Bison/SimpleDB/obj/Debug/net8.0/SimpleDB.GeneratedMSBuildEditorConfig.editorconfig
+/home/jacob/BDSA/BisonProject/Bison/SimpleDB/obj/Debug/net8.0/SimpleDB.AssemblyInfoInputs.cache
+/home/jacob/BDSA/BisonProject/Bison/SimpleDB/obj/Debug/net8.0/SimpleDB.AssemblyInfo.cs
+/home/jacob/BDSA/BisonProject/Bison/SimpleDB/obj/Debug/net8.0/SimpleDB.csproj.CoreCompileInputs.cache
+/home/jacob/BDSA/BisonProject/Bison/SimpleDB/obj/Debug/net8.0/SimpleDB.sourcelink.json
+/home/jacob/BDSA/BisonProject/Bison/SimpleDB/obj/Debug/net8.0/SimpleDB.csproj.AssemblyReference.cache
+/home/jacob/BDSA/BisonProject/Bison/SimpleDB/bin/Debug/net8.0/SimpleDB.deps.json
+/home/jacob/BDSA/BisonProject/Bison/SimpleDB/bin/Debug/net8.0/SimpleDB.dll
+/home/jacob/BDSA/BisonProject/Bison/SimpleDB/bin/Debug/net8.0/SimpleDB.pdb
+/home/jacob/BDSA/BisonProject/Bison/SimpleDB/obj/Debug/net8.0/SimpleDB.dll
+/home/jacob/BDSA/BisonProject/Bison/SimpleDB/obj/Debug/net8.0/refint/SimpleDB.dll
+/home/jacob/BDSA/BisonProject/Bison/SimpleDB/obj/Debug/net8.0/SimpleDB.pdb
+/home/jacob/BDSA/BisonProject/Bison/SimpleDB/obj/Debug/net8.0/ref/SimpleDB.dll

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "rwAW4kg36+D3Zg3fa3eCdoczdKCxSRoytP1FGhNolf43l/zucmDXuGWVNcVqwcjdV7SjC+TIJGMIQHINfx06ew==",
+  "success": true,
+  "projectFilePath": "/home/jacob/BDSA/BisonProject/Bison/SimpleDB/SimpleDB.csproj",
+  "expectedPackageFiles": [
+    "/home/jacob/.nuget/packages/csvhelper/33.1.0/csvhelper.33.1.0.nupkg.sha512"
+  ],
+  "logs": []
+}
