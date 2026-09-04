@@ -11,13 +11,24 @@ class Program
 
     static void Main(string[] args)
     {
-        if (args[0] == "read")
+        try
         {
-            read();
+            if (args[0] == "read")
+            {
+                read();
+            }
+            else if (args[0] == "observe")
+            {
+                observe(args[1]);
+            }
+            else
+            {
+                Console.WriteLine("Not a supported command");
+            }
         }
-        else if (args[0] == "observe")
+        catch (IndexOutOfRangeException exc)
         {
-            observe(args[1]);
+            Console.WriteLine($"You passed zero arguments: {exc}");
         }
     }
 
