@@ -18,7 +18,7 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
         using (StreamReader reader = new StreamReader(pathToCsvFile))
         using (CsvReader csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
-            var records = csv.GetRecords<T>();
+            var records = csv.GetRecords<T>().ToList();
             return records;
         }
     }

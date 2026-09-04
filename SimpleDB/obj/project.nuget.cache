@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "rwAW4kg36+D3Zg3fa3eCdoczdKCxSRoytP1FGhNolf43l/zucmDXuGWVNcVqwcjdV7SjC+TIJGMIQHINfx06ew==",
+  "dgSpecHash": "3BH/qEPJW8DGUEUUCKmd0bRAGIn48pVuyrByhL2wmWcMUQcfe0vleDQDqxhXrwUH3Uip+pM8/MxOru3RmCjmiA==",
   "success": true,
-  "projectFilePath": "/home/jacob/BDSA/BisonProject/Bison/SimpleDB/SimpleDB.csproj",
+  "projectFilePath": "/home/mikke/Analyse fag ting/WeeklyProjekt/GroupProjectBison/Bison/SimpleDB/SimpleDB.csproj",
   "expectedPackageFiles": [
-    "/home/jacob/.nuget/packages/csvhelper/33.1.0/csvhelper.33.1.0.nupkg.sha512"
+    "/home/mikke/.nuget/packages/csvhelper/33.1.0/csvhelper.33.1.0.nupkg.sha512"
   ],
   "logs": []
 }
