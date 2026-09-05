@@ -24,3 +24,16 @@
 /home/mikke/Analyse fag ting/WeeklyProjekt/GroupProjectBison/Bison/SimpleDB/obj/Debug/net8.0/refint/SimpleDB.dll
 /home/mikke/Analyse fag ting/WeeklyProjekt/GroupProjectBison/Bison/SimpleDB/obj/Debug/net8.0/SimpleDB.pdb
 /home/mikke/Analyse fag ting/WeeklyProjekt/GroupProjectBison/Bison/SimpleDB/obj/Debug/net8.0/ref/SimpleDB.dll
+/home/ander/Bison/SimpleDB/bin/Debug/net8.0/SimpleDB.deps.json
+/home/ander/Bison/SimpleDB/bin/Debug/net8.0/SimpleDB.dll
+/home/ander/Bison/SimpleDB/bin/Debug/net8.0/SimpleDB.pdb
+/home/ander/Bison/SimpleDB/obj/Debug/net8.0/SimpleDB.csproj.AssemblyReference.cache
+/home/ander/Bison/SimpleDB/obj/Debug/net8.0/SimpleDB.GeneratedMSBuildEditorConfig.editorconfig
+/home/ander/Bison/SimpleDB/obj/Debug/net8.0/SimpleDB.AssemblyInfoInputs.cache
+/home/ander/Bison/SimpleDB/obj/Debug/net8.0/SimpleDB.AssemblyInfo.cs
+/home/ander/Bison/SimpleDB/obj/Debug/net8.0/SimpleDB.csproj.CoreCompileInputs.cache
+/home/ander/Bison/SimpleDB/obj/Debug/net8.0/SimpleDB.sourcelink.json
+/home/ander/Bison/SimpleDB/obj/Debug/net8.0/SimpleDB.dll
+/home/ander/Bison/SimpleDB/obj/Debug/net8.0/refint/SimpleDB.dll
+/home/ander/Bison/SimpleDB/obj/Debug/net8.0/SimpleDB.pdb
+/home/ander/Bison/SimpleDB/obj/Debug/net8.0/ref/SimpleDB.dll

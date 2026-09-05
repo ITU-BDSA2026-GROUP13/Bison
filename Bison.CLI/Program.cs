@@ -6,6 +6,7 @@ using CsvHelper.Configuration;
 using System.Globalization;
 using SimpleDB;
 
+
 class Program
 {
     static string pathToCsvFile = "bison_observe_cli_db.csv";
@@ -18,11 +19,7 @@ class Program
             if (args[0] == "read")
             {
                 var records = csvDatabase.Read();
-                foreach (var record in records)
-                {
-                    var time = DateTimeOffset.FromUnixTimeSeconds(record.Timestamp).ToLocalTime();
-                    Console.WriteLine($"{record.Author} @ {time:MM/dd/yy HH:mm:ss:} {record.Observation}");
-                }
+                UserInterface.PrintCheeps(records);
             }
             else if (args[0] == "observe")
             {

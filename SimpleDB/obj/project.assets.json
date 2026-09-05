@@ -51,19 +51,19 @@
     ]
   },
   "packageFolders": {
-    "/home/mikke/.nuget/packages/": {}
+    "/home/ander/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/mikke/Analyse fag ting/WeeklyProjekt/GroupProjectBison/Bison/SimpleDB/SimpleDB.csproj",
+      "projectUniqueName": "/home/ander/Bison/SimpleDB/SimpleDB.csproj",
       "projectName": "SimpleDB",
-      "projectPath": "/home/mikke/Analyse fag ting/WeeklyProjekt/GroupProjectBison/Bison/SimpleDB/SimpleDB.csproj",
-      "packagesPath": "/home/mikke/.nuget/packages/",
-      "outputPath": "/home/mikke/Analyse fag ting/WeeklyProjekt/GroupProjectBison/Bison/SimpleDB/obj/",
+      "projectPath": "/home/ander/Bison/SimpleDB/SimpleDB.csproj",
+      "packagesPath": "/home/ander/.nuget/packages/",
+      "outputPath": "/home/ander/Bison/SimpleDB/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/mikke/.nuget/NuGet/NuGet.Config"
+        "/home/ander/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
