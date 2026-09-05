@@ -3,6 +3,7 @@ namespace Bison;
 using System;
 using System.Diagnostics.Metrics;
 using System.Text.RegularExpressions;
+using System.CommandLine;
 using CsvHelper;
 using CsvHelper.Configuration;
 using System.Globalization;
@@ -18,28 +19,31 @@ public class Program
     static void Main(string[] args)
     {
         CSVDatabase<Cheep> csvDatabase = new CSVDatabase<Cheep>(pathToCsvFile);
-        try
+        RootCommand rootCommand = new RootCommand("Application to alter data in database");
+        
+        var readCommand = new Command("read", "Reads all values from DB");
+        readCommand.SetAction((parseResult) =>
         {
-            if (args[0] == "read")
-            {
-                var records = csvDatabase.Read();
-                UserInterface.PrintCheeps(records);
-            }
-            else if (args[0] == "observe")
-            {
-                string author = Environment.UserName;
-                long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-                Cheep record = new Cheep(author, args[1], timestamp);
-                csvDatabase.Store(record);
-            }
-            else
-            {
-                Console.WriteLine("Not a supported command");
-            }
-        }
-        catch (IndexOutOfRangeException exc)
+            var records = csvDatabase.Read();
+            UserInterface.PrintCheeps(records);
+        });
+        
+        var observeCommand = new Command("observe", "Adds observation to DB");
+        var observeArgument = new Argument<string>("observation");
+        observeCommand.Add(observeArgument);
+        observeCommand.SetAction((parseResult) =>
         {
-            Console.WriteLine($"You passed zero arguments: {exc}");
-        }
+            string observation = parseResult.GetValue(observeArgument) ?? throw new InvalidOperationException("Message argument was not provided.");
+            string author = Environment.UserName;
+            long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            
+            Cheep record = new Cheep(author, observation, timestamp);
+            csvDatabase.Store(record);
+        });
+
+        rootCommand.Add(readCommand);
+        rootCommand.Add(observeCommand);
+        
+        rootCommand.Parse(args).Invoke(); // Actually takes
     }
 }
