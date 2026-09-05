@@ -4,6 +4,8 @@ using System.Text.RegularExpressions;
 using CsvHelper;
 using CsvHelper.Configuration;
 using System.Globalization;
+using SimpleDB;
+
 
 class Program
 {
@@ -11,15 +13,20 @@ class Program
 
     static void Main(string[] args)
     {
+        CSVDatabase<Cheep> csvDatabase = new CSVDatabase<Cheep>(pathToCsvFile);
         try
         {
             if (args[0] == "read")
             {
-                read();
+                var records = csvDatabase.Read();
+                UserInterface.PrintCheeps(records);
             }
             else if (args[0] == "observe")
             {
-                observe(args[1]);
+                string author = Environment.UserName;
+                long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                Cheep record = new Cheep(author, args[1], timestamp);
+                csvDatabase.Store(record);
             }
             else
             {
@@ -34,7 +41,7 @@ class Program
 
     public record Cheep(string Author, string Observation, long Timestamp);
 
-    public static void read()
+    /*public static void read()
     {
         using (StreamReader reader = new StreamReader(pathToCsvFile))
         using (CsvReader csv = new CsvReader(reader, CultureInfo.InvariantCulture))
@@ -62,5 +69,5 @@ class Program
             csv.WriteField(timestamp);
             csv.NextRecord();
         }
-    }
+    }*/
 }

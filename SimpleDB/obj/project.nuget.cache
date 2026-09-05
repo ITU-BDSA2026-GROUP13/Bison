@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "8l52fE3NMXFplcMMGjI5B1ePYIgIYraeUheG/SVjv7dXzvZTXO+5UAbjAbmXhwMKgIve7zUXyu6Jtwkff7wNdg==",
+  "success": true,
+  "projectFilePath": "/home/ander/Bison/SimpleDB/SimpleDB.csproj",
+  "expectedPackageFiles": [
+    "/home/ander/.nuget/packages/csvhelper/33.1.0/csvhelper.33.1.0.nupkg.sha512"
+  ],
+  "logs": []
+}
