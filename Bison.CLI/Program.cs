@@ -7,7 +7,7 @@ using System.Globalization;
 using SimpleDB;
 
 
-class Program
+public class Program
 {
     static string pathToCsvFile = "bison_observe_cli_db.csv";
     
@@ -40,34 +40,4 @@ class Program
             Console.WriteLine($"You passed zero arguments: {exc}");
         }
     }
-
-    /*public static void read()
-    {
-        using (StreamReader reader = new StreamReader(pathToCsvFile))
-        using (CsvReader csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-        {
-            var records = csv.GetRecords<Cheep>();
-
-            foreach (var record in records)
-            {
-                var time = DateTimeOffset.FromUnixTimeSeconds(record.Timestamp).ToLocalTime();
-                Console.WriteLine($"{record.Author} @ {time:MM/dd/yy HH:mm:ss:} {record.Observation}");
-            }
-        }
-    } 
-    
-    public static void observe(string observation)
-    {
-        using (var writer = new StreamWriter(pathToCsvFile, append: true))
-        using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-        {
-            string author = Environment.UserName;
-            long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-
-            csv.WriteField(author);
-            csv.WriteField(observation, true);
-            csv.WriteField(timestamp);
-            csv.NextRecord();
-        }
-    }*/
 }
