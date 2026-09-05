@@ -10,6 +10,8 @@ using SimpleDB;
 class Program
 {
     static string pathToCsvFile = "bison_observe_cli_db.csv";
+    
+    public record Cheep(string Author, string Observation, long Timestamp);
 
     static void Main(string[] args)
     {
@@ -38,8 +40,6 @@ class Program
             Console.WriteLine($"You passed zero arguments: {exc}");
         }
     }
-
-    public record Cheep(string Author, string Observation, long Timestamp);
 
     /*public static void read()
     {
