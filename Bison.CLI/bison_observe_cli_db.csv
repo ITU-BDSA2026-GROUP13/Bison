@@ -1,9 +1,9 @@
-Author,Observation,Timestamp
-ropf,"A bird at DR Byen",1690891760
-adho,"I think that is a Heron at DR Byen",1690978778
-edka,"Ardea cinerea at DR Byen",1690979858
-jacob,"Heron at DR Byen",1787906360
-mikke,Jeg,1788528021
-mikke,Jeg elsker lort kh Lasse,1788528071
-jacob,I am the coolest in the world,1788603777
-jacob,This observation was made with new CLI lib,1788606781
+CheepID,Author,Observation,Timestamp
+0,ropf,"A bird at DR Byen",1690891760
+1,adho,"I think that is a Heron at DR Byen",1690978778
+2,edka,"Ardea cinerea at DR Byen",1690979858
+3,jacob,"Heron at DR Byen",1787906360
+4,mikke,Jeg,1788528021
+5,mikke,Jeg elsker lort kh Lasse,1788528071
+6,jacob,I am the coolest in the world,1788603777
+7,jacob,This observation was made with new CLI lib,1788606781

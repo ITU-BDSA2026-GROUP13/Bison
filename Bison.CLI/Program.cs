@@ -13,8 +13,6 @@ using SimpleDB;
 public class Program
 {
     static string pathToCsvFile = "bison_observe_cli_db.csv";
-    
-    public record Cheep(string Author, string Observation, long Timestamp);
 
     static void Main(string[] args)
     {
@@ -34,10 +32,8 @@ public class Program
         observeCommand.SetAction((parseResult) =>
         {
             string observation = parseResult.GetValue(observeArgument) ?? throw new InvalidOperationException("Message argument was not provided.");
-            string author = Environment.UserName;
-            long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             
-            Cheep record = new Cheep(author, observation, timestamp);
+            Bison.Cheep record = new Bison.Cheep(observation);
             csvDatabase.Store(record);
         });
 
