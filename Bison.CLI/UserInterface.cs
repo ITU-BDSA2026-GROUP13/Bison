@@ -1,6 +1,6 @@
 public static class UserInterface
 {
-    public static void PrintCheeps(IEnumerable<Program.Cheep> cheeps)
+    public static void PrintCheeps(IEnumerable<Bison.Program.Cheep> cheeps)
     {
         foreach (var cheep in cheeps)
         {
