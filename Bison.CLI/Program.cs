@@ -27,6 +27,16 @@ public class Program
             var records = cheepDatabase.Read();
             UserInterface.PrintCheeps(records);
         });
+
+        var discussionCommand = new Command("discussion", "Read the discussion on a specific observation");
+        var discussionCheepIDArgument = new Argument<long>("CheepID");
+        discussionCommand.Add(discussionCheepIDArgument);
+        discussionCommand.SetAction((parseResult) =>
+        {
+            long CheepID = parseResult.GetValue(discussionCheepIDArgument);
+            var comments = commentDatabase.Read();
+            UserInterface.PrintComments(comments, CheepID);
+        });
         
         var observeCommand = new Command("observe", "Adds observation to DB");
         var observeArgument = new Argument<string>("observation");
@@ -54,6 +64,7 @@ public class Program
         });
 
         rootCommand.Add(readCommand);
+        rootCommand.Add(discussionCommand);
         rootCommand.Add(observeCommand);
         rootCommand.Add(commentCommand);
         
