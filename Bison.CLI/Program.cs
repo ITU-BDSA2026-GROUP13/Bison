@@ -12,20 +12,30 @@ using SimpleDB;
 
 public class Program
 {
-    static string pathToCsvFile = "bison_observe_cli_db.csv";
-    
-    public record Cheep(string Author, string Observation, long Timestamp);
+    static string pathToCheepCsvFile = "bison_observe_cli_db.csv";
+    static string pathToCommentCSVFile = "bison_comments_cli_db.csv";
 
     static void Main(string[] args)
     {
-        CSVDatabase<Cheep> csvDatabase = new CSVDatabase<Cheep>(pathToCsvFile);
+        CSVDatabase<Cheep> cheepDatabase = new CSVDatabase<Cheep>(pathToCheepCsvFile);
+        CSVDatabase<Comment> commentDatabase = new CSVDatabase<Comment>(pathToCommentCSVFile);
         RootCommand rootCommand = new RootCommand("Application to alter data in database");
         
         var readCommand = new Command("read", "Reads all values from DB");
         readCommand.SetAction((parseResult) =>
         {
-            var records = csvDatabase.Read();
+            var records = cheepDatabase.Read();
             UserInterface.PrintCheeps(records);
+        });
+
+        var discussionCommand = new Command("discussion", "Read the discussion on a specific observation");
+        var discussionCheepIDArgument = new Argument<long>("CheepID");
+        discussionCommand.Add(discussionCheepIDArgument);
+        discussionCommand.SetAction((parseResult) =>
+        {
+            long CheepID = parseResult.GetValue(discussionCheepIDArgument);
+            var comments = commentDatabase.Read();
+            UserInterface.PrintComments(comments, CheepID);
         });
         
         var observeCommand = new Command("observe", "Adds observation to DB");
@@ -34,15 +44,29 @@ public class Program
         observeCommand.SetAction((parseResult) =>
         {
             string observation = parseResult.GetValue(observeArgument) ?? throw new InvalidOperationException("Message argument was not provided.");
-            string author = Environment.UserName;
-            long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             
-            Cheep record = new Cheep(author, observation, timestamp);
-            csvDatabase.Store(record);
+            Bison.Cheep record = new Bison.Cheep(observation);
+            cheepDatabase.Store(record);
+        });
+        
+        var commentCommand = new Command("comment", "Adds comment to observation");
+        var commentArgument = new Argument<string>("comment");
+        var commentCheepIDArgument = new Argument<long>("cheepID");
+        commentCommand.Add(commentArgument);
+        commentCommand.Add(commentCheepIDArgument);
+        commentCommand.SetAction((parseResult) =>
+        {
+            string comment = parseResult.GetValue(commentArgument) ?? throw new InvalidOperationException("Comment argument was not provided.");
+            long CheepID = parseResult.GetValue(commentCheepIDArgument);
+            
+            Bison.Comment commentRecord = new Bison.Comment(CheepID, comment);
+            commentDatabase.Store(commentRecord);
         });
 
         rootCommand.Add(readCommand);
+        rootCommand.Add(discussionCommand);
         rootCommand.Add(observeCommand);
+        rootCommand.Add(commentCommand);
         
         rootCommand.Parse(args).Invoke(); // Actually takes
     }
