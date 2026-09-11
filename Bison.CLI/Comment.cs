@@ -14,4 +14,12 @@ public record Comment
         this.CheepID = CheepID;
         this.Message = Message;
     }
+    
+    public Comment(long CheepID, string Author, string Message,  long Timestamp)
+    {
+        this.CheepID = CheepID;
+        this.Author = Author;
+        this.Message = Message;
+        this.Timestamp = Timestamp;
+    }
 }
