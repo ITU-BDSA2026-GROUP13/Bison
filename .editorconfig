@@ -1,0 +1,22 @@
+
+[*]
+
+# Microsoft .NET properties
+csharp_preferred_modifier_order = public, private, protected, internal, file, new, sealed, abstract, virtual, closed, static, readonly, override, safe, unsafe, extern, volatile, async, required:suggestion
+csharp_style_var_for_built_in_types = false:suggestion
+csharp_using_directive_placement = inside_namespace:silent
+dotnet_sort_system_directives_first = false
+dotnet_style_qualification_for_event = false:suggestion
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_method = false:suggestion
+dotnet_style_qualification_for_property = true:suggestion
+
+# ReSharper properties
+resharper_arguments_literal = named
+resharper_blank_lines_after_multiline_statements = 1
+resharper_braces_for_foreach = required
+resharper_braces_for_using = not_required
+resharper_csharp_max_line_length = 148
+resharper_csharp_remove_blank_lines_near_braces_in_code = false
+resharper_default_private_modifier = implicit
+resharper_object_creation_when_type_evident = explicitly_typed
