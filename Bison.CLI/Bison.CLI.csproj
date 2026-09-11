@@ -15,4 +15,9 @@
     <PackageReference Include="System.CommandLine" Version="2.0.11" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="bison_comments_cli_db.csv" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="bison_observe_cli_db.csv" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>
