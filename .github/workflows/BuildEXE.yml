@@ -1,0 +1,76 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Restore dependencies
+        run: dotnet restore Bison.CLI/Bison.CLI.csproj
+      - name: Build
+        run: dotnet build Bison.CLI/Bison.CLI.csproj --no-restore
+      - name: Test
+        run: dotnet test Bison.CLI/Bison.CLI.csproj --no-build --verbosity normal
+  
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - rid: win-x64
+          - rid: win-arm64 
+          - rid: osx-x64
+          - rid: linux-x64
+          - rid: osx-arm64
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Publish ${{ matrix.rid }}
+        run: >
+          dotnet publish ./Bison.CLI/Bison.CLI.csproj
+          -c Release
+          -r ${{ matrix.rid }}
+          --self-contained false
+          -p:PublishSingleFile=true
+          -o ./publish/${{ matrix.rid }}
+      - name: Zip executable
+        run: |
+          cd ./publish/${{ matrix.rid }}
+          zip -r ../../bison-${{ matrix.rid }}.zip .
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bison-${{ matrix.rid }}
+          path: bison-${{ matrix.rid }}.zip
+  
+  release:
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+      - name: Flatten artifact zips
+        run: |
+          mkdir -p ./release-files
+          find ./artifacts -name "*.zip" -exec cp {} ./release-files/ \;
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ./release-files/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
