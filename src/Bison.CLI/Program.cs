@@ -58,10 +58,15 @@ public class Program
         commentCommand.SetAction((parseResult) =>
         {
             string comment = parseResult.GetValue(commentArgument) ?? throw new InvalidOperationException("Comment argument was not provided.");
-            long CheepID = parseResult.GetValue(commentCheepIDArgument);
+            long cheepID = parseResult.GetValue(commentCheepIDArgument);
             
-            Bison.Comment commentRecord = new Bison.Comment(CheepID, comment);
-            commentDatabase.Store(commentRecord);
+            try {
+                addComment(cheepID, comment, cheepDatabase, commentDatabase);
+            } catch (InvalidOperationException)
+            {
+                Console.WriteLine("Referenced Observation ID does not exist");
+            }
+            
         });
 
         rootCommand.Add(readCommand);
@@ -70,5 +75,12 @@ public class Program
         rootCommand.Add(commentCommand);
         
         rootCommand.Parse(args).Invoke(); // Actually takes
+    }
+
+    public static void addComment(long cheepId, string comment, CSVDatabase<Cheep> cheepDb, CSVDatabase<Comment> commentDb)
+    {
+        if (!CommentHandling.doesObservationExist(cheepId, cheepDb)) throw new InvalidOperationException("Referenced observation does not exist");
+            Bison.Comment commentRecord = new Bison.Comment(cheepId, comment);
+            commentDb.Store(commentRecord);
     }
 }

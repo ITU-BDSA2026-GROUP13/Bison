@@ -11,6 +11,18 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
     public CSVDatabase(string pathToCsvFile)
     {
         this.pathToCsvFile = pathToCsvFile;
+
+        bool fileIsEmpty = !File.Exists(this.pathToCsvFile) || new FileInfo(this.pathToCsvFile).Length == 0;
+
+        if (fileIsEmpty)
+        {
+            using (var writer = new StreamWriter(pathToCsvFile, append: true))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                csv.WriteHeader<T>();
+                csv.NextRecord();
+            }
+        }
     }    
 
     public IEnumerable<T> Read(int? limit = null)
