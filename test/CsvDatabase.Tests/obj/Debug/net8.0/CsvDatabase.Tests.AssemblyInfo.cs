@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CsvDatabase.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+be3e7db0831dd80aeabe56367ee575d8962a994e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+46ad26544b7f405d5977bc99cd7c3a2dab8122a9")]
 [assembly: System.Reflection.AssemblyProductAttribute("CsvDatabase.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CsvDatabase.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -4,7 +4,7 @@ using SimpleDB;
 
 public static class CommentHandling {
     
-    public static bool doesObservationExist(long cheepId, CSVDatabase<Cheep> db) 
+    public static bool doesObservationExist(long cheepId, IDatabaseRepository<Cheep> db) 
     {
         foreach (Cheep cheep in db.Read())
         {

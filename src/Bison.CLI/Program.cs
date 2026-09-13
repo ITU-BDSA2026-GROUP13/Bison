@@ -77,7 +77,7 @@ public class Program
         rootCommand.Parse(args).Invoke(); // Actually takes
     }
 
-    public static void addComment(long cheepId, string comment, CSVDatabase<Cheep> cheepDb, CSVDatabase<Comment> commentDb)
+    public static void addComment(long cheepId, string comment, IDatabaseRepository<Cheep> cheepDb, IDatabaseRepository<Comment> commentDb)
     {
         if (!CommentHandling.doesObservationExist(cheepId, cheepDb)) throw new InvalidOperationException("Referenced observation does not exist");
             Bison.Comment commentRecord = new Bison.Comment(cheepId, comment);
