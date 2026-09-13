@@ -7,29 +7,30 @@ using SimpleDB;
 
 public class CommentTests
 {
-    private readonly string testFileName = "bison_observe_test_cli_db.csv";
+    private readonly string testFileNameCheep = "cheep_bison_observe_test_cli_db.csv";
+    private readonly string testFileNameComment = "comment_bison_observe_test_cli_db.csv";
     private readonly CSVDatabase<Cheep> cheeps;
     private readonly CSVDatabase<Comment> comments;
     public CommentTests()
     {
-        if (File.Exists(testFileName))
-        {
-            File.Delete(testFileName);
-        }
+        if (File.Exists(testFileNameCheep)) File.Delete(testFileNameCheep);
+        if (File.Exists(testFileNameComment)) File.Delete(testFileNameComment);
 
-        cheeps = new CSVDatabase<Cheep>(testFileName);
-        comments = new CSVDatabase<Comment>("bison_observe_test_cli_db.csv");
+        cheeps = new CSVDatabase<Cheep>(testFileNameCheep);
+        comments = new CSVDatabase<Comment>(testFileNameComment);
 
-        Cheep cheep = new Cheep(69, "Lars", "test test", 1000);
-        cheeps.Store(cheep);
+        Cheep cheep1 = new Cheep(69, "Lars", "test test", 1000);
+        Cheep cheep2 = new Cheep(70, "Lasse", "lort", 2000);
+        cheeps.Store(cheep1);
+        cheeps.Store(cheep2);
     }
 
 
     [Fact]
     public void TestCommentReferenceNonExistingObservation()
     {
-        //Screenshot of database BEFORE attempting to add new comment
-        List<Cheep> database_before_add_attempt = cheeps.Read().ToList();
+        //Snapshot of database BEFORE attempting to add new comment
+        List<Comment> database_before_add_attempt = comments.Read().ToList();
 
         //Test the right exception is thrown (and that it even is thrown)
         var exception = Assert.Throws<InvalidOperationException>(() =>
@@ -38,10 +39,41 @@ public class CommentTests
             Program.addComment(67, "test", cheeps, comments);
         });
 
-        //Screenshot of database AFTER attempting to add new comment
-        List<Cheep> database_after_add_attempt = cheeps.Read().ToList();
+        //Snapshot of database AFTER attempting to add new comment
+        List<Comment> database_after_add_attempt = comments.Read().ToList();
 
         Assert.Equal(database_before_add_attempt.Count, database_after_add_attempt.Count);
         Assert.Equivalent(database_before_add_attempt, database_after_add_attempt);
+    }
+
+    [Fact]
+    public void TestCommentReferencesCorrectObservation()
+    {
+        Program.addComment(69, "test", cheeps, comments);
+
+        List<Comment> comment_database_after_add_attempt = comments.Read().ToList();
+
+        Assert.Single(comment_database_after_add_attempt);
+        Assert.Equal(69, comment_database_after_add_attempt[0].CheepID);
+
+        List<Cheep> cheep_database = cheeps.Read().ToList();
+
+        bool foundIt = false;
+        foreach (Cheep c in cheep_database)
+        {
+            if (c.CheepID == comment_database_after_add_attempt[0].CheepID) foundIt = true;
+        }
+
+        Assert.True(foundIt);
+    }
+
+    [Fact]
+    public void TestConversionOfUNIXTimestamps()
+    {
+        long timestamp = 1700000000;
+
+        var time = DateTimeOffset.FromUnixTimeSeconds(timestamp).ToLocalTime();
+        string timeString = $"{time:MM/dd/yy HH:mm:ss}";
+        Assert.Equal("11/14/23 23:13:20", timeString);
     }
 }

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Bison.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5e21bcb67fc5f211dddb9ee1f36b67f79467e46c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+be3e7db0831dd80aeabe56367ee575d8962a994e")]
 [assembly: System.Reflection.AssemblyProductAttribute("Bison.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Bison.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
