@@ -5,13 +5,13 @@ using Xunit;
 using Bison;
 using SimpleDB;
 
-public class CommentTests
+public class BisonTests
 {
     private readonly string testFileNameCheep = "cheep_bison_observe_test_cli_db.csv";
     private readonly string testFileNameComment = "comment_bison_observe_test_cli_db.csv";
     private readonly CSVDatabase<Cheep> cheeps;
     private readonly CSVDatabase<Comment> comments;
-    public CommentTests()
+    public BisonTests()
     {
         if (File.Exists(testFileNameCheep)) File.Delete(testFileNameCheep);
         if (File.Exists(testFileNameComment)) File.Delete(testFileNameComment);
@@ -75,5 +75,34 @@ public class CommentTests
         var time = DateTimeOffset.FromUnixTimeSeconds(timestamp).ToLocalTime();
         string timeString = $"{time:MM/dd/yy HH:mm:ss}";
         Assert.Equal("11/14/23 23:13:20", timeString);
+    }
+
+    [Fact]
+    public void TestPrintingOfCheeps()
+    {
+        string expectedOutput = 
+        "Lars @ 01/01/70 01:16:40: test test\nLasse @ 01/01/70 01:33:20: lort\n";
+
+        using (StringWriter sw = new StringWriter())
+        {
+            TextWriter originalOutput = Console.Out;
+
+            Console.SetOut(sw);
+
+            try
+            {
+                UserInterface.PrintCheeps(cheeps.Read());
+                Assert.Equal(expectedOutput, sw.ToString());
+            }
+            finally
+            {
+                Console.SetOut(originalOutput);
+            }
+
+        }
+        
+
+
+
     }
 }
