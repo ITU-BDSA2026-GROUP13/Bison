@@ -5576,19 +5576,19 @@
     ]
   },
   "packageFolders": {
-    "/home/mikke/.nuget/packages/": {}
+    "/Users/lassevinding/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/mikke/Analyse fag ting/WeeklyProjekt/GroupProjectBison/Bison/test/CsvDatabase.Tests/CsvDatabase.Tests.csproj",
+      "projectUniqueName": "/Users/lassevinding/RiderProjects/Bison/test/CsvDatabase.Tests/CsvDatabase.Tests.csproj",
       "projectName": "CsvDatabase.Tests",
-      "projectPath": "/home/mikke/Analyse fag ting/WeeklyProjekt/GroupProjectBison/Bison/test/CsvDatabase.Tests/CsvDatabase.Tests.csproj",
-      "packagesPath": "/home/mikke/.nuget/packages/",
-      "outputPath": "/home/mikke/Analyse fag ting/WeeklyProjekt/GroupProjectBison/Bison/test/CsvDatabase.Tests/obj/",
+      "projectPath": "/Users/lassevinding/RiderProjects/Bison/test/CsvDatabase.Tests/CsvDatabase.Tests.csproj",
+      "packagesPath": "/Users/lassevinding/.nuget/packages/",
+      "outputPath": "/Users/lassevinding/RiderProjects/Bison/test/CsvDatabase.Tests/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/mikke/.nuget/NuGet/NuGet.Config"
+        "/Users/lassevinding/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -5600,8 +5600,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/home/mikke/Analyse fag ting/WeeklyProjekt/GroupProjectBison/Bison/src/SimpleDB/SimpleDB.csproj": {
-              "projectPath": "/home/mikke/Analyse fag ting/WeeklyProjekt/GroupProjectBison/Bison/src/SimpleDB/SimpleDB.csproj"
+            "/Users/lassevinding/RiderProjects/Bison/src/SimpleDB/SimpleDB.csproj": {
+              "projectPath": "/Users/lassevinding/RiderProjects/Bison/src/SimpleDB/SimpleDB.csproj"
             }
           }
         }
@@ -5653,7 +5653,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.130/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/opt/homebrew/Cellar/dotnet@8/8.0.130/libexec/sdk/8.0.130/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

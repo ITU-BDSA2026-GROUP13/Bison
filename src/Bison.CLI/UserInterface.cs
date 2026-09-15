@@ -1,7 +1,12 @@
+using Spectre.Console;
+
 public static class UserInterface
 {
     public static void PrintCheeps(IEnumerable<Bison.Cheep> cheeps)
     {
+        Console.WriteLine("Cheeps:");
+
+
         foreach (var cheep in cheeps)
         {
             var time = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp).ToLocalTime();
