@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Bison.Tests
-build_property.ProjectDir = /home/mikke/Analyse fag ting/WeeklyProjekt/GroupProjectBison/Bison/test/Bison.Tests/
+build_property.ProjectDir = /Users/lassevinding/RiderProjects/Bison/test/Bison.Tests/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
