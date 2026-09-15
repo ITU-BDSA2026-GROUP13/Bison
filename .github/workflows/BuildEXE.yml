@@ -15,11 +15,11 @@ jobs:
         with:
           dotnet-version: 8.0.x
       - name: Restore dependencies
-        run: dotnet restore Bison.CLI/Bison.CLI.csproj
+        run: dotnet restore src/Bison.CLI/Bison.CLI.csproj
       - name: Build
-        run: dotnet build Bison.CLI/Bison.CLI.csproj --no-restore
+        run: dotnet build src/Bison.CLI/Bison.CLI.csproj --no-restore
       - name: Test
-        run: dotnet test Bison.CLI/Bison.CLI.csproj --no-build --verbosity normal
+        run: dotnet test src/Bison.CLI/Bison.CLI.csproj --no-build --verbosity normal
   
   publish:
     needs: test
@@ -40,7 +40,7 @@ jobs:
           dotnet-version: 8.0.x
       - name: Publish ${{ matrix.rid }}
         run: >
-          dotnet publish ./Bison.CLI/Bison.CLI.csproj
+          dotnet publish .src/Bison.CLI/Bison.CLI.csproj
           -c Release
           -r ${{ matrix.rid }}
           --self-contained false

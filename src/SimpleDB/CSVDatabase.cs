@@ -1,0 +1,55 @@
+﻿namespace SimpleDB;
+
+using CsvHelper;
+using CsvHelper.Configuration;
+using System.Globalization;
+
+public sealed class CSVDatabase<T> : IDatabaseRepository<T>
+{
+    internal string pathToCsvFile;
+
+    public CSVDatabase(string pathToCsvFile)
+    {
+        this.pathToCsvFile = pathToCsvFile;
+
+        bool fileIsEmpty = !File.Exists(this.pathToCsvFile) || new FileInfo(this.pathToCsvFile).Length == 0;
+
+        if (fileIsEmpty)
+        {
+            using (var writer = new StreamWriter(pathToCsvFile, append: true))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                csv.WriteHeader<T>();
+                csv.NextRecord();
+            }
+        }
+    }    
+
+    public IEnumerable<T> Read(int? limit = null)
+    {
+        using (StreamReader reader = new StreamReader(pathToCsvFile))
+        using (CsvReader csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+        {
+            var records = csv.GetRecords<T>().ToList();
+            return records;
+        }
+    }
+
+    public void Store(T record)
+    {
+        using (var writer = new StreamWriter(pathToCsvFile, append: true))
+        using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+        {
+            //string author = Environment.UserName;
+            //long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+            csv.WriteRecord(record);
+            csv.NextRecord();
+            
+            //csv.WriteField(author);
+            //csv.WriteField(observation, true);
+            //csv.WriteField(timestamp);
+            //csv.NextRecord();
+        }
+    }
+}
