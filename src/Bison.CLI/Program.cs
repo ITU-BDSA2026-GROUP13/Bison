@@ -8,6 +8,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using System.Globalization;
 using SimpleDB;
+using DefaultNamespace;
 
 // This is just so I can tag this commit :D
 
@@ -18,8 +19,8 @@ public class Program
 
     static void Main(string[] args)
     {
-        CSVDatabase<Cheep> cheepDatabase = new CSVDatabase<Cheep>(pathToCheepCsvFile);
-        CSVDatabase<Comment> commentDatabase = new CSVDatabase<Comment>(pathToCommentCSVFile);
+        CSVDatabase<Cheep> cheepDatabase = new ObservationDatabase<Cheep>(pathToCheepCsvFile);
+        CSVDatabase<Comment> commentDatabase = new CommentDatabase<Comment>(pathToCommentCSVFile);
         RootCommand rootCommand = new RootCommand("Application to alter data in database");
         
         var readCommand = new Command("read", "Reads all values from DB");
