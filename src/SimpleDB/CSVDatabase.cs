@@ -4,10 +4,11 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using System.Globalization;
 
-public sealed class CSVDatabase<T> : IDatabaseRepository<T>
+public class CSVDatabase<T> : IDatabaseRepository<T>
 {
     internal string pathToCsvFile;
 
+    // A constructer that takes the path to an csv file as argument and if it does not exist create e new file at that location
     public CSVDatabase(string pathToCsvFile)
     {
         this.pathToCsvFile = pathToCsvFile;
@@ -25,6 +26,7 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
         }
     }    
 
+    // Reads all lines from the csv file into a list and returns it
     public IEnumerable<T> Read(int? limit = null)
     {
         using (StreamReader reader = new StreamReader(pathToCsvFile))
@@ -34,7 +36,8 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
             return records;
         }
     }
-
+    
+    //Appends a line to the csv file
     public void Store(T record)
     {
         using (var writer = new StreamWriter(pathToCsvFile, append: true))
