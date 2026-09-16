@@ -19,8 +19,8 @@ public class BisonTests
         cheeps = new CSVDatabase<Cheep>(testFileNameCheep);
         comments = new CSVDatabase<Comment>(testFileNameComment);
 
-        Cheep cheep1 = new Cheep(69, "Lars", "test test", 1000);
-        Cheep cheep2 = new Cheep(70, "Lasse", "lort", 2000);
+        Cheep cheep1 = new Cheep(69, "Lars", "test test", "Slagelse", 1000);
+        Cheep cheep2 = new Cheep(70,  "Lasse", "lort", "Slagelse", 2000);
         cheeps.Store(cheep1);
         cheeps.Store(cheep2);
     }
@@ -81,7 +81,7 @@ public class BisonTests
     public void TestPrintingOfCheeps()
     {
         string expectedOutput = 
-        "Cheeps:\nLars @ 01/01/70 01:16:40: test test\nLasse @ 01/01/70 01:33:20: lort\n";
+        "Cheeps:\nLars @ 01/01/70 01:16:40: test test at Slagelse\nLasse @ 01/01/70 01:33:20: lort at Slagelse\n";
 
         using (StringWriter sw = new StringWriter())
         {

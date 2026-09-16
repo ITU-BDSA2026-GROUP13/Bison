@@ -9,7 +9,7 @@ public class BisonEndToEndTests
     [Fact]
     public void AddObservations()
     {
-        var args = new string[]{"observe", "Mikkel skider"};
+        var args = new string[]{"observe", "Mikkel skider", "Taastrup"};
 
         using (StringWriter sw = new StringWriter())
         {
@@ -42,6 +42,7 @@ public class BisonEndToEndTests
             TextWriter originalOutput = Console.Out;
 
             Console.SetOut(sw);
+            Console.SetError(sw);
 
             try
             {

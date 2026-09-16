@@ -10,7 +10,7 @@ public static class UserInterface
         foreach (var cheep in cheeps)
         {
             var time = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp).ToLocalTime();
-            Console.WriteLine($"{cheep.Author} @ {time:MM/dd/yy HH:mm:ss}: {cheep.Observation}");
+            Console.WriteLine($"{cheep.Author} @ {time:MM/dd/yy HH:mm:ss}: {cheep.Observation} at {cheep.Location}");
         }
     }
 

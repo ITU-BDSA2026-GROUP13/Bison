@@ -40,14 +40,17 @@ public class Program
             UserInterface.PrintComments(comments, CheepID);
         });
         
+        // CLI option for adding a observation
         var observeCommand = new Command("observe", "Adds observation to DB");
         var observeArgument = new Argument<string>("observation");
+        var locationObserveCommand = new Argument<string>("Location");
         observeCommand.Add(observeArgument);
+        observeCommand.Add(locationObserveCommand);
         observeCommand.SetAction((parseResult) =>
         {
             string observation = parseResult.GetValue(observeArgument) ?? throw new InvalidOperationException("Message argument was not provided.");
-            
-            Bison.Cheep record = new Bison.Cheep(observation);
+            string location = parseResult.GetValue(locationObserveCommand) ?? throw new InvalidOperationException("Location argument was not provided");
+            Bison.Cheep record = new Bison.Cheep(observation, location);
             cheepDatabase.Store(record);
             Console.WriteLine("Successfully added observation");
             
