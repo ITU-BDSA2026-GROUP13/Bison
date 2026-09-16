@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "VZpC6Gyg3kY=",
+  "success": true,
+  "projectFilePath": "/Users/lassevinding/RiderProjects/Bison/Bison.CLI/Bison.CLI.csproj",
+  "expectedPackageFiles": [
+    "/Users/lassevinding/.nuget/packages/csvhelper/33.1.0/csvhelper.33.1.0.nupkg.sha512",
+    "/Users/lassevinding/.nuget/packages/system.commandline/2.0.11/system.commandline.2.0.11.nupkg.sha512"
+  ],
+  "logs": []
+}

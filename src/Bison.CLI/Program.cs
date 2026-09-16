@@ -8,6 +8,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using System.Globalization;
 using SimpleDB;
+using Spectre.Console;
 
 // This is just so I can tag this commit :D
 
@@ -16,7 +17,7 @@ public class Program
     static string pathToCheepCsvFile = "bison_observe_cli_db.csv";
     static string pathToCommentCSVFile = "bison_comments_cli_db.csv";
 
-    static void Main(string[] args)
+    public static int Main(string[] args)
     {
         CSVDatabase<Cheep> cheepDatabase = new CSVDatabase<Cheep>(pathToCheepCsvFile);
         CSVDatabase<Comment> commentDatabase = new CSVDatabase<Comment>(pathToCommentCSVFile);
@@ -48,6 +49,8 @@ public class Program
             
             Bison.Cheep record = new Bison.Cheep(observation);
             cheepDatabase.Store(record);
+            Console.WriteLine("Successfully added observation");
+            
         });
         
         var commentCommand = new Command("comment", "Adds comment to observation");
@@ -75,6 +78,7 @@ public class Program
         rootCommand.Add(commentCommand);
         
         rootCommand.Parse(args).Invoke(); // Actually takes
+        return 0;
     }
 
     public static void addComment(long cheepId, string comment, IDatabaseRepository<Cheep> cheepDb, IDatabaseRepository<Comment> commentDb)

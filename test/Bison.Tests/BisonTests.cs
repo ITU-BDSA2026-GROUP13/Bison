@@ -81,7 +81,7 @@ public class BisonTests
     public void TestPrintingOfCheeps()
     {
         string expectedOutput = 
-        "Lars @ 01/01/70 01:16:40: test test\nLasse @ 01/01/70 01:33:20: lort\n";
+        "Cheeps:\nLars @ 01/01/70 01:16:40: test test\nLasse @ 01/01/70 01:33:20: lort\n";
 
         using (StringWriter sw = new StringWriter())
         {
