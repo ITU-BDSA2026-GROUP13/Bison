@@ -26,4 +26,8 @@
     <ProjectReference Include="..\..\src\Bison.CLI\Bison.CLI.csproj" />
   </ItemGroup>
 
+    <ItemGroup>
+        <None Include="..\..\src\Bison.CLI\bison_observe_cli_db.csv" CopyToOutputDirectory="Always"/>
+    </ItemGroup>
+
 </Project>
