@@ -1,16 +1,18 @@
 using Spectre.Console;
+using System.Globalization;
 
 public static class UserInterface
 {
     public static void PrintCheeps(IEnumerable<Bison.Cheep> cheeps)
     {
         Console.WriteLine("Cheeps:");
-
-
+        
         foreach (var cheep in cheeps)
         {
             var time = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp).ToLocalTime();
-            Console.WriteLine($"{cheep.Author} @ {time:MM/dd/yy HH:mm:ss}: {cheep.Observation}");
+            string formattedTime = time.ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            // InvariantCulture takes care of Windows and Linux formatting date separators differently.
+            Console.WriteLine($"{cheep.Author} @ {formattedTime}: {cheep.Observation}");
         }
     }
 
@@ -21,7 +23,9 @@ public static class UserInterface
             if (comment.CheepID == CheepID)
             {
                 var time = DateTimeOffset.FromUnixTimeSeconds(comment.Timestamp).ToLocalTime();
-                Console.WriteLine($"{comment.Author} @ {time:MM/dd/yy HH:mm:ss}: {comment.Message}");
+                string formattedTime = time.ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                // InvariantCulture takes care of Windows and Linux formatting date separators differently.
+                Console.WriteLine($"{comment.Author} @ {formattedTime}: {comment.Message}");
             }
         }
     }
