@@ -21,7 +21,7 @@ public class CSVDatabaseIntegrationTest
         cheeps = new CSVDatabase<Cheep>(testFileNameCheep);
         comments = new CSVDatabase<Comment>(testFileNameComment);
 
-        exampleCheep = new Cheep("The answer to everything and Nothing");
+        exampleCheep = new Cheep("The answer to everything and Nothing", "Rued Langaardsvej 7");
         exampleComment = new Comment(exampleCheep.CheepID, "OMG IS THIS TRUE??!!");
     }
     
@@ -90,10 +90,10 @@ public class CSVDatabaseIntegrationTest
         string readLimitFileName = "ReadLimitDB.csv";
         if (File.Exists(readLimitFileName)) File.Delete(readLimitFileName);
         var DB = new CSVDatabase<Cheep>(readLimitFileName);
-        DB.Store(new Cheep("First Observation"));
-        DB.Store(new Cheep("Second Observation"));
-        DB.Store(new Cheep("Third Observation"));
-        DB.Store(new Cheep("Fourth Observation"));
+        DB.Store(new Cheep("First Observation", "Rued Langaardsvej 7"));
+        DB.Store(new Cheep("Second Observation", "Rued Langaardsvej 7"));
+        DB.Store(new Cheep("Third Observation", "Rued Langaardsvej 7"));
+        DB.Store(new Cheep("Fourth Observation", "Rued Langaardsvej 7"));
         
         var dbRead = DB.Read(1);
         Assert.Single(dbRead);

@@ -10,6 +10,7 @@ public static class UserInterface
         {
             var time = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp).ToLocalTime();
             string formattedTime = time.ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            Console.WriteLine($"{cheep.Author} @ {formattedTime}: {cheep.Observation}");
             // InvariantCulture takes care of Windows and Linux formatting date separators differently.
         }
     }
