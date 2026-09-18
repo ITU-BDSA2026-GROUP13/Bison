@@ -4,6 +4,7 @@ using System;
 using Xunit;
 using Bison;
 using SimpleDB;
+using System.Globalization;
 
 public class BisonTests
 {
@@ -68,20 +69,22 @@ public class BisonTests
     }
 
     [Fact]
-    public void TestConversionOfUNIXTimestamps()
+    public void TestConversionOfUnixTimestamps()
     {
         long timestamp = 1700000000;
 
         var time = DateTimeOffset.FromUnixTimeSeconds(timestamp).ToLocalTime();
-        string timeString = $"{time:MM/dd/yy HH:mm:ss}";
-        Assert.Equal("11/14/23 23:13:20", timeString);
+        string timeString = time.ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+        // InvariantCulture takes care of Windows and Linux formatting date separators differently.
+        
+        Assert.Equal("11/14/2023 23:13:20", timeString);
     }
 
     [Fact]
     public void TestPrintingOfCheeps()
     {
         string expectedOutput = 
-        "Cheeps:\nLars @ 01/01/70 01:16:40: test test at Slagelse\nLasse @ 01/01/70 01:33:20: lort at Slagelse\n";
+        "Cheeps:\nLars @ 01/01/1970 01:16:40: test test\nLasse @ 01/01/1970 01:33:20: lort\n";
 
         using (StringWriter sw = new StringWriter())
         {
@@ -92,17 +95,15 @@ public class BisonTests
             try
             {
                 UserInterface.PrintCheeps(cheeps.Read());
-                Assert.Equal(expectedOutput, sw.ToString());
+                string actualOutput = sw.ToString().ReplaceLineEndings("\n");
+                // Normalization around line seperators between Windows and Linux Culture. 
+                Assert.Equal(expectedOutput, actualOutput);
             }
             finally
             {
                 Console.SetOut(originalOutput);
             }
-
         }
         
-
-
-
     }
 }

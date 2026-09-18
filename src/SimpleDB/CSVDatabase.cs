@@ -1,4 +1,4 @@
-﻿namespace SimpleDB;
+namespace SimpleDB;
 
 using CsvHelper;
 using CsvHelper.Configuration;
@@ -37,8 +37,9 @@ public class CSVDatabase<T> : IDatabaseRepository<T>
         using (StreamReader reader = new StreamReader(pathToCsvFile))
         using (CsvReader csv = new CsvReader(reader, config))
         {
-            var records = csv.GetRecords<T>().ToList();
-            return records;
+            var records = csv.GetRecords<T>();
+            if (limit.HasValue) return records.Take(limit.Value).ToList();
+            return records.ToList();
         }
     }
     
