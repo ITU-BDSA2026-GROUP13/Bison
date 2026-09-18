@@ -77,14 +77,21 @@ public class BisonTests
         string timeString = time.ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
         // InvariantCulture takes care of Windows and Linux formatting date separators differently.
         
-        Assert.Equal("11/14/2023 23:13:20", timeString);
+        var expectedTime = new DateTimeOffset(2023, 11, 14, 22, 13, 20, TimeSpan.Zero).ToLocalTime();
+        Assert.Equal(expectedTime.ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture), timeString);
     }
 
     [Fact]
     public void TestPrintingOfCheeps()
     {
+        string firstCheepTime = DateTimeOffset.FromUnixTimeSeconds(1000)
+            .ToLocalTime()
+            .ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+        string secondCheepTime = DateTimeOffset.FromUnixTimeSeconds(2000)
+            .ToLocalTime()
+            .ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
         string expectedOutput = 
-        "Cheeps:\nLars @ 01/01/1970 01:16:40: test test\nLasse @ 01/01/1970 01:33:20: lort\n";
+        $"Cheeps:\nLars @ {firstCheepTime}: test test\nLasse @ {secondCheepTime}: lort\n";
 
         using (StringWriter sw = new StringWriter())
         {
