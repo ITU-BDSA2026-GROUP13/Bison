@@ -9,24 +9,28 @@ using CsvHelper.Configuration;
 using System.Globalization;
 using SimpleDB;
 using Spectre.Console;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 // This is just so I can tag this commit :D
 
 public class Program
 {
-    static string pathToCheepCsvFile = "bison_observe_cli_db.csv";
-    static string pathToCommentCSVFile = "bison_comments_cli_db.csv";
-
-    public static int Main(string[] args)
+    public static async Task<int> Main(string[] args)
     {
-        CSVDatabase<Cheep> cheepDatabase = new CSVDatabase<Cheep>(pathToCheepCsvFile);
-        CSVDatabase<Comment> commentDatabase = new CSVDatabase<Comment>(pathToCommentCSVFile);
+        // Sets up HTTP connection
+        var baseURL = "http://localhost:5229";
+        using HttpClient client = new();
+        client.DefaultRequestHeaders.Accept.Clear();
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        client.BaseAddress = new Uri(baseURL);
+        
         RootCommand rootCommand = new RootCommand("Application to alter data in database");
         
         var readCommand = new Command("read", "Reads all values from DB");
         readCommand.SetAction((parseResult) =>
         {
-            var records = cheepDatabase.Read();
+            var records = cheepDatabase.Read(); // Skal ændres til at tage fra webservicen
             UserInterface.PrintCheeps(records);
         });
 
