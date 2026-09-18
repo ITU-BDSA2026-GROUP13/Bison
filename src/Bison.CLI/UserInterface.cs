@@ -6,13 +6,11 @@ public static class UserInterface
     public static void PrintCheeps(IEnumerable<Bison.Cheep> cheeps)
     {
         Console.WriteLine("Cheeps:");
-        
         foreach (var cheep in cheeps)
         {
             var time = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp).ToLocalTime();
             string formattedTime = time.ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
             // InvariantCulture takes care of Windows and Linux formatting date separators differently.
-            Console.WriteLine($"{cheep.Author} @ {formattedTime}: {cheep.Observation}");
         }
     }
 
@@ -24,7 +22,6 @@ public static class UserInterface
             {
                 var time = DateTimeOffset.FromUnixTimeSeconds(comment.Timestamp).ToLocalTime();
                 string formattedTime = time.ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-                // InvariantCulture takes care of Windows and Linux formatting date separators differently.
                 Console.WriteLine($"{comment.Author} @ {formattedTime}: {comment.Message}");
             }
         }

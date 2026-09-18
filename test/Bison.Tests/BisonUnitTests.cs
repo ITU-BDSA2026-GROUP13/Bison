@@ -10,7 +10,7 @@ public class BisonUnitTests
     {
         var cheeps = new TestDatabase<Cheep>();
         var comments = new TestDatabase<Comment>();
-        cheeps.Store(new Cheep(69, "Lars", "test", 1000));
+        cheeps.Store(new Cheep(69, "Lars", "test", "Slagelse", 1000));
 
         Program.addComment(69, "comment", cheeps, comments);
 

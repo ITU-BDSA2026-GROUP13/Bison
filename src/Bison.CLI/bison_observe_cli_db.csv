@@ -1,15 +1,3 @@
-CheepID,Author,Observation,Timestamp
-0,ropf,"A bird at DR Byen",1690891760
-1,adho,"I think that is a Heron at DR Byen",1690978778
-2,edka,"Ardea cinerea at DR Byen",1690979858
-3,jacob,"Heron at DR Byen",1787906360
-4,mikke,Jeg,1788528021
-5,mikke,Jeg elsker lort kh Lasse,1788528071
-6,jacob,I am the coolest in the world,1788603777
-7,jacob,This observation was made with new CLI lib,1788606781
-833601329,jacob,"We have completed the project work for this week, and Lasse Shite again",1788683486
-67,lort,"kasper",1700000000
-252845962,lassevinding,"Mikkel prutter",1789481824
-792872557,lassevinding,"tis",1789481914
-894019358,lassevinding,virker,1789481964
-1011276325,lassevinding,Virker stadig,1789481980
+CheepID,Location,Author,Observation,Timestamp
+1227192276,Lego City,lassevinding,A man has been spotted,1789577953
+419723091,Jægerspris,lassevinding,Seje mennesker,1789583617

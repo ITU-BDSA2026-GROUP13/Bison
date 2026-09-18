@@ -20,8 +20,8 @@ public class BisonTests
         cheeps = new CSVDatabase<Cheep>(testFileNameCheep);
         comments = new CSVDatabase<Comment>(testFileNameComment);
 
-        Cheep cheep1 = new Cheep(69, "Lars", "test test", 1000);
-        Cheep cheep2 = new Cheep(70, "Lasse", "lort", 2000);
+        Cheep cheep1 = new Cheep(69, "Lars", "test test", "Slagelse", 1000);
+        Cheep cheep2 = new Cheep(70,  "Lasse", "lort", "Slagelse", 2000);
         cheeps.Store(cheep1);
         cheeps.Store(cheep2);
     }

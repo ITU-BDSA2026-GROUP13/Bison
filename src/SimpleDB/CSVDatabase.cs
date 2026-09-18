@@ -29,8 +29,13 @@ public class CSVDatabase<T> : IDatabaseRepository<T>
     // Reads all lines from the csv file into a list and returns it
     public IEnumerable<T> Read(int? limit = null)
     {
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            PrepareHeaderForMatch = args => args.Header.ToLower().Trim()
+        };
+        
         using (StreamReader reader = new StreamReader(pathToCsvFile))
-        using (CsvReader csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+        using (CsvReader csv = new CsvReader(reader, config))
         {
             var records = csv.GetRecords<T>();
             if (limit.HasValue) return records.Take(limit.Value).ToList();
