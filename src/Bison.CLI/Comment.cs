@@ -1,4 +1,6 @@
 ﻿namespace Bison;
+using System.Text.Json.Serialization;
+
 
 public record Comment
 {
@@ -7,6 +9,7 @@ public record Comment
     public string Message { get; set; }
     public long Timestamp { get; set; }
 
+    public Comment() { }   // bruges af JSON
     public Comment(long CheepID, string Message)
     {
         this.Author = Environment.UserName;
@@ -15,6 +18,8 @@ public record Comment
         this.Message = Message;
     }
     
+    [JsonConstructor]
+
     public Comment(long CheepID, string Author, string Message,  long Timestamp)
     {
         this.CheepID = CheepID;
