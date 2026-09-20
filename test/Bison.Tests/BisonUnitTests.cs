@@ -2,17 +2,27 @@ namespace Bison.Tests;
 
 using Bison;
 using SimpleDB;
+using System.Net.Http.Headers;
 
 public class BisonUnitTests
 {
     [Fact]
     public void TestAddCommentStoresCommentForExistingObservation()
     {
+        //Start webservice
+        var baseURL = "http://localhost:5229";
+        using HttpClient client = new();
+        client.DefaultRequestHeaders.Accept.Clear();
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        client.BaseAddress = new Uri(baseURL);
+        
+        // start unit test
         var cheeps = new TestDatabase<Cheep>();
         var comments = new TestDatabase<Comment>();
         cheeps.Store(new Cheep(69, "Lars", "test", "Slagelse", 1000));
 
-        Program.addComment(69, "comment", cheeps, comments);
+        var response = await client.PostAsJsonAsync("comment", record, ct);
+        //Program.addComment(69, "comment", cheeps, comments);
 
         List<Comment> storedComments = comments.Read().ToList();
         Assert.Single(comments.Read());

@@ -5,6 +5,7 @@ using Xunit;
 using Bison;
 using SimpleDB;
 using System.Globalization;
+using System.Net.Http.Headers;
 
 public class BisonTests
 {
@@ -14,6 +15,12 @@ public class BisonTests
     private readonly CSVDatabase<Comment> comments;
     public BisonTests()
     {
+        var baseURL = "http://localhost:5229";
+        using HttpClient client = new();
+        client.DefaultRequestHeaders.Accept.Clear();
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        client.BaseAddress = new Uri(baseURL);
+        
         if (File.Exists(testFileNameCheep)) File.Delete(testFileNameCheep);
         if (File.Exists(testFileNameComment)) File.Delete(testFileNameComment);
 
