@@ -1,6 +1,7 @@
 namespace Bison.Tests;
 
 using Bison;
+using SimpleDB;
 
 public class BisonUnitTests
 {
@@ -35,8 +36,8 @@ public class BisonUnitTests
     //vi kan jo ikke bruge vores reele services da de ville store i vores .csv
     private class TestService
     {
-        private readonly List<Cheep> observations = [];
         private readonly List<Comment> comments = [];
+        private readonly List<Cheep> observations = [];
 
         public void AddObservation(Cheep observation)
         {
@@ -45,7 +46,7 @@ public class BisonUnitTests
 
         public void AddComment(Comment comment)
         {
-            if (!observations.Any(observation => observation.CheepID == comment.CheepID))
+            if (!CommentHandling.doesObservationExist(comment.CheepID, observations))
                 throw new InvalidOperationException("Observation id does not exist");
 
             comments.Add(comment);

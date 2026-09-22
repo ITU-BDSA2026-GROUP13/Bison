@@ -1,20 +1,28 @@
 namespace Service;
+
 using Bison;
 using DefaultNamespace;
+using SimpleDB;
 
 public class CommentService
 {
     // Creates DBs
-    private static readonly ObservationDatabase<Cheep> observations = ObservationDatabase<Cheep>.Instance;
-    private static readonly CommentDatabase<Comment> comments = CommentDatabase<Comment>.Instance;
+    private readonly IDatabaseRepository<Cheep> observations;
+    private readonly IDatabaseRepository<Comment> comments;
     
-    public static void addComment(Comment comment)
+    public CommentService(IDatabaseRepository<Comment> comments, IDatabaseRepository<Cheep> observations)
     {
-        if (!CommentHandling.doesObservationExist(comment.CheepID, observations)) throw new InvalidOperationException("Observation id does not exist");
+        this.comments = comments;
+        this.observations = observations;
+    }
+
+    public void addComment(Comment comment)
+    {
+        if (!CommentHandling.doesObservationExist(comment.CheepID, observations.Read())) throw new InvalidOperationException("Observation id does not exist");
         comments.Store(comment);
     }
 
-    public static IEnumerable<Comment> getComments(long observationID)
+    public IEnumerable<Comment> getComments(long observationID)
     {
         return comments.Read().Where(c => c.CheepID == observationID);
     }

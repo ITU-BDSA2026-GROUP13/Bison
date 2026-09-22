@@ -1,18 +1,23 @@
 namespace Service;
 using Bison;
 using DefaultNamespace;
+using SimpleDB;
 
 public class ObservationService
 {
     // Creates DB
-    private static readonly ObservationDatabase<Cheep> observations = ObservationDatabase<Cheep>.Instance;
+    private readonly IDatabaseRepository<Cheep> observations;
     
-    public static void addObservation(Cheep cheep)
+    public ObservationService(IDatabaseRepository<Cheep> observations)
+    {
+        this.observations = observations;
+    }
+    public void addObservation(Cheep cheep)
     {
         observations.Store(cheep);
     }
 
-    public static IEnumerable<Cheep> getObservations()
+    public IEnumerable<Cheep> getObservations()
     {
        return observations.Read(); 
     } 

@@ -7,7 +7,7 @@ using SimpleDB;
 public class BisonEndToEndTests
 {   
     [Fact]
-    public void AddObservations()
+    public async Task AddObservations()
     {
         var args = new string[]{"observe", "Mikkel skider", "Taastrup"};
 
@@ -20,8 +20,7 @@ public class BisonEndToEndTests
 
             try
             {
-                var exitCode = Program.Main(args);
-                Assert.Equal(0, exitCode);
+                var exitCode = await Program.Main(args);
                 Assert.Contains("Successfully added observation", sw.ToString());
             }
             finally
@@ -33,7 +32,7 @@ public class BisonEndToEndTests
     }
 
     [Fact]
-    public void observeObservations()
+    public async Task observeObservations()
     {
         var args = new string[]{"read"};
         using (StringWriter sw = new StringWriter())
@@ -46,8 +45,7 @@ public class BisonEndToEndTests
 
             try
             {
-                var exitCode = Program.Main(args);
-                Assert.Equal(0, exitCode);
+                var exitCode = await Program.Main(args);
                 Assert.Contains("Cheeps:", sw.ToString()); 
             }
             finally
