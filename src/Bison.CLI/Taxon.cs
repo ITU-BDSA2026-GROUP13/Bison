@@ -4,10 +4,10 @@ using CsvHelper.Configuration;
 public class Taxon
 {
     public string TaxonID { get; set; } = ""; // = "" makes sure the warning for non nullable doesnt appear
-    public string ParentNameUsageID { get; set; } = "";
+    public string ParentNameUsageID { get; set; } = ""; // er ikke sikker på om vi skal bruge dette, da vi har superTaxon
     public string TaxonRank { get; set; } = "";
     public string ScientificName { get; set; } = "";
-    public string? VernacularName { get; set; }
+    public string? VernacularName { get; set; } //The name in danish
     
     // Does not get read from csv
     public Taxon? SuperTaxon { get; set; }
