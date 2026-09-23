@@ -8,14 +8,13 @@ public class BisonUnitTests
     [Fact]
     public void TestAddCommentStoresCommentForExistingObservation()
     {
-        var cheeps = new TestDatabase<Cheep>();
-        var comments = new TestDatabase<Comment>();
-        cheeps.Store(new Cheep(69, "Lars", "test", "Slagelse", 1000));
+        var service = new TestService();
+        service.AddObservation(new Cheep(69, "Lars", "test", "Slagelse", 1000));
 
-        Program.addComment(69, "comment", cheeps, comments);
+        service.AddComment(new Comment(69, "comment"));
 
-        List<Comment> storedComments = comments.Read().ToList();
-        Assert.Single(comments.Read());
+        List<Comment> storedComments = service.ReadComments(69).ToList();
+        Assert.Single(storedComments);
         Assert.Equal(69, storedComments[0].CheepID);
         Assert.Equal("comment", storedComments[0].Message);
     }
@@ -23,31 +22,39 @@ public class BisonUnitTests
     [Fact]
     public void TestAddCommentThrowsForNonExistingObservation()
     {
-        var cheeps = new TestDatabase<Cheep>();
-        var comments = new TestDatabase<Comment>();
+        var service = new TestService();
 
         Assert.Throws<InvalidOperationException>(() =>
-            Program.addComment(69, "comment", cheeps, comments));
+            service.AddComment(new Comment(69, "comment")));
 
-        Assert.Empty(comments.Read());
+        Assert.Empty(service.ReadComments(69));
     }
 
 
-    //Så dette er vores egen lille database her som implementerer vores interface jo
-    //DET FAKTISK SÅ SMART OMG!!!
-    //FIK EN LATE NIGHT ÅBENBARING!!!!
-    private class TestDatabase<T> : IDatabaseRepository<T>
+    //Den her service er blot til test og rummer altså både observation/comment logic
+    //Ikke helt sikker på om det er sådan her man børe gøre det, men tror det er fint
+    //vi kan jo ikke bruge vores reele services da de ville store i vores .csv
+    private class TestService
     {
-        private readonly List<T> records = [];
+        private readonly List<Comment> comments = [];
+        private readonly List<Cheep> observations = [];
 
-        public IEnumerable<T> Read(int? limit = null)
+        public void AddObservation(Cheep observation)
         {
-            return records;
+            observations.Add(observation);
         }
 
-        public void Store(T record)
+        public void AddComment(Comment comment)
         {
-            records.Add(record);
+            if (!CommentHandling.doesObservationExist(comment.CheepID, observations))
+                throw new InvalidOperationException("Observation id does not exist");
+
+            comments.Add(comment);
+        }
+
+        public IEnumerable<Comment> ReadComments(long observationId)
+        {
+            return comments.Where(comment => comment.CheepID == observationId);
         }
     }
 }

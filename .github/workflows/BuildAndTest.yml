@@ -19,5 +19,8 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
+    - name: Start API
+      working-directory: src/Bison.CSVDBService
+      run: dotnet run --no-build --urls http://localhost:5229 > api.log 2>&1 &
     - name: Test
       run: dotnet test --no-build --verbosity normal

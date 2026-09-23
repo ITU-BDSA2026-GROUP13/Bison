@@ -2,16 +2,18 @@ namespace DefaultNamespace;
 
 using SimpleDB;
 
-public sealed class ObservationDatabase<T> : CSVDatabase<T>
+public sealed class ObservationDatabase<Cheep> : CSVDatabase<Cheep>
 {
-    private static ObservationDatabase<T> instance = null;
+    private static ObservationDatabase<Cheep> instance = null;
     private static readonly object padlock = new object();
-    public ObservationDatabase(string pathToCsvFile) : base(pathToCsvFile)
+    static readonly string pathToCsvFile = "../Bison.CLI/bison_observe_cli_db.csv";
+
+    ObservationDatabase() : base(pathToCsvFile)
     {
         
     }
     
-    public ObservationDatabase<T> Instance
+    public static ObservationDatabase<Cheep> Instance
     {
         get
         {
@@ -19,10 +21,10 @@ public sealed class ObservationDatabase<T> : CSVDatabase<T>
             {
                 if (instance == null)
                 {
-                    instance = new ObservationDatabase<T>(pathToCsvFile);
+                    instance = new ObservationDatabase<Cheep>();
                 }
                 return instance;
             }
         }
     }
-} 
+}

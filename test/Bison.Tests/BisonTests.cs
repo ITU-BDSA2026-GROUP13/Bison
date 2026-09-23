@@ -4,7 +4,10 @@ using System;
 using Xunit;
 using Bison;
 using SimpleDB;
+using Service;
 using System.Globalization;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 public class BisonTests
 {
@@ -12,6 +15,10 @@ public class BisonTests
     private readonly string testFileNameComment = "comment_bison_observe_test_cli_db.csv";
     private readonly CSVDatabase<Cheep> cheeps;
     private readonly CSVDatabase<Comment> comments;
+    private readonly CommentService commentService;
+    private readonly ObservationService observationService;
+
+
     public BisonTests()
     {
         if (File.Exists(testFileNameCheep)) File.Delete(testFileNameCheep);
@@ -19,6 +26,9 @@ public class BisonTests
 
         cheeps = new CSVDatabase<Cheep>(testFileNameCheep);
         comments = new CSVDatabase<Comment>(testFileNameComment);
+
+        observationService = new ObservationService(cheeps);
+        commentService = new CommentService(comments, cheeps);
 
         Cheep cheep1 = new Cheep(69, "Lars", "test test", "Slagelse", 1000);
         Cheep cheep2 = new Cheep(70,  "Lasse", "lort", "Slagelse", 2000);
@@ -37,7 +47,8 @@ public class BisonTests
         var exception = Assert.Throws<InvalidOperationException>(() =>
         {
              //Attempt to add new comment referencing invalid observationId
-            Program.addComment(67, "test", cheeps, comments);
+             Comment comment = new Comment(67, "test");
+             commentService.addComment(comment);
         });
 
         //Snapshot of database AFTER attempting to add new comment
@@ -50,7 +61,8 @@ public class BisonTests
     [Fact]
     public void TestCommentReferencesCorrectObservation()
     {
-        Program.addComment(69, "test", cheeps, comments);
+        Comment comment = new Comment(69, "test");
+        commentService.addComment(comment);
 
         List<Comment> comment_database_after_add_attempt = comments.Read().ToList();
 
@@ -91,7 +103,7 @@ public class BisonTests
             .ToLocalTime()
             .ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
         string expectedOutput = 
-        $"Cheeps:\nLars @ {firstCheepTime}: test test\nLasse @ {secondCheepTime}: lort\n";
+        $"Cheeps:\nLars @ {firstCheepTime}: test test at Slagelse\nLasse @ {secondCheepTime}: lort at Slagelse\n";
 
         using (StringWriter sw = new StringWriter())
         {

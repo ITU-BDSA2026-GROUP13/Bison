@@ -6,12 +6,13 @@ public sealed class CommentDatabase<T> : CSVDatabase<T>
 {
     private static CommentDatabase<T> instance = null;
     private static readonly object padlock = new object();
-    public CommentDatabase(string pathToCsvFile) : base(pathToCsvFile)
+    private static readonly string pathToCsvFile = "../Bison.CLI/bison_comments_cli_db.csv"; 
+    CommentDatabase() : base(pathToCsvFile)
     {
         
     }
     
-    public CommentDatabase<T> Instance
+    public static CommentDatabase<T> Instance
     {
         get
         {
@@ -19,7 +20,7 @@ public sealed class CommentDatabase<T> : CSVDatabase<T>
             {
                 if (instance == null)
                 {
-                    instance = new CommentDatabase<T>(pathToCsvFile);
+                    instance = new CommentDatabase<T>();
                 }
                 return instance;
             }
