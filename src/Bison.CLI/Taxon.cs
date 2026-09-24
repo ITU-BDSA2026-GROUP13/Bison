@@ -11,10 +11,10 @@ public class Taxon
     
     // Does not get read from csv
     public Taxon? SuperTaxon { get; set; }
-    public List<Taxon> SubTaxons { get; set; }
-    
-    
-    
+    public List<Taxon> SubTaxons { get; set; } = new();
+
+
+
 }
 
 /*

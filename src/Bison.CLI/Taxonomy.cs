@@ -7,7 +7,9 @@ using System.Reflection;
 
 public class Taxonomy
 {
-    public List<Taxon> Taxons { get; set; } = new List<Taxon>();
+    private List<Taxon> Taxons { get; set; } = new List<Taxon>();
+    private readonly Dictionary<string, Taxon> lookupById = new();
+    private readonly Dictionary<string, Taxon> lookupByVernacularName = new();
 
     
     string csvEmbeddedResourcePath = "Bison.CLI.joined.csv";
@@ -20,13 +22,37 @@ public class Taxonomy
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         csv.Context.RegisterClassMap<TaxonMap>();
         Taxons = csv.GetRecords<Taxon>().ToList();
+        
+        // Fill the Dictionaries
+        foreach (var taxon in Taxons)
+        {
+            lookupById.Add(taxon.TaxonID, taxon);
+            if (!string.IsNullOrWhiteSpace(taxon.VernacularName))
+            {
+                lookupByVernacularName.Add(taxon.VernacularName, taxon);
+            }
+        }
+        
+        // Populate SubTaxon list and assing SuperTaxons
+        foreach (var taxon in Taxons)
+        {
+            if (lookupById.TryGetValue(taxon.ParentNameUsageID, out Taxon? parent))
+            {
+                taxon.SuperTaxon = parent;
+                parent.SubTaxons.Add(taxon);
+            }
+        }
     }
 
     public void PrintTaxonomy()
     {
         foreach (var taxon in Taxons)
         {
-            Console.WriteLine($"ID: {taxon.TaxonID}, Name: {taxon.VernacularName}, ParentID: {taxon.ParentNameUsageID}, SuperTaxon: {taxon.SuperTaxon}");
+            string parentID;
+            if (taxon.SuperTaxon != null) parentID = taxon.SuperTaxon.TaxonID;
+            else parentID = "None";
+            
+            Console.WriteLine($"ID: {taxon.TaxonID}, Name: {taxon.VernacularName}, ParentID: {taxon.ParentNameUsageID}, SuperTaxon: {parentID}");
         
         }
     
