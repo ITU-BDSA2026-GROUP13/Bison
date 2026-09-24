@@ -57,16 +57,15 @@ public class Taxonomy
         }
     
     }
-    public Taxon getTaxonByID(string id)
+    public Taxon? getTaxonByID(string id)
     {
-        throw new NotImplementedException();
-        //return Taxon;
+        
+        return lookupById.TryGetValue(id, out Taxon? taxon) ? taxon : null;
     }
 
-    public Taxon getTaxonByDanishName(string danishName)
+    public Taxon? getTaxonByDanishName(string danishName)
     {
-        throw new NotImplementedException();
-        //return Taxon;
+        return lookupByVernacularName.TryGetValue(danishName, out Taxon? taxon) ? taxon : null;
     }
 
     public Taxon getTaxonParentID(string parentID)
