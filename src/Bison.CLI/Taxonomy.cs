@@ -57,26 +57,29 @@ public class Taxonomy
         }
     
     }
-    public Taxon? getTaxonByID(string id)
+    public Taxon? GetTaxonById(string id)
     {
         
         return lookupById.TryGetValue(id, out Taxon? taxon) ? taxon : null;
     }
 
-    public Taxon? getTaxonByDanishName(string danishName)
+    public Taxon? GetTaxonByDanishName(string danishName)
     {
         return lookupByVernacularName.TryGetValue(danishName, out Taxon? taxon) ? taxon : null;
     }
 
-    public Taxon getTaxonParentID(string parentID)
-    {
-        throw new NotImplementedException();
-        //return Taxon;
+    public Taxon? GetTaxonParent(Taxon taxon)
+    { // In doubt if this and next method should actually be here, and not in Taxon
+        string parentId;
+        
+        if (taxon.SuperTaxon != null) parentId = taxon.SuperTaxon.TaxonID;
+        else return null;
+        
+        return  GetTaxonById(parentId);
     }
 
-    public List<Taxon> getTaxonChildren(Taxon parent)
+    public List<Taxon>? GetTaxonChildren(Taxon taxon)
     {
-        throw new NotImplementedException();
-        //return Taxon;
+        return taxon.SubTaxons.Count == 0 ? null : taxon.SubTaxons;
     }
 }
