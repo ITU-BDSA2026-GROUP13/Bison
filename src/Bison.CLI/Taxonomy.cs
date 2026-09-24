@@ -21,9 +21,15 @@ public class Taxonomy
         var reader = new StreamReader(stream);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         csv.Context.RegisterClassMap<TaxonMap>();
-        Taxons = csv.GetRecords<Taxon>().ToList();
-        
-        // Fill the Dictionaries
+        BuildStructures(csv.GetRecords<Taxon>().ToList());
+    }
+
+    public void BuildStructures(List<Taxon> taxons)
+    {
+        Taxons = taxons;
+        lookupById.Clear();
+        lookupByVernacularName.Clear();
+
         foreach (var taxon in Taxons)
         {
             lookupById.Add(taxon.TaxonID, taxon);
@@ -32,8 +38,7 @@ public class Taxonomy
                 lookupByVernacularName.Add(taxon.VernacularName, taxon);
             }
         }
-        
-        // Populate SubTaxon list and assing SuperTaxons
+
         foreach (var taxon in Taxons)
         {
             if (lookupById.TryGetValue(taxon.ParentNameUsageID, out Taxon? parent))
