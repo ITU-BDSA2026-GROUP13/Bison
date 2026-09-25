@@ -116,8 +116,29 @@ public class Program
         proposalCommand.Add(propersalCheepIDArgument);
         proposalCommand.SetAction(async (parseResult, ct) =>
             {
-                string proposal = parseResult.GetValue(propersalArgument) ?? throw new InvalidOperationException("Proposal argument not given");
+                string proposalString = parseResult.GetValue(propersalArgument) ?? throw new InvalidOperationException("Proposal argument not given");
                 long cheepID = parseResult.GetValue(propersalCheepIDArgument);
+                if (taxonomy.GetTaxonByDanishName(proposalString) == null && taxonomy.GetTaxonById(proposalString) == null)
+                {
+                    Console.WriteLine("Proposal id/name does not exist");
+                    return;
+                }
+                
+                var proposal = new Proposal(cheepID, proposalString);
+                try
+                {
+                    var response = await client.PostAsJsonAsync("proposal", proposal, ct);
+                    if (response.StatusCode == HttpStatusCode.NotFound)
+                        Console.WriteLine("Referenced Observation ID does not exist");
+                    else if (!response.IsSuccessStatusCode)
+                        Console.WriteLine($"Failed: {(int)response.StatusCode} {response.ReasonPhrase}");
+                    else
+                        Console.WriteLine("Successfully added proposal");
+                }
+                catch (HttpRequestException ex)
+                {
+                    Console.WriteLine($"Request to web service failed: {ex.Message}");
+                }
                 
             }
             
@@ -129,6 +150,7 @@ public class Program
         rootCommand.Add(discussionCommand);
         rootCommand.Add(observeCommand);
         rootCommand.Add(commentCommand);
+        rootCommand.Add(proposalCommand);
 
         return await rootCommand.Parse(args).InvokeAsync();
     }
