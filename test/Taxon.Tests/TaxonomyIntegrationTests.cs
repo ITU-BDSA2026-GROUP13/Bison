@@ -13,10 +13,24 @@ public class TaxonomyIntegrationTests
         return taxonomy;
     }
 
+    
     [Fact]
     public void TaxonsLoader_Loads()
     {
-        //Assert & Act start
+        //Arrange & Act start
+        var taxonomy = GetTaxonomy(); // Calls Taxonloader
+
+        var taxon = taxonomy.GetTaxonByDanishName("Årefodede"); // Pulling out example
+        
+        //Assert
+        Assert.NotNull(taxon);
+    }
+    
+    
+    [Fact]
+    public void Taxonomy_Prints()
+    {
+        //Arrange
         var taxonomy = GetTaxonomy(); // Calls Taxonloader
         
         using (StringWriter sw = new StringWriter())
@@ -25,6 +39,7 @@ public class TaxonomyIntegrationTests
             TextWriter originalOutput = Console.Out;
             Console.SetOut(sw);
             
+            // Act
             taxonomy.PrintTaxonomy();
             
             //Assert
@@ -33,8 +48,22 @@ public class TaxonomyIntegrationTests
             Console.SetOut(originalOutput);
         }
     }
-    
-    
-    
-    
+
+    [Fact]
+    public void TaxonomyHierarchy_Exists_IE_ParentChild()
+    {
+        //Arrange
+        var taxonomy = GetTaxonomy();
+        
+        var actualParent = taxonomy.GetTaxonByDanishName("Årefodede"); //Parent 
+        var taxonChild = taxonomy.GetTaxonByDanishName("Hejrer"); //Child
+        
+        // Act
+        var foundParent = taxonomy.GetTaxonParent(taxonChild); //Relative parent
+        var parentChildren = actualParent.SubTaxons; //Relative children
+        
+        //Assert
+        Assert.Equal(actualParent.TaxonID, foundParent.TaxonID);
+        Assert.Contains(taxonChild, parentChildren);
+    }
 }
