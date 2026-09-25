@@ -81,6 +81,7 @@ public class Program
             }
         });
 
+        //Adding CLI comment command
         var commentCommand = new Command("comment", "Adds comment to observation");
         var commentArgument = new Argument<string>("comment");
         var commentCheepIDArgument = new Argument<long>("cheepID");
@@ -106,6 +107,23 @@ public class Program
                 Console.WriteLine($"Request to web service failed: {ex.Message}");
             }
         });
+        
+        //Adding proposal to CLI command 
+        var proposalCommand = new Command("proposal", "Adds proposal to observation");
+        var propersalArgument = new Argument<string>("proposal");
+        var propersalCheepIDArgument = new Argument<long>("cheepID");
+        proposalCommand.Add(propersalArgument);
+        proposalCommand.Add(propersalCheepIDArgument);
+        proposalCommand.SetAction(async (parseResult, ct) =>
+            {
+                string proposal = parseResult.GetValue(propersalArgument) ?? throw new InvalidOperationException("Proposal argument not given");
+                long cheepID = parseResult.GetValue(propersalCheepIDArgument);
+                
+            }
+            
+        );
+        
+        
 
         rootCommand.Add(readCommand);
         rootCommand.Add(discussionCommand);
