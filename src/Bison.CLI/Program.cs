@@ -24,7 +24,7 @@ public class Program
 
         var taxonomy = new Taxonomy();
         taxonomy.Taxonloader();
-        taxonomy.PrintTaxonomy();
+        //taxonomy.PrintTaxonomy();
         RootCommand rootCommand = new RootCommand("Application to alter data in database");
 
         var readCommand = new Command("read", "Reads all values from DB");
