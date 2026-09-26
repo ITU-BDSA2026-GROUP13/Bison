@@ -25,6 +25,22 @@ public class TaxonomyIntegrationTests
         //Assert
         Assert.NotNull(taxon);
     }
+
+    [Fact]
+    public void TaxonGetters_Reference_Same_Taxons()
+    {
+        //Arrange
+        var taxonomy = GetTaxonomy();
+        
+        //Act
+        var taxon = taxonomy.GetTaxonByDanishName("Årefodede"); // Pulling out example
+        Assert.NotNull(taxon);
+        var sameTaxon = taxonomy.GetTaxonById(taxon.TaxonID); // Extracting the same taxon through ID
+        Assert.NotNull(sameTaxon);
+        
+        //Assert
+        Assert.Same(sameTaxon, taxon);
+    }
     
     
     [Fact]
@@ -65,5 +81,5 @@ public class TaxonomyIntegrationTests
         //Assert
         Assert.Equal(actualParent.TaxonID, foundParent.TaxonID);
         Assert.Contains(taxonChild, parentChildren);
-    }
+    }   
 }
