@@ -14,10 +14,10 @@ public class EndpointTesting
     public async Task TestGetObservationsRequest()
     {
         //Arrange
-        string url = "http://localhost:5229/observation";
+        string observationUrl = "http://localhost:5229/observations";
         
         //Act
-        var response = await client.GetAsync(url);
+        var response = await client.GetAsync(observationUrl);
         
         //Assert
         //statuscode ok?? (200).
