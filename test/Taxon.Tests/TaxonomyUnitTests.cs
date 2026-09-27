@@ -20,9 +20,13 @@ public class TaxonomyUnitTest
     [Fact]
     public void ReturnsCorrectTaxon()
     {
+        //Arrange
         var taxonomy = BuildSampleTaxonomy();
+        
+        //Act
         var frederik = taxonomy.GetTaxonById("2");
 
+        //Assert
         Assert.NotNull(frederik);
         Assert.Equal("2", frederik!.TaxonID);
     }
@@ -30,17 +34,26 @@ public class TaxonomyUnitTest
     [Fact]
     public void IdDoesNotExist()
     {
+        //Arrange
         var taxonomy = BuildSampleTaxonomy();
 
-        Assert.Null(taxonomy.GetTaxonById("999"));
+        //Act
+        var nonExistingTaxon =  taxonomy.GetTaxonById("999");
+        
+        //Assert
+        Assert.Null(nonExistingTaxon);
     }
 
     [Fact]
     public void GetTaxonByDanishName()
     {
+        //Arrange
         var taxonomy = BuildSampleTaxonomy();
+        
+        //Act
         var christian = taxonomy.GetTaxonByDanishName("Christian");
-
+        
+        //Assert
         Assert.NotNull(christian);
         Assert.Equal("3", christian!.TaxonID);
     }
@@ -48,12 +61,15 @@ public class TaxonomyUnitTest
     [Fact]
     public void GetCorrectTaxonParent()
     {
+        //Arrange
         var taxonomy = BuildSampleTaxonomy();
         var margrethe = taxonomy.GetTaxonById("1");
-
         Assert.NotNull(margrethe);
+        
+        //Act
         var parent = margrethe.SuperTaxon;
 
+        //Assert
         Assert.Null(parent);
     }
 
