@@ -1,12 +1,11 @@
 ﻿namespace Bison;
+
+using System;
 using System.Text.Json.Serialization;
 
-public class Proposal
+public record Proposal : UserAddition
 {
-    public long CheepID { get; set; }
-    public string Author { get; set; }
     public string TaxonID { get; set; }
-    public long Timestamp { get; set; }
     
     public Proposal() { }   // bruges af JSON
     public Proposal(long CheepID, string TaxonID)
@@ -18,7 +17,6 @@ public class Proposal
     }
     
     [JsonConstructor]
-
     public Proposal(long CheepID, string Author, string TaxonID,  long Timestamp)
     {
         this.CheepID = CheepID;

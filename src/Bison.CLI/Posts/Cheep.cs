@@ -3,13 +3,11 @@
 using System;
 using System.Text.Json.Serialization;
 
-public record Cheep
+public record Cheep : Post
 {
     public long CheepID { get; set; }
     public string Location { get; set; }
-    public string Author { get; set; }
     public string Observation { get; set; }
-    public long Timestamp { get; set; }
 
     public Cheep() { }   // bruges af JSON
 
