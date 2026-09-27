@@ -9,7 +9,7 @@ public class ProposalService
     private readonly IDatabaseRepository<Cheep> observations;
     private readonly IDatabaseRepository<Proposal> proposals;
 
-    public ProposalService(IDatabaseRepository<Cheep> observations, IDatabaseRepository<Proposal> proposals)
+    public ProposalService(IDatabaseRepository<Proposal> proposals, IDatabaseRepository<Cheep> observations)
     {
         this.observations = observations;
         this.proposals = proposals;
