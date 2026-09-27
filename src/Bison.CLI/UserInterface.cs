@@ -27,4 +27,17 @@ public static class UserInterface
             }
         }
     }
+
+    public static void PrintProposals(IEnumerable<Bison.Proposal> proposals, long CheepID)
+    {
+        foreach (var proposal in proposals)
+        {
+            if (proposal.CheepID == CheepID)
+            {
+                var time = DateTimeOffset.FromUnixTimeSeconds(proposal.Timestamp).ToLocalTime();
+                string formattedTime = time.ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                Console.WriteLine($"{proposal.Author} @ {formattedTime}: {proposal.TaxonID}");
+            }
+        }
+    }
 }

@@ -58,6 +58,7 @@ public class Program
             }
         });
 
+        
         var observeCommand = new Command("observe", "Adds observation to DB");
         var observeArgument = new Argument<string>("observation");
         var locationObserveCommand = new Argument<string>("Location");
@@ -144,13 +145,38 @@ public class Program
             
         );
         
-        
+        //Adding proposals to CLI commands
+        var proposalsCommand = new Command("proposals", "Shows all proposals for a given observation");
+        var proposalsArgument = new Argument<long>("cheepID");
+        proposalsCommand.Add(proposalsArgument);
+        proposalCommand.SetAction(async (parseResult, ct) =>
+        {
+            Console.WriteLine("NNDND");
+            try
+            {
+                long cheepID = parseResult.GetValue(proposalsArgument);
+                var proposals = await client.GetFromJsonAsync<List<Proposal>>($"proposals?id={cheepID}", ct) ?? new List<Proposal>();
+                Console.WriteLine(proposals.Capacity);
+                Console.WriteLine("JDJDJDJ");
+                UserInterface.PrintProposals(proposals, cheepID);
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Request to web service failed: {ex.Message}");
+            }
+            
 
+        });
+
+        
+        
+        
         rootCommand.Add(readCommand);
         rootCommand.Add(discussionCommand);
         rootCommand.Add(observeCommand);
         rootCommand.Add(commentCommand);
         rootCommand.Add(proposalCommand);
+        rootCommand.Add(proposalsCommand);
 
         return await rootCommand.Parse(args).InvokeAsync();
     }
