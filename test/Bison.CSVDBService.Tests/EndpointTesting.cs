@@ -13,15 +13,19 @@ public class EndpointTesting
     [Fact]
     public async Task TestGetObservationsRequest()
     {
-        var response = await client.GetAsync("http://localhost:5229/observations");
+        //Arrange
+        string url = "http://localhost:5229/observation";
         
+        //Act
+        var response = await client.GetAsync(url);
+        
+        //Assert
         //statuscode ok?? (200).
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         //Test if json
         Assert.Equal("application/json; charset=utf-8",
             response.Content.Headers.ContentType?.ToString());
-
 
         //If content of response of is empty, any object type would suffice. TA HJÆLPPPPP!
         var observations = await response.Content.ReadFromJsonAsync<List<Cheep>>();
@@ -31,9 +35,13 @@ public class EndpointTesting
     [Fact]
     public async Task TestPostObservationRequest()
     {
+        //Arrange
         Cheep cheep = new Cheep("i saw a goat", "farm");
+        
+        //Act
         var response = await client.PostAsJsonAsync("http://localhost:5229/observation", cheep);
 
+        //Assert
         //statuscode ok?? (200).
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }

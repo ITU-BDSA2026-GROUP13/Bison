@@ -38,9 +38,11 @@ public class BisonTests
     [Fact]
     public void TestCommentReferenceNonExistingObservation()
     {
+        //Arrange
         //Snapshot of database BEFORE attempting to add new comment
         List<Comment> database_before_add_attempt = comments.Read().ToList();
 
+        //Act
         //Test the right exception is thrown (and that it even is thrown)
         var exception = Assert.Throws<InvalidOperationException>(() =>
         {
@@ -52,6 +54,8 @@ public class BisonTests
         //Snapshot of database AFTER attempting to add new comment
         List<Comment> database_after_add_attempt = comments.Read().ToList();
 
+        
+        //Assert
         Assert.Equal(database_before_add_attempt.Count, database_after_add_attempt.Count);
         Assert.Equivalent(database_before_add_attempt, database_after_add_attempt);
     }
