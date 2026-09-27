@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
+
 // This is just so I can tag this commit :D
 
 public class Program
@@ -21,6 +22,9 @@ public class Program
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         client.BaseAddress = new Uri(baseURL);
 
+        var taxonomy = new Taxonomy();
+        taxonomy.Taxonloader();
+        //taxonomy.PrintTaxonomy();
         RootCommand rootCommand = new RootCommand("Application to alter data in database");
 
         var readCommand = new Command("read", "Reads all values from DB");
@@ -110,4 +114,6 @@ public class Program
 
         return await rootCommand.Parse(args).InvokeAsync();
     }
+
+
 }

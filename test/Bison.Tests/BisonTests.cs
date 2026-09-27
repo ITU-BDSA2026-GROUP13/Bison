@@ -16,7 +16,6 @@ public class BisonTests
     private readonly CSVDatabase<Cheep> cheeps;
     private readonly CSVDatabase<Comment> comments;
     private readonly CommentService commentService;
-    private readonly ObservationService observationService;
 
 
     public BisonTests()
@@ -27,7 +26,6 @@ public class BisonTests
         cheeps = new CSVDatabase<Cheep>(testFileNameCheep);
         comments = new CSVDatabase<Comment>(testFileNameComment);
 
-        observationService = new ObservationService(cheeps);
         commentService = new CommentService(comments, cheeps);
 
         Cheep cheep1 = new Cheep(69, "Lars", "test test", "Slagelse", 1000);
