@@ -149,15 +149,12 @@ public class Program
         var proposalsCommand = new Command("proposals", "Shows all proposals for a given observation");
         var proposalsArgument = new Argument<long>("cheepID");
         proposalsCommand.Add(proposalsArgument);
-        proposalCommand.SetAction(async (parseResult, ct) =>
+        proposalsCommand.SetAction(async (parseResult, ct) =>
         {
-            Console.WriteLine("NNDND");
             try
             {
                 long cheepID = parseResult.GetValue(proposalsArgument);
                 var proposals = await client.GetFromJsonAsync<List<Proposal>>($"proposals?id={cheepID}", ct) ?? new List<Proposal>();
-                Console.WriteLine(proposals.Capacity);
-                Console.WriteLine("JDJDJDJ");
                 UserInterface.PrintProposals(proposals, cheepID);
             }
             catch (HttpRequestException ex)
