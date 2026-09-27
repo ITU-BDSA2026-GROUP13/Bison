@@ -32,10 +32,12 @@ public class Taxonomy
 
         foreach (var taxon in Taxons)
         {
-            lookupById.Add(taxon.TaxonID, taxon);
+            taxon.SubTaxons.Clear();
+            
+            lookupById[taxon.TaxonID] = taxon; // Overrides if Key already exists.
             if (!string.IsNullOrWhiteSpace(taxon.VernacularName))
             {
-                lookupByVernacularName.Add(taxon.VernacularName, taxon);
+                lookupByVernacularName[taxon.VernacularName] = taxon;
             }
         }
 
@@ -71,20 +73,5 @@ public class Taxonomy
     public Taxon? GetTaxonByDanishName(string danishName)
     {
         return lookupByVernacularName.TryGetValue(danishName, out Taxon? taxon) ? taxon : null;
-    }
-
-    public Taxon? GetTaxonParent(Taxon taxon)
-    { // In doubt if this and next method should actually be here, and not in Taxon
-        string parentId;
-        
-        if (taxon.SuperTaxon != null) parentId = taxon.SuperTaxon.TaxonID;
-        else return null;
-        
-        return  GetTaxonById(parentId);
-    }
-
-    public List<Taxon>? GetTaxonChildren(Taxon taxon)
-    {
-        return taxon.SubTaxons.Count == 0 ? null : taxon.SubTaxons;
     }
 }

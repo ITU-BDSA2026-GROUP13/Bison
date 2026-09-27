@@ -27,6 +27,21 @@ public class TaxonomyIntegrationTests
     }
 
     [Fact]
+    public void TaxonGetters_With_Wrong_Input()
+    {
+        //Arrange
+        var taxonomy = GetTaxonomy();
+
+        //Act
+        var nonExistingIdTaxon = taxonomy.GetTaxonById("6767676767676767");
+        var nonExistingNameTaxon = taxonomy.GetTaxonByDanishName("xXx!Lars!xXx");
+        
+        //Assert
+        Assert.Null(nonExistingIdTaxon);
+        Assert.Null(nonExistingNameTaxon);
+    }
+    
+    [Fact]
     public void TaxonGetters_Reference_Same_Taxons()
     {
         //Arrange
@@ -72,10 +87,13 @@ public class TaxonomyIntegrationTests
         var taxonomy = GetTaxonomy();
         
         var actualParent = taxonomy.GetTaxonByDanishName("Årefodede"); //Parent 
+        Assert.NotNull(actualParent);
         var taxonChild = taxonomy.GetTaxonByDanishName("Hejrer"); //Child
+        Assert.NotNull(taxonChild);
         
         // Act
-        var foundParent = taxonomy.GetTaxonParent(taxonChild); //Relative parent
+        var foundParent = taxonChild.SuperTaxon; //Relative parent
+        Assert.NotNull(foundParent);
         var parentChildren = actualParent.SubTaxons; //Relative children
         
         //Assert

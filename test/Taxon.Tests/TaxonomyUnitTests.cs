@@ -52,7 +52,7 @@ public class TaxonomyUnitTest
         var margrethe = taxonomy.GetTaxonById("1");
 
         Assert.NotNull(margrethe);
-        var parent = taxonomy.GetTaxonParent(margrethe!);
+        var parent = margrethe.SuperTaxon;
 
         Assert.Null(parent);
     }
@@ -67,8 +67,8 @@ public class TaxonomyUnitTest
         Assert.NotNull(christian);
         Assert.NotNull(isabella);
 
-        var parent1 = taxonomy.GetTaxonParent(christian!);
-        var parent2 = taxonomy.GetTaxonParent(isabella!);
+        var parent1 = christian.SuperTaxon;
+        var parent2 = isabella.SuperTaxon;
 
         Assert.NotNull(parent1);
         Assert.NotNull(parent2);
@@ -77,7 +77,7 @@ public class TaxonomyUnitTest
     }
 
     [Fact]
-    public void GetTaxonChildren_ReturnsNull_ForLeafTaxon()
+    public void GetTaxonChildren_ReturnsEmptyList_ForLeafTaxon()
     {
         var taxonomy = BuildSampleTaxonomy();
         var christian = taxonomy.GetTaxonById("3");
@@ -86,11 +86,11 @@ public class TaxonomyUnitTest
         Assert.NotNull(christian);
         Assert.NotNull(isabella);
 
-        var children1 = taxonomy.GetTaxonChildren(christian!);
-        var children2 = taxonomy.GetTaxonChildren(isabella!);
+        var children1 = christian.SubTaxons;
+        var children2 = christian.SubTaxons;
 
-        Assert.Null(children1);
-        Assert.Null(children2);
+        Assert.Empty(children1);
+        Assert.Empty(children2);
     }
 
     [Fact]
@@ -100,7 +100,7 @@ public class TaxonomyUnitTest
         var frederik = taxonomy.GetTaxonById("2");
 
         Assert.NotNull(frederik);
-        var children = taxonomy.GetTaxonChildren(frederik!);
+        var children = frederik.SubTaxons;
 
         Assert.NotNull(children);
         Assert.Equal(2, children!.Count);
