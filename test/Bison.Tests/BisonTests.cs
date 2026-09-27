@@ -39,44 +39,7 @@ public class BisonTests
         cheeps.Store(cheep1);
         cheeps.Store(cheep2);
     }
-
-
-    private void AssertInvalidReferenceDoesNotAdd<T>(CSVDatabase<T> database, Action addAttempt)
-    {
-        // Snapshot of database BEFORE attempting to add
-        List<T> before = database.Read().ToList();
-
-        // Test the right exception is thrown (and that it even is thrown)
-        Assert.Throws<InvalidOperationException>(addAttempt);
-
-        // Snapshot of database AFTER attempting to add
-        List<T> after = database.Read().ToList();
-
-        Assert.Equal(before.Count, after.Count);
-        Assert.Equivalent(before, after);
-    }
-
-    //Test for making sure that the UA reffernce the correct observation
-    private void AssertRefferncesCorrectObservation<T>(CSVDatabase<T> database, Action addAttempt) where T : UserAddition
-    {
-        UserAddition ua = new Comment(69, "test");
-        commentService.addComment(ua);
-
-        List<Comment> comment_database_after_add_attempt = comments.Read().ToList();
-
-        Assert.Single(comment_database_after_add_attempt);
-        Assert.Equal(69, comment_database_after_add_attempt[0].CheepID);
-
-        List<Cheep> cheep_database = cheeps.Read().ToList();
-
-        bool foundIt = false;
-        foreach (Cheep c in cheep_database)
-        {
-            if (c.CheepID == comment_database_after_add_attempt[0].CheepID) foundIt = true;
-        }
-
-        Assert.True(foundIt);
-    }
+    
 
     [Fact]
     public void TestCommentReferenceNonExistingObservation()
@@ -96,23 +59,15 @@ public class BisonTests
     [Fact]
     public void TestCommentReferencesCorrectObservation()
     {
-        Comment comment = new Comment(69, "test");
-        commentService.addComment(comment);
-
-        List<Comment> comment_database_after_add_attempt = comments.Read().ToList();
-
-        Assert.Single(comment_database_after_add_attempt);
-        Assert.Equal(69, comment_database_after_add_attempt[0].CheepID);
-
-        List<Cheep> cheep_database = cheeps.Read().ToList();
-
-        bool foundIt = false;
-        foreach (Cheep c in cheep_database)
-        {
-            if (c.CheepID == comment_database_after_add_attempt[0].CheepID) foundIt = true;
-        }
-
-        Assert.True(foundIt);
+        AssertValidReferenceAdds(comments, () =>
+            commentService.addComment(new Comment(69, "test")));
+    }
+    
+    [Fact]
+    public void TestProposalReferencesCorrectObservation()
+    {
+        AssertValidReferenceAdds(proposalDatabase, () =>
+            proposalService.addProposal(new Proposal(69, "Purpurhejre")));
     }
 
     [Fact]
@@ -159,5 +114,48 @@ public class BisonTests
             }
         }
         
+    }
+    
+    
+    // HELPING METHODS (Generic type assertions)
+    private void AssertInvalidReferenceDoesNotAdd<T>(CSVDatabase<T> database, Action addAttempt)
+    {
+        // Snapshot of database BEFORE attempting to add
+        List<T> before = database.Read().ToList();
+
+        // Test the right exception is thrown (and that it even is thrown)
+        Assert.Throws<InvalidOperationException>(addAttempt);
+
+        // Snapshot of database AFTER attempting to add
+        List<T> after = database.Read().ToList();
+
+        Assert.Equal(before.Count, after.Count);
+        Assert.Equivalent(before, after);
+    }
+
+    //Test for making sure that the UA reffernce the correct observation
+    
+    private void AssertValidReferenceAdds<T>(CSVDatabase<T> database, Action addAttempt) where T : UserAddition
+    {
+        // Snapshot of database BEFORE attempting to add
+        List<T> before = database.Read().ToList();
+
+        addAttempt.Invoke();
+        
+        // Snapshot of database AFTER attempting to add
+        List<T> after = database.Read().ToList();
+        Assert.NotEqual(before.Count, after.Count);
+        Assert.Single(after);
+        Assert.Equal(69, after[0].CheepID);
+
+        List<Cheep> observations = cheeps.Read().ToList();
+
+        bool foundIt = false;
+        foreach (Cheep c in observations)
+        {
+            if (c.CheepID == after[0].CheepID) foundIt = true;
+        }
+
+        Assert.True(foundIt);
     }
 }
