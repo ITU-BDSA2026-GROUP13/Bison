@@ -120,12 +120,17 @@ public class BisonTests
     // HELPING METHODS (Generic type assertions)
     private void AssertInvalidReferenceDoesNotAdd<T>(CSVDatabase<T> database, Action addAttempt)
     {
+        // Arrange
         // Snapshot of database BEFORE attempting to add
         List<T> before = database.Read().ToList();
 
+        
+        // Act
         // Test the right exception is thrown (and that it even is thrown)
         Assert.Throws<InvalidOperationException>(addAttempt);
 
+        
+        // Assert
         // Snapshot of database AFTER attempting to add
         List<T> after = database.Read().ToList();
 
@@ -137,11 +142,15 @@ public class BisonTests
     
     private void AssertValidReferenceAdds<T>(CSVDatabase<T> database, Action addAttempt) where T : UserAddition
     {
+        // Arrange
         // Snapshot of database BEFORE attempting to add
         List<T> before = database.Read().ToList();
 
+        // Act
         addAttempt.Invoke();
         
+        
+        // Assert
         // Snapshot of database AFTER attempting to add
         List<T> after = database.Read().ToList();
         Assert.NotEqual(before.Count, after.Count);
