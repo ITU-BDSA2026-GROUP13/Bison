@@ -20,9 +20,13 @@ public class TaxonomyUnitTest
     [Fact]
     public void ReturnsCorrectTaxon()
     {
+        //Arrange
         var taxonomy = BuildSampleTaxonomy();
+        
+        //Act
         var frederik = taxonomy.GetTaxonById("2");
 
+        //Assert
         Assert.NotNull(frederik);
         Assert.Equal("2", frederik!.TaxonID);
     }
@@ -30,17 +34,26 @@ public class TaxonomyUnitTest
     [Fact]
     public void IdDoesNotExist()
     {
+        //Arrange
         var taxonomy = BuildSampleTaxonomy();
 
-        Assert.Null(taxonomy.GetTaxonById("999"));
+        //Act
+        var nonExistingTaxon =  taxonomy.GetTaxonById("999");
+        
+        //Assert
+        Assert.Null(nonExistingTaxon);
     }
 
     [Fact]
     public void GetTaxonByDanishName()
     {
+        //Arrange
         var taxonomy = BuildSampleTaxonomy();
+        
+        //Act
         var christian = taxonomy.GetTaxonByDanishName("Christian");
-
+        
+        //Assert
         Assert.NotNull(christian);
         Assert.Equal("3", christian!.TaxonID);
     }
@@ -48,30 +61,35 @@ public class TaxonomyUnitTest
     [Fact]
     public void GetCorrectTaxonParent()
     {
+        //Arrange
         var taxonomy = BuildSampleTaxonomy();
         var margrethe = taxonomy.GetTaxonById("1");
-
         Assert.NotNull(margrethe);
+        
+        //Act
         var parent = margrethe.SuperTaxon;
 
+        //Assert
         Assert.Null(parent);
     }
 
     [Fact]
     public void GetTaxonParent_ReturnsCorrectParent_ForNonRootTaxon()
     {
+        //Arrange
         var taxonomy = BuildSampleTaxonomy();
+        
+        //Act
         var christian = taxonomy.GetTaxonById("3");
         var isabella = taxonomy.GetTaxonById("4");
-
         Assert.NotNull(christian);
         Assert.NotNull(isabella);
-
         var parent1 = christian.SuperTaxon;
         var parent2 = isabella.SuperTaxon;
-
         Assert.NotNull(parent1);
         Assert.NotNull(parent2);
+        
+        //Assert
         Assert.Equal("2", parent1!.TaxonID);
         Assert.Equal("2", parent2!.TaxonID);
     }
@@ -79,16 +97,18 @@ public class TaxonomyUnitTest
     [Fact]
     public void GetTaxonChildren_ReturnsEmptyList_ForLeafTaxon()
     {
+        //Arrange
         var taxonomy = BuildSampleTaxonomy();
         var christian = taxonomy.GetTaxonById("3");
         var isabella = taxonomy.GetTaxonById("4");
-
         Assert.NotNull(christian);
         Assert.NotNull(isabella);
 
+        //Act
         var children1 = christian.SubTaxons;
         var children2 = christian.SubTaxons;
 
+        //Assert
         Assert.Empty(children1);
         Assert.Empty(children2);
     }
@@ -96,12 +116,15 @@ public class TaxonomyUnitTest
     [Fact]
     public void GetTaxonChildren_ReturnsChildren_ForParentTaxon()
     {
+        //Arrange
         var taxonomy = BuildSampleTaxonomy();
         var frederik = taxonomy.GetTaxonById("2");
-
         Assert.NotNull(frederik);
+        
+        //Act
         var children = frederik.SubTaxons;
 
+        //Assert
         Assert.NotNull(children);
         Assert.Equal(2, children!.Count);
     }

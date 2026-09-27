@@ -28,13 +28,16 @@ public class BisonUnitTests
     [Fact]
     public void TestAddCommentThrowsForNonExistingObservation()
     {
+        //Arrange
         var comments = new InMemoryTestDatabaseRepository<Comment>();
         var observations = new InMemoryTestDatabaseRepository<Cheep>();
         var service = new CommentService(comments, observations);
 
+        //Act
         Assert.Throws<InvalidOperationException>(() =>
             service.addComment(new Comment(69, "comment")));
 
+        //Assert
         Assert.Empty(comments.Read());
     }
 
@@ -59,17 +62,22 @@ public class BisonUnitTests
     }
 
     [Fact]
-    public void TestObservationReducedConstructor() {
+    public void TestObservationReducedConstructor() 
+    {
+        //Arrange + Act
         Cheep cheep = new Cheep("Jeg så en ko", "Isen");
 
+        //Assert
         Assert.Equal("Jeg så en ko", cheep.Observation);
         Assert.Equal("Isen", cheep.Location);
     }
 
     [Fact]
     public void TestObservationFullConstructor() {
+        //Arrange + Act
         Cheep cheep = new Cheep(67, "Lars", "Jeg så en ko", "Isen", 1000);
 
+        //Assert
         Assert.Equal(67, cheep.CheepID);
         Assert.Equal("Lars", cheep.Author);
         Assert.Equal("Jeg så en ko", cheep.Observation);
@@ -80,35 +88,48 @@ public class BisonUnitTests
     [Fact]
     public void TestAuthorMatchingEnvironmentUsername()
     {
+        //Arrange
         Cheep cheep = new Cheep("Jeg så en ko", "Isen");
 
+        //Act
         string cheep_author = cheep.Author;
 
+        //Assert
         Assert.Equal(Environment.UserName, cheep_author);
     }
 
     [Fact]
     public void TestTimeStampMatchesTimeOfConstruction()
     {
+        //Arrange
         long time_before = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); 
+        
+        //Act
         Cheep cheep = new Cheep("Jeg så en ko", "Isen");
         long time_after = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); 
 
+        //Assert
         Assert.InRange(cheep.Timestamp, time_before, time_after);
     }
 
     [Fact]
-    public void TestCommentReducedConstructor() {
+    public void TestCommentReducedConstructor() 
+    {
+        //Arrange + Act
         Comment comment = new Comment(69, "Thats right I saw it too");
 
+        //Assert
         Assert.Equal(69, comment.CheepID);
         Assert.Equal("Thats right I saw it too", comment.Message);
     }
 
     [Fact]
-    public void TestCommentFullConstructor() {
+    public void TestCommentFullConstructor() 
+    {
+        //Arrange + Act
         Comment comment = new Comment(69, "Lars", "Thats right I saw it too", 1000);
 
+        //Assert
         Assert.Equal(69, comment.CheepID);
         Assert.Equal("Lars", comment.Author);
         Assert.Equal("Thats right I saw it too", comment.Message);
@@ -116,8 +137,8 @@ public class BisonUnitTests
     }
 
     [Fact]
-    public void TestDoesObservationExistMethodYES() {
-
+    public void TestDoesObservationExistMethodYES() 
+    {
         //Arrange
         List<Cheep> cheeps = new List<Cheep>(){new Cheep(69, "Lars", "test", "Slagelse", 1000)};
         Comment comment = new Comment(69, "Thats right I saw it too");
@@ -132,6 +153,7 @@ public class BisonUnitTests
     [Fact]
     public void TestDoesObservationExistMethodNO()
     {
+        //Arrange
         List<Cheep> cheeps = new List<Cheep>(){new Cheep(69, "Lars", "test", "Slagelse", 1000)};
         Comment comment = new Comment(67, "Thats right I saw it too");
 

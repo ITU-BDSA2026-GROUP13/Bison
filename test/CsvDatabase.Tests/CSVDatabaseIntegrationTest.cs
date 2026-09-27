@@ -28,22 +28,26 @@ public class CSVDatabaseIntegrationTest
     [Fact]
     public void canReceiveObservationAfterItsStored()
     {
+        //Arrange
         // Adds new record to DB
         cheeps.Store(exampleCheep);
         
+        //Act
         // Reads observations in DB, and stores first observation in variable
         var listRead =  cheeps.Read().ToList();
         var observation = listRead[0];
         
-        // Asserts
+        // Assert
         Assert.Equal(observation, exampleCheep);
     }
 
     [Fact]
     public void canReceiveCommentAfterItsStored()
     {
+        //Arrange
         comments.Store(exampleComment);
         
+        //Act
         var listRead = comments.Read().ToList();
         var comment = listRead[0];
         
@@ -54,24 +58,23 @@ public class CSVDatabaseIntegrationTest
     [Fact]
     public void DataStoredInOneInstance_IsReadableInNewInstance_PointingAtTheSameFile()
     {
+        //Arrange
         // Store data via the first instance
         cheeps.Store(exampleCheep);
         comments.Store(exampleComment);
-        
         // Create second instance pointing at same file
         var secondCheepDB = new CSVDatabase<Cheep>(testFileNameCheep);
         var secondCommentDB = new CSVDatabase<Comment>(testFileNameComment);
         
-        
+        //Act
         // Read from first instance
         var firstCheepResult = cheeps.Read().ToList()[0];
         var firstCommentResult = comments.Read().ToList()[0];
-        
         // Read from second instance
         var cheepResult = secondCheepDB.Read().ToList()[0];
         var commentResult =  secondCommentDB.Read().ToList()[0];
         
-        // Asserts
+        // Assert
         Assert.Equal(firstCheepResult, cheepResult);
         Assert.Equal(firstCommentResult, commentResult);
     }
@@ -79,14 +82,20 @@ public class CSVDatabaseIntegrationTest
     [Fact]
     public void EmptyDBReturnsEmptyEnumerable()
     {
+        //Arrange
         var DB = new CSVDatabase<Cheep>("EmptyDB.csv");
+        
+        //Act
         var dbRead = DB.Read();
+        
+        //Assert
         Assert.Empty(dbRead);
     }
     
     [Fact]
     public void ReadLimitReturnsEnumerableWithLimit()
     {
+        //Arrange
         string readLimitFileName = "ReadLimitDB.csv";
         if (File.Exists(readLimitFileName)) File.Delete(readLimitFileName);
         var DB = new CSVDatabase<Cheep>(readLimitFileName);
@@ -94,16 +103,17 @@ public class CSVDatabaseIntegrationTest
         DB.Store(new Cheep("Second Observation", "Rued Langaardsvej 7"));
         DB.Store(new Cheep("Third Observation", "Rued Langaardsvej 7"));
         DB.Store(new Cheep("Fourth Observation", "Rued Langaardsvej 7"));
-        
+
+        //Act + Assert
         var dbRead = DB.Read(1);
         Assert.Single(dbRead);
-        
+
         dbRead = DB.Read(2);
         Assert.Equal(2, dbRead.Count());
-        
+
         dbRead = DB.Read(3);
         Assert.Equal(3, dbRead.Count());
-        
+
         dbRead = DB.Read();
         Assert.Equal(4, dbRead.Count());
     }
