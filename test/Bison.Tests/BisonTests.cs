@@ -56,6 +56,28 @@ public class BisonTests
         Assert.Equivalent(before, after);
     }
 
+    //Test for making sure that the UA reffernce the correct observation
+    private void AssertRefferncesCorrectObservation<T>(CSVDatabase<T> database, Action addAttempt) where T : UserAddition
+    {
+        UserAddition ua = new Comment(69, "test");
+        commentService.addComment(ua);
+
+        List<Comment> comment_database_after_add_attempt = comments.Read().ToList();
+
+        Assert.Single(comment_database_after_add_attempt);
+        Assert.Equal(69, comment_database_after_add_attempt[0].CheepID);
+
+        List<Cheep> cheep_database = cheeps.Read().ToList();
+
+        bool foundIt = false;
+        foreach (Cheep c in cheep_database)
+        {
+            if (c.CheepID == comment_database_after_add_attempt[0].CheepID) foundIt = true;
+        }
+
+        Assert.True(foundIt);
+    }
+
     [Fact]
     public void TestCommentReferenceNonExistingObservation()
     {
@@ -70,6 +92,7 @@ public class BisonTests
             proposalService.addProposal(new Proposal(67, "Purpurhejre")));
     }
 
+    
     [Fact]
     public void TestCommentReferencesCorrectObservation()
     {
