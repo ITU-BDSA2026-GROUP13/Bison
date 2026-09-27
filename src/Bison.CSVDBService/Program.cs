@@ -30,7 +30,7 @@ app.MapGet("/comments",
     (long id, CommentService service) =>
         service.getComments(id));
 
-app.MapPost("/observations",
+app.MapPost("/observation",
     (Cheep cheep, ObservationService service) =>
 {
     service.addObservation(cheep);
