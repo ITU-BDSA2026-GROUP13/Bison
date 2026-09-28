@@ -19,10 +19,10 @@ public class FuzzOracle
 
     public bool KnowsCheep(long id) => Cheeps.Any(c => c.CheepID == id);
 
-    public long PickCheepId(Random rng) =>
-        Cheeps.Count > 0 && rng.NextDouble() < 0.9
-            ? Cheeps[rng.Next(Cheeps.Count)].CheepID
-            : rng.NextInt64(1_000_000_000, long.MaxValue);
+    public long PickCheepId(Random ran) =>
+        Cheeps.Count > 0 && ran.NextDouble() < 0.9
+            ? Cheeps[ran.Next(Cheeps.Count)].CheepID
+            : ran.NextInt64(1_000_000_000, long.MaxValue);
 
     public async Task LoadBaselineAsync(HttpClient client)
     {

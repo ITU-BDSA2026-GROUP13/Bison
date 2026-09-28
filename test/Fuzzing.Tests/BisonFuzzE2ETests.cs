@@ -5,7 +5,7 @@ using System.Net.Http.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 using Xunit.Abstractions;
-using ServerProgram = Service.ObservationService; // serverens Program, ikke klientens
+using ServerProgram = Service.ObservationService; // servers Program, not the client
 
 public class BisonFuzzE2ETests : IClassFixture<WebApplicationFactory<ServerProgram>>
 {
@@ -34,18 +34,18 @@ public class BisonFuzzE2ETests : IClassFixture<WebApplicationFactory<ServerProgr
     {
         var seed = Environment.TickCount;
         output.WriteLine($"Fuzz seed: {seed}");
-        var rng = new Random(seed);
+        var ran = new Random(seed);
 
         var oracle = new FuzzOracle(CheepsGet, CommentsGet);
         await oracle.LoadBaselineAsync(client);
 
-        var cheepGen = new CheepGenerator(rng);
-        var commentGen = new CommentGenerator(rng, () => oracle.PickCheepId(rng));
+        var cheepGen = new CheepGenerator(ran);
+        var commentGen = new CommentGenerator(ran, () => oracle.PickCheepId(ran));
 
         for (int i = 0; i < 300; i++)
         {
             // Uden en kendt cheep kan vi ikke lave en gyldig kommentar.
-            int kind = oracle.Cheeps.Count == 0 ? 0 : rng.Next(10);
+            int kind = oracle.Cheeps.Count == 0 ? 0 : ran.Next(10);
 
             if (kind < 5) await PostCheepAsync(cheepGen, oracle, seed);
             else await PostCommentAsync(commentGen, oracle, seed);

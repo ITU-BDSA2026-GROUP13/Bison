@@ -8,7 +8,7 @@ public sealed class CommentDatabase<T> : CSVDatabase<T>
     private static readonly object padlock = new object();
     private static readonly string pathToCsvFile =
         Environment.GetEnvironmentVariable("BISON_COMMENT_DB")
-        ?? "../Bison.CLI/bison_comments_cli_db.csv";    
+        ?? "../Bison.CLI/bison_comments_cli_db.csv"; // a change to Fuzzing   
     CommentDatabase() : base(pathToCsvFile)
     {
         

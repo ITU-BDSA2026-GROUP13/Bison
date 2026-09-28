@@ -2,12 +2,12 @@ namespace Bison.FuzzTests;
 
 public class CommentGenerator
 {
-    private readonly Random rng;
+    private readonly Random ran;
     private readonly Func<long> pickCheepId;
 
-    public CommentGenerator(Random rng, Func<long> pickCheepId)
+    public CommentGenerator(Random ran, Func<long> pickCheepId)
     {
-        this.rng = rng;
+        this.ran = ran;
         this.pickCheepId = pickCheepId;
     }
 

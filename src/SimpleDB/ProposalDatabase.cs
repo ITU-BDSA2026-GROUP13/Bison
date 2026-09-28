@@ -8,7 +8,7 @@ public class ProposalDatabase<T> : CSVDatabase<T>
     private static readonly object padlock = new object();
     private static readonly string pathToCsvFile =
         Environment.GetEnvironmentVariable("BISON_PROPOSAL_DB")
-        ?? "../SimpleDB/bison_proposals_cli_db.csv";
+        ?? "../SimpleDB/bison_proposals_cli_db.csv"; // a change to Fuzzing
    
     ProposalDatabase() : base(pathToCsvFile)
     {
