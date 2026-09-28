@@ -6,7 +6,9 @@ public sealed class ObservationDatabase<Cheep> : CSVDatabase<Cheep>
 {
     private static ObservationDatabase<Cheep> instance = null;
     private static readonly object padlock = new object();
-    static readonly string pathToCsvFile = "../Bison.CLI/bison_observe_cli_db.csv";
+    static readonly string pathToCsvFile =
+    Environment.GetEnvironmentVariable("BISON_OBSERVATION_DB")
+    ?? "../Bison.CLI/bison_observe_cli_db.csv"; // a change to Fuzzing
 
     ObservationDatabase() : base(pathToCsvFile)
     {

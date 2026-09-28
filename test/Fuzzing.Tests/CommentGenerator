@@ -1,0 +1,15 @@
+namespace Bison.FuzzTests;
+
+public class CommentGenerator
+{
+    private readonly Random rng;
+    private readonly Func<long> pickCheepId;
+
+    public CommentGenerator(Random rng, Func<long> pickCheepId)
+    {
+        this.rng = rng;
+        this.pickCheepId = pickCheepId;
+    }
+
+    public Comment Generate() => new Comment(pickCheepId(), CheepGenerator.RandomText(rng));
+}
