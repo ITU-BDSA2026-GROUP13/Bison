@@ -11,5 +11,5 @@ public class CommentGenerator
         this.pickCheepId = pickCheepId;
     }
 
-    public Comment Generate() => new Comment(pickCheepId(), CheepGenerator.RandomText(rng));
+    public Comment Generate() => new Comment(pickCheepId(), CheepGenerator.RandomText(ran));
 }
