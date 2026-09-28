@@ -13,73 +13,61 @@ public class BisonTests
 {
     private readonly string testFileNameCheep = "cheep_bison_observe_test_cli_db.csv";
     private readonly string testFileNameComment = "comment_bison_observe_test_cli_db.csv";
+    private readonly string testFileNameProposal = "proposal_bison_test_cli_db.csv";
     private readonly CSVDatabase<Cheep> cheeps;
     private readonly CSVDatabase<Comment> comments;
+    private readonly CSVDatabase<Proposal> proposalDatabase;
     private readonly CommentService commentService;
+    private readonly ProposalService proposalService;
 
 
     public BisonTests()
     {
         if (File.Exists(testFileNameCheep)) File.Delete(testFileNameCheep);
         if (File.Exists(testFileNameComment)) File.Delete(testFileNameComment);
+        if (File.Exists(testFileNameProposal)) File.Delete(testFileNameProposal);
 
         cheeps = new CSVDatabase<Cheep>(testFileNameCheep);
         comments = new CSVDatabase<Comment>(testFileNameComment);
+        proposalDatabase = new CSVDatabase<Proposal>(testFileNameProposal);
 
         commentService = new CommentService(comments, cheeps);
+        proposalService = new ProposalService(proposalDatabase, cheeps);
 
         Cheep cheep1 = new Cheep(69, "Lars", "test test", "Slagelse", 1000);
         Cheep cheep2 = new Cheep(70,  "Lasse", "lort", "Slagelse", 2000);
         cheeps.Store(cheep1);
         cheeps.Store(cheep2);
     }
-
+    
 
     [Fact]
     public void TestCommentReferenceNonExistingObservation()
     {
-        //Arrange
-        //Snapshot of database BEFORE attempting to add new comment
-        List<Comment> database_before_add_attempt = comments.Read().ToList();
-
-        //Act
-        //Test the right exception is thrown (and that it even is thrown)
-        var exception = Assert.Throws<InvalidOperationException>(() =>
-        {
-             //Attempt to add new comment referencing invalid observationId
-             Comment comment = new Comment(67, "test");
-             commentService.addComment(comment);
-        });
-
-        //Snapshot of database AFTER attempting to add new comment
-        List<Comment> database_after_add_attempt = comments.Read().ToList();
-
-        
-        //Assert
-        Assert.Equal(database_before_add_attempt.Count, database_after_add_attempt.Count);
-        Assert.Equivalent(database_before_add_attempt, database_after_add_attempt);
+        AssertInvalidReferenceDoesNotAdd(comments, () =>
+            commentService.addComment(new Comment(67, "test")));
+    }
+    
+    [Fact]
+    public void TestProposalReferenceNonExistingObservation()
+    {
+        AssertInvalidReferenceDoesNotAdd(proposalDatabase, () =>
+            proposalService.addProposal(new Proposal(67, "Purpurhejre")));
     }
 
+    
     [Fact]
     public void TestCommentReferencesCorrectObservation()
     {
-        Comment comment = new Comment(69, "test");
-        commentService.addComment(comment);
-
-        List<Comment> comment_database_after_add_attempt = comments.Read().ToList();
-
-        Assert.Single(comment_database_after_add_attempt);
-        Assert.Equal(69, comment_database_after_add_attempt[0].CheepID);
-
-        List<Cheep> cheep_database = cheeps.Read().ToList();
-
-        bool foundIt = false;
-        foreach (Cheep c in cheep_database)
-        {
-            if (c.CheepID == comment_database_after_add_attempt[0].CheepID) foundIt = true;
-        }
-
-        Assert.True(foundIt);
+        AssertValidReferenceAdds(comments, () =>
+            commentService.addComment(new Comment(69, "test")));
+    }
+    
+    [Fact]
+    public void TestProposalReferencesCorrectObservation()
+    {
+        AssertValidReferenceAdds(proposalDatabase, () =>
+            proposalService.addProposal(new Proposal(69, "Purpurhejre")));
     }
 
     [Fact]
@@ -126,5 +114,57 @@ public class BisonTests
             }
         }
         
+    }
+    
+    
+    // HELPING METHODS (Generic type assertions)
+    private void AssertInvalidReferenceDoesNotAdd<T>(CSVDatabase<T> database, Action addAttempt)
+    {
+        // Arrange
+        // Snapshot of database BEFORE attempting to add
+        List<T> before = database.Read().ToList();
+
+        
+        // Act
+        // Test the right exception is thrown (and that it even is thrown)
+        Assert.Throws<InvalidOperationException>(addAttempt);
+
+        
+        // Assert
+        // Snapshot of database AFTER attempting to add
+        List<T> after = database.Read().ToList();
+
+        Assert.Equal(before.Count, after.Count);
+        Assert.Equivalent(before, after);
+    }
+
+    //Test for making sure that the UA reffernce the correct observation
+    
+    private void AssertValidReferenceAdds<T>(CSVDatabase<T> database, Action addAttempt) where T : UserAddition
+    {
+        // Arrange
+        // Snapshot of database BEFORE attempting to add
+        List<T> before = database.Read().ToList();
+
+        // Act
+        addAttempt.Invoke();
+        
+        
+        // Assert
+        // Snapshot of database AFTER attempting to add
+        List<T> after = database.Read().ToList();
+        Assert.NotEqual(before.Count, after.Count);
+        Assert.Single(after);
+        Assert.Equal(69, after[0].CheepID);
+
+        List<Cheep> observations = cheeps.Read().ToList();
+
+        bool foundIt = false;
+        foreach (Cheep c in observations)
+        {
+            if (c.CheepID == after[0].CheepID) foundIt = true;
+        }
+
+        Assert.True(foundIt);
     }
 }

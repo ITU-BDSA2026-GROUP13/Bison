@@ -58,6 +58,7 @@ public class Program
             }
         });
 
+        
         var observeCommand = new Command("observe", "Adds observation to DB");
         var observeArgument = new Argument<string>("observation");
         var locationObserveCommand = new Argument<string>("Location");
@@ -81,6 +82,7 @@ public class Program
             }
         });
 
+        //Adding CLI comment command
         var commentCommand = new Command("comment", "Adds comment to observation");
         var commentArgument = new Argument<string>("comment");
         var commentCheepIDArgument = new Argument<long>("cheepID");
@@ -106,11 +108,72 @@ public class Program
                 Console.WriteLine($"Request to web service failed: {ex.Message}");
             }
         });
+        
+        //Adding proposal to CLI command 
+        var proposalCommand = new Command("proposal", "Adds proposal to observation");
+        var propersalArgument = new Argument<string>("proposal");
+        var propersalCheepIDArgument = new Argument<long>("cheepID");
+        proposalCommand.Add(propersalArgument);
+        proposalCommand.Add(propersalCheepIDArgument);
+        proposalCommand.SetAction(async (parseResult, ct) =>
+            {
+                string proposalString = parseResult.GetValue(propersalArgument) ?? throw new InvalidOperationException("Proposal argument not given");
+                long cheepID = parseResult.GetValue(propersalCheepIDArgument);
+                if (taxonomy.GetTaxonByDanishName(proposalString) == null && taxonomy.GetTaxonById(proposalString) == null)
+                {
+                    Console.WriteLine("Proposal id/name does not exist");
+                    return;
+                }
+                
+                var proposal = new Proposal(cheepID, proposalString);
+                try
+                {
+                    var response = await client.PostAsJsonAsync("proposal", proposal, ct);
+                    if (response.StatusCode == HttpStatusCode.NotFound)
+                        Console.WriteLine("Referenced Observation ID does not exist");
+                    else if (!response.IsSuccessStatusCode)
+                        Console.WriteLine($"Failed: {(int)response.StatusCode} {response.ReasonPhrase}");
+                    else
+                        Console.WriteLine("Successfully added proposal");
+                }
+                catch (HttpRequestException ex)
+                {
+                    Console.WriteLine($"Request to web service failed: {ex.Message}");
+                }
+                
+            }
+            
+        );
+        
+        //Adding proposals to CLI commands
+        var proposalsCommand = new Command("proposals", "Shows all proposals for a given observation");
+        var proposalsArgument = new Argument<long>("cheepID");
+        proposalsCommand.Add(proposalsArgument);
+        proposalsCommand.SetAction(async (parseResult, ct) =>
+        {
+            try
+            {
+                long cheepID = parseResult.GetValue(proposalsArgument);
+                var proposals = await client.GetFromJsonAsync<List<Proposal>>($"proposals?id={cheepID}", ct) ?? new List<Proposal>();
+                UserInterface.PrintProposals(proposals, cheepID);
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Request to web service failed: {ex.Message}");
+            }
+            
 
+        });
+
+        
+        
+        
         rootCommand.Add(readCommand);
         rootCommand.Add(discussionCommand);
         rootCommand.Add(observeCommand);
         rootCommand.Add(commentCommand);
+        rootCommand.Add(proposalCommand);
+        rootCommand.Add(proposalsCommand);
 
         return await rootCommand.Parse(args).InvokeAsync();
     }
