@@ -70,7 +70,7 @@ app.MapPost("/proposal",
         } 
         catch (InvalidOperationException)
         {
-            return Results.NotFound("Referenced proposal does not exist");
+            return Results.BadRequest("Referenced observation does not exist");
         }
     });
 

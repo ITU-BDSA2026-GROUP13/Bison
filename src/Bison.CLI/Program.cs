@@ -111,14 +111,14 @@ public class Program
         
         //Adding proposal to CLI command 
         var proposalCommand = new Command("proposal", "Adds proposal to observation");
-        var propersalArgument = new Argument<string>("proposal");
-        var propersalCheepIDArgument = new Argument<long>("cheepID");
-        proposalCommand.Add(propersalArgument);
-        proposalCommand.Add(propersalCheepIDArgument);
+        var proposalArgument = new Argument<string>("proposal");
+        var proposalCheepIDArgument = new Argument<long>("cheepID");
+        proposalCommand.Add(proposalArgument);
+        proposalCommand.Add(proposalCheepIDArgument);
         proposalCommand.SetAction(async (parseResult, ct) =>
             {
-                string proposalString = parseResult.GetValue(propersalArgument) ?? throw new InvalidOperationException("Proposal argument not given");
-                long cheepID = parseResult.GetValue(propersalCheepIDArgument);
+                string proposalString = parseResult.GetValue(proposalArgument) ?? throw new InvalidOperationException("Proposal argument not given");
+                long cheepID = parseResult.GetValue(proposalCheepIDArgument);
                 if (taxonomy.GetTaxonByDanishName(proposalString) == null && taxonomy.GetTaxonById(proposalString) == null)
                 {
                     Console.WriteLine("Proposal id/name does not exist");
