@@ -26,10 +26,16 @@ public class BisonFuzzE2ETests : IClassFixture<WebApplicationFactory<ServerProgr
         var dir = Path.Combine(Path.GetTempPath(), $"bison_fuzz_{Guid.NewGuid()}");
         Directory.CreateDirectory(dir);
 
+        // To make sure 
+        if (File.Exists(Path.Combine(dir, "observations.csv"))) File.Delete(Path.Combine(dir, "observations.csv"));
+        if (File.Exists(Path.Combine(dir, "comment.csv"))) File.Delete(Path.Combine(dir, "comment.csv"));
+        if (File.Exists(Path.Combine(dir, "proposals.csv"))) File.Delete(Path.Combine(dir, "proposals.csv"));
+        
         // Point the server at temp CSV files so the fuzzer doesn't touch the real database
         Environment.SetEnvironmentVariable("BISON_OBSERVATION_DB", Path.Combine(dir, "observations.csv"));
         Environment.SetEnvironmentVariable("BISON_COMMENT_DB", Path.Combine(dir, "comments.csv"));
         Environment.SetEnvironmentVariable("BISON_PROPOSAL_DB", Path.Combine(dir, "proposals.csv"));
+        
 
         client = factory.CreateClient();
         this.output = output;
@@ -66,6 +72,7 @@ public class BisonFuzzE2ETests : IClassFixture<WebApplicationFactory<ServerProgr
 
         var oracle = new FuzzOracle(CheepsGet, CommentsGet, ProposalsGet);
         await oracle.LoadBaselineAsync(client);
+        Console.WriteLine($"Baseline: {oracle.Cheeps.Count} cheeps");
 
         var cheepGen = new CheepGenerator(ran);
         var commentGen = new CommentGenerator(ran, () => oracle.PickCheepId(ran));
@@ -78,7 +85,7 @@ public class BisonFuzzE2ETests : IClassFixture<WebApplicationFactory<ServerProgr
             if (kind < 4) await PostCheepAsync(cheepGen, oracle, seed);
             else if (kind < 7) await PostCommentAsync(commentGen, oracle, seed);
             else if (kind < 9) await PostRandomProposalAsync(proposalGen, oracle, seed);
-            else if (oracle.Proposals.Count > 0) await PostMutatedProposalAsync(proposalGen, oracle, seed);
+            else if (oracle.Proposals.Count > 0) await PostMutatedProposalAsync(proposalGen, oracle,ran, seed);
             else await PostRandomProposalAsync(proposalGen, oracle, seed);
 
             if (i % 50 == 49) await oracle.AssertMatchesServerAsync(client, seed);
@@ -132,10 +139,10 @@ public class BisonFuzzE2ETests : IClassFixture<WebApplicationFactory<ServerProgr
             Assert.Equal(HttpStatusCode.NotFound, res.StatusCode);
     }
 
-    private async Task PostMutatedProposalAsync(ProposalGenerator gen, FuzzOracle oracle, int seed)
+    private async Task PostMutatedProposalAsync(ProposalGenerator gen, FuzzOracle oracle,Random ran,int seed)
     {
         // Pick an existing proposal and re-send it with a different taxon ID
-        var original = oracle.Proposals[Random.Shared.Next(oracle.Proposals.Count)];
+        var original = oracle.Proposals[ran.Next(oracle.Proposals.Count)];
         var proposal = gen.Mutate(original);
         var res = await client.PostAsJsonAsync(ProposalPost, proposal);
 
