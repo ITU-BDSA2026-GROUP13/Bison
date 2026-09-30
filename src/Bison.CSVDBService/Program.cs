@@ -38,8 +38,15 @@ app.MapGet("/comments",
 app.MapPost("/observation",
     (Cheep cheep, ObservationService service) =>
 {
-    service.addObservation(cheep);
-    return Results.Ok();
+    try
+    {
+        service.addObservation(cheep);
+        return Results.Ok();
+    }
+    catch (InvalidOperationException)
+    {
+        return Results.BadRequest("Referenced observation does not exist");
+    }
 });
 
 app.MapPost("/comment",
@@ -52,7 +59,7 @@ app.MapPost("/comment",
     }
     catch (InvalidOperationException)
     {
-        return Results.NotFound("Referenced observation does not exist");
+        return Results.BadRequest("Referenced observation does not exist");
     }
 });
 
@@ -70,7 +77,7 @@ app.MapPost("/proposal",
         } 
         catch (InvalidOperationException)
         {
-            return Results.NotFound("Referenced proposal does not exist");
+            return Results.BadRequest("Referenced observation does not exist");
         }
     });
 
