@@ -5,7 +5,7 @@ using Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+/*
 builder.Services.AddSingleton<IDatabaseRepository<Cheep>>(
     ObservationDatabase<Cheep>.Instance
 );
@@ -17,6 +17,19 @@ builder.Services.AddSingleton<IDatabaseRepository<Comment>>(
 builder.Services.AddSingleton<IDatabaseRepository<Proposal>>(
     ProposalDatabase<Proposal>.Instance
 );
+*/
+
+builder.Services.AddSingleton<IDatabaseRepository<Cheep>>(_ =>
+    new CSVDatabase<Cheep>(
+        Environment.GetEnvironmentVariable("BISON_OBSERVATION_DB") ?? "observations.csv"));
+
+builder.Services.AddSingleton<IDatabaseRepository<Comment>>(_ =>
+    new CSVDatabase<Comment>(
+        Environment.GetEnvironmentVariable("BISON_COMMENT_DB") ?? "comments.csv"));
+
+builder.Services.AddSingleton<IDatabaseRepository<Proposal>>(_ =>
+    new CSVDatabase<Proposal>(
+        Environment.GetEnvironmentVariable("BISON_PROPOSAL_DB") ?? "proposals.csv"));
 
 builder.Services.AddSingleton<ObservationService>();
 builder.Services.AddSingleton<CommentService>();

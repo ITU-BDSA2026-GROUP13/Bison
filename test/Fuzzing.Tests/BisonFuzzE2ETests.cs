@@ -8,7 +8,7 @@ using Xunit;
 using Xunit.Abstractions;
 using ServerProgram = Service.ObservationService; // server's Program marker, not the client's
 
-public class BisonFuzzE2ETests : IClassFixture<WebApplicationFactory<ServerProgram>>
+public class BisonFuzzE2ETests
 {
     private const string CheepPost = "/observation";
     private const string CheepsGet = "/observations";
@@ -17,26 +17,29 @@ public class BisonFuzzE2ETests : IClassFixture<WebApplicationFactory<ServerProgr
     private const string ProposalPost = "/proposal";
     private const string ProposalsGet = "/proposals";
 
+    private readonly string dir;
+    private readonly WebApplicationFactory<ServerProgram> factory;
     private readonly HttpClient client;
     private readonly ITestOutputHelper output;
     private readonly Taxonomy taxonomy;
 
-    public BisonFuzzE2ETests(WebApplicationFactory<ServerProgram> factory, ITestOutputHelper output)
+    public BisonFuzzE2ETests( ITestOutputHelper output)
     {
-        var dir = Path.Combine(Path.GetTempPath(), $"bison_fuzz_{Guid.NewGuid()}");
+        this.output = output;
+        dir = Path.Combine(Path.GetTempPath(), $"bison_fuzz_{Guid.NewGuid()}");
         Directory.CreateDirectory(dir);
 
         // To make sure 
-        if (File.Exists(Path.Combine(dir, "observations.csv"))) File.Delete(Path.Combine(dir, "observations.csv"));
-        if (File.Exists(Path.Combine(dir, "comment.csv"))) File.Delete(Path.Combine(dir, "comment.csv"));
-        if (File.Exists(Path.Combine(dir, "proposals.csv"))) File.Delete(Path.Combine(dir, "proposals.csv"));
+        //if (File.Exists(Path.Combine(dir, "observations.csv"))) File.Delete(Path.Combine(dir, "observations.csv"));
+        //if (File.Exists(Path.Combine(dir, "comment.csv"))) File.Delete(Path.Combine(dir, "comment.csv"));
+        //if (File.Exists(Path.Combine(dir, "proposals.csv"))) File.Delete(Path.Combine(dir, "proposals.csv"));
         
         // Point the server at temp CSV files so the fuzzer doesn't touch the real database
         Environment.SetEnvironmentVariable("BISON_OBSERVATION_DB", Path.Combine(dir, "observations.csv"));
         Environment.SetEnvironmentVariable("BISON_COMMENT_DB", Path.Combine(dir, "comments.csv"));
         Environment.SetEnvironmentVariable("BISON_PROPOSAL_DB", Path.Combine(dir, "proposals.csv"));
         
-
+        factory = new WebApplicationFactory<ServerProgram>();
         client = factory.CreateClient();
         this.output = output;
 
@@ -72,8 +75,8 @@ public class BisonFuzzE2ETests : IClassFixture<WebApplicationFactory<ServerProgr
 
         var oracle = new FuzzOracle(CheepsGet, CommentsGet, ProposalsGet);
         await oracle.LoadBaselineAsync(client);
-        Console.WriteLine($"Baseline: {oracle.Cheeps.Count} cheeps");
-
+        output.WriteLine($"Baseline: {oracle.Cheeps.Count} cheeps");
+        
         var cheepGen = new CheepGenerator(ran);
         var commentGen = new CommentGenerator(ran, () => oracle.PickCheepId(ran));
         var proposalGen = new ProposalGenerator(ran, () => oracle.PickCheepId(ran), taxonomy);
