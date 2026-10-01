@@ -31,7 +31,7 @@ public class EndpointTesting
         var observations = await response.Content.ReadFromJsonAsync<List<Cheep>>();
         Assert.NotNull(observations);
     }
-
+    
     [Fact]
     public async Task TestPostObservationRequest()
     {
@@ -44,6 +44,35 @@ public class EndpointTesting
         //Assert
         //statuscode ok?? (200).
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        
     }
     
+    [Fact]
+    public async Task TestWrongObserationIDCommentsRequest()
+    {
+        //Arrange
+        string commentUrl = "http://localhost:5229/comments?id=3934985748579548"; //No ID matches this
+        
+        //Act
+        var response = await client.GetAsync(commentUrl);
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode); //Statuscode not found?
+        
+    }
+
+    [Fact]
+    public async Task TestPostCommentNonExistingObservationRequest()
+    {
+        //Arrange
+        Comment comment = new Comment(6767676767676767, "Tester", "TestMessage", 1000);
+        
+        //Act
+        var response = await client.PostAsJsonAsync("http://localhost:5229/comments", comment);
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.MethodNotAllowed, response.StatusCode);
+        
+        //LOOK AT THIS AGAIN. PROBRABLY WRONG!
+    }
 }
