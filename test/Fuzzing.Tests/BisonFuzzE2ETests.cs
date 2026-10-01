@@ -123,7 +123,7 @@ public class BisonFuzzE2ETests
         if (expectAccepted)
             oracle.Comments.Add(comment);
         else
-            Assert.Equal(HttpStatusCode.NotFound, res.StatusCode);
+            Assert.Equal(HttpStatusCode.BadRequest, res.StatusCode);
     }
 
     private async Task PostRandomProposalAsync(ProposalGenerator gen, FuzzOracle oracle, int seed)
@@ -140,7 +140,7 @@ public class BisonFuzzE2ETests
         if (expectAccepted)
             oracle.Proposals.Add(proposal);
         else
-            Assert.Equal(HttpStatusCode.NotFound, res.StatusCode);
+            Assert.Equal(HttpStatusCode.BadRequest, res.StatusCode);
     }
 
     private async Task PostMutatedProposalAsync(ProposalGenerator gen, FuzzOracle oracle,Random ran,int seed)
@@ -158,6 +158,6 @@ public class BisonFuzzE2ETests
         if (expectAccepted)
             oracle.Proposals.Add(proposal);
         else
-            Assert.Equal(HttpStatusCode.NotFound, res.StatusCode);
+            Assert.Equal(HttpStatusCode.BadRequest, res.StatusCode);
     }
 }
