@@ -5,20 +5,8 @@ using Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
-/*
-builder.Services.AddSingleton<IDatabaseRepository<Cheep>>(
-    ObservationDatabase<Cheep>.Instance
-);
 
-builder.Services.AddSingleton<IDatabaseRepository<Comment>>(
-    CommentDatabase<Comment>.Instance
-);
-
-builder.Services.AddSingleton<IDatabaseRepository<Proposal>>(
-    ProposalDatabase<Proposal>.Instance
-);
-*/
-
+//Makes sure that the file is a new one everytime
 builder.Services.AddSingleton<IDatabaseRepository<Cheep>>(_ =>
     new CSVDatabase<Cheep>(
         Environment.GetEnvironmentVariable("BISON_OBSERVATION_DB") ?? "observations.csv"));
