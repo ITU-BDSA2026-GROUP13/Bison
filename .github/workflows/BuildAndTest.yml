@@ -21,5 +21,18 @@ jobs:
     - name: Start API
       working-directory: src/Bison.CSVDBService
       run: dotnet run --no-build --urls http://localhost:5229 > api.log 2>&1 &
+    - name: Wait for API to be ready
+      run: |
+        for i in {1..30}; do
+          if curl -s http://localhost:5229/observations > /dev/null 2>&1; then
+            echo "API is ready!"
+            exit 0
+          fi
+          echo "Waiting for API to start... ($i/30)"
+          sleep 1
+        done
+        echo "API failed to start within 30 seconds"
+        cat src/Bison.CSVDBService/api.log
+        exit 1
     - name: Test
       run: dotnet test --no-build --verbosity normal
