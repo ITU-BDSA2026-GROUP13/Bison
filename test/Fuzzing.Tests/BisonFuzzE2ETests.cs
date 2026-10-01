@@ -10,6 +10,7 @@ using ServerProgram = Service.ObservationService; // server's Program marker, no
 
 public class BisonFuzzE2ETests
 {
+    // This small comment is just a commit for the workflow to run :))
     private const string CheepPost = "/observation";
     private const string CheepsGet = "/observations";
     private const string CommentPost = "/comment";
