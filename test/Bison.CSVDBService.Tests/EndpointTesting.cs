@@ -30,6 +30,7 @@ public class EndpointTesting
         //If content of response of is empty, any object type would suffice. TA HJÆLPPPPP!
         var observations = await response.Content.ReadFromJsonAsync<List<Cheep>>();
         Assert.NotNull(observations);
+        Assert.NotEmpty(observations);
     }
     
     [Fact]
@@ -58,6 +59,8 @@ public class EndpointTesting
         
         //Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode); //Statuscode not found?
+        //Assert.Equal(HttpStatusCode.OK, response.StatusCode); //Statuscode ok?
+        // These two options depend on the intended behavior of the program
         
     }
 
@@ -68,11 +71,11 @@ public class EndpointTesting
         Comment comment = new Comment(6767676767676767, "Tester", "TestMessage", 1000);
         
         //Act
-        var response = await client.PostAsJsonAsync("http://localhost:5229/comments", comment);
+        var response = await client.PostAsJsonAsync("http://localhost:5229/comment", comment);
         
         //Assert
-        Assert.Equal(HttpStatusCode.MethodNotAllowed, response.StatusCode);
-        
-        //LOOK AT THIS AGAIN. PROBRABLY WRONG!
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        //Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        //Pick the one that would match our wanted behavior Bad request or Not found. 
     }
 }
