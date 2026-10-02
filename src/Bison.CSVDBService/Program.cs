@@ -36,8 +36,8 @@ app.MapGet("/comments",
     {
         try
         {
-            service.getComments(id);
-            return Results.Ok();
+            var comments = service.getComments(id);
+            return Results.Ok(comments);
         }
         catch (InvalidOperationException)
         {
