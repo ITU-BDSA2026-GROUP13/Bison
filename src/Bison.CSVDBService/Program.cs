@@ -9,15 +9,15 @@ var builder = WebApplication.CreateBuilder(args);
 //Makes sure that the file is a new one everytime
 builder.Services.AddSingleton<IDatabaseRepository<Cheep>>(_ =>
     new CSVDatabase<Cheep>(
-        Environment.GetEnvironmentVariable("BISON_OBSERVATION_DB") ?? "observations.csv"));
+        Environment.GetEnvironmentVariable("BISON_OBSERVATION_DB") ?? "../Bison.CLI/bison_observe_cli_db.csv"));
 
 builder.Services.AddSingleton<IDatabaseRepository<Comment>>(_ =>
     new CSVDatabase<Comment>(
-        Environment.GetEnvironmentVariable("BISON_COMMENT_DB") ?? "comments.csv"));
+        Environment.GetEnvironmentVariable("BISON_COMMENT_DB") ?? "../Bison.CLI/bison_comments_cli_db.csv"));
 
 builder.Services.AddSingleton<IDatabaseRepository<Proposal>>(_ =>
     new CSVDatabase<Proposal>(
-        Environment.GetEnvironmentVariable("BISON_PROPOSAL_DB") ?? "proposals.csv"));
+        Environment.GetEnvironmentVariable("BISON_PROPOSAL_DB") ?? "../SimpleDB/bison_proposals_cli_db.csv"));
 
 builder.Services.AddSingleton<ObservationService>();
 builder.Services.AddSingleton<CommentService>();
