@@ -46,11 +46,14 @@ public class BisonUnitTests
     {
         //Arrange
         var comments = new InMemoryTestDatabaseRepository<Comment>();
-        var observations = new InMemoryTestDatabaseRepository<Cheep>();
-        var service = new CommentService(comments, observations);
         comments.Store(new Comment(69, "comment for 69"));
         comments.Store(new Comment(70, "comment for 70"));
         comments.Store(new Comment(69, "another comment for 69"));
+        var observations = new InMemoryTestDatabaseRepository<Cheep>();
+        observations.Store(new Cheep(69, "Lars", "test", "Randers", 1000));
+        observations.Store(new Cheep(70, "Peter", "tester", "Taastrup", 1000));
+        var service = new CommentService(comments, observations);
+        
 
         //Act
         List<Comment> result = service.getComments(69).ToList();

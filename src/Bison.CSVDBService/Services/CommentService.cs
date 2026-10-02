@@ -25,6 +25,7 @@ public class CommentService
 
     public IEnumerable<Comment> getComments(long observationID)
     {
+        if (!CommentHandling.doesObservationExist(observationID, observations.Read())) throw new InvalidOperationException("Observation id does not exist");
         return comments.Read().Where(c => c.CheepID == observationID);
     }
     

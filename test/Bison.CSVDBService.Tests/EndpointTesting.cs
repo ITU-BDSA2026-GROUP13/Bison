@@ -58,7 +58,7 @@ public class EndpointTesting
         var response = await client.GetAsync(commentUrl);
         
         //Assert
-        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode); //Statuscode not found?
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode); //Statuscode not found?
         //Assert.Equal(HttpStatusCode.OK, response.StatusCode); //Statuscode ok?
         // These two options depend on the intended behavior of the program
         
@@ -75,7 +75,5 @@ public class EndpointTesting
         
         //Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        //Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-        //Pick the one that would match our wanted behavior Bad request or Not found. 
     }
 }
