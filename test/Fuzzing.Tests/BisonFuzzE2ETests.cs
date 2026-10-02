@@ -66,6 +66,7 @@ public class BisonFuzzE2ETests
 
     private async Task RunFuzzRun(int seed)
     {
+        // Arrange
         output.WriteLine($"Fuzz seed: {seed}");
         var ran = new Random(seed);
 
@@ -76,6 +77,9 @@ public class BisonFuzzE2ETests
         var commentGen = new CommentGenerator(ran, () => oracle.PickCheepId(ran));
         var proposalGen = new ProposalGenerator(ran, () => oracle.PickCheepId(ran), taxonomy);
 
+        // Act
+        // Each iteration below is itself a full generate → send → verify cycle
+        // (the helper methods assert internally), so this loop isn't pure action.
         for (int i = 0; i < 300; i++)
         {
             int kind = ran.Next(10);
@@ -85,18 +89,22 @@ public class BisonFuzzE2ETests
             else if (kind < 9) await PostRandomProposalAsync(proposalGen, oracle, seed);
             else if (oracle.Proposals.Count > 0) await PostMutatedProposalAsync(proposalGen, oracle,ran, seed);
             else await PostRandomProposalAsync(proposalGen, oracle, seed);
-
+            // Assert (periodic check during the run)
             if (i % 50 == 49) await oracle.AssertMatchesServerAsync(client, seed);
         }
-
+        // Assert
         await oracle.AssertMatchesServerAsync(client, seed);
     }
 
     private async Task PostCheepAsync(CheepGenerator gen, FuzzOracle oracle, int seed)
     {
+        // Arrange
         var cheep = gen.Generate();
+        
+        // Act
         var res = await client.PostAsJsonAsync(CheepPost, cheep);
-
+        
+        // Assert
         Assert.True(res.IsSuccessStatusCode,
             $"[seed {seed}] POST {CheepPost} rejected: {res.StatusCode}, cheep: {cheep}");
 
@@ -105,9 +113,13 @@ public class BisonFuzzE2ETests
 
     private async Task PostCommentAsync(CommentGenerator gen, FuzzOracle oracle, int seed)
     {
+        // Arrange
         var comment = gen.Generate();
+        
+        // Act
         var res = await client.PostAsJsonAsync(CommentPost, comment);
-
+        
+        // Assert
         // Only valid if the referenced cheep exists
         bool expectAccepted = oracle.KnowsCheep(comment.CheepID);
 
@@ -122,9 +134,13 @@ public class BisonFuzzE2ETests
 
     private async Task PostRandomProposalAsync(ProposalGenerator gen, FuzzOracle oracle, int seed)
     {
+        // Arrange
         var proposal = gen.GenerateRandom();
+        
+        // Act
         var res = await client.PostAsJsonAsync(ProposalPost, proposal);
-
+        
+        // Assert
         // Server only validates CheepID (no Taxonomy service in DI), not TaxonID
         bool expectAccepted = oracle.KnowsCheep(proposal.CheepID);
 
@@ -139,11 +155,15 @@ public class BisonFuzzE2ETests
 
     private async Task PostMutatedProposalAsync(ProposalGenerator gen, FuzzOracle oracle,Random ran,int seed)
     {
+        // Arrange
         // Pick an existing proposal and re-send it with a different taxon ID
         var original = oracle.Proposals[ran.Next(oracle.Proposals.Count)];
         var proposal = gen.Mutate(original);
+        
+        // Act
         var res = await client.PostAsJsonAsync(ProposalPost, proposal);
-
+        
+        // Act
         bool expectAccepted = oracle.KnowsCheep(proposal.CheepID);
 
         Assert.True(res.IsSuccessStatusCode == expectAccepted,
