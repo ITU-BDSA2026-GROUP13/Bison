@@ -6,7 +6,9 @@ public sealed class CommentDatabase<T> : CSVDatabase<T>
 {
     private static CommentDatabase<T> instance = null;
     private static readonly object padlock = new object();
-    private static readonly string pathToCsvFile = "../Bison.CLI/bison_comments_cli_db.csv"; 
+    private static readonly string pathToCsvFile =
+        Environment.GetEnvironmentVariable("BISON_COMMENT_DB")
+        ?? "../Bison.CLI/bison_comments_cli_db.csv"; // a change to Fuzzing   
     CommentDatabase() : base(pathToCsvFile)
     {
         

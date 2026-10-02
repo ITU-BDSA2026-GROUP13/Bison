@@ -74,4 +74,7 @@ public class Taxonomy
     {
         return lookupByVernacularName.TryGetValue(danishName, out Taxon? taxon) ? taxon : null;
     }
+
+    //so the test can call the taxons for sampels
+    public IReadOnlyList<Taxon> AllTaxons => Taxons;
 }
