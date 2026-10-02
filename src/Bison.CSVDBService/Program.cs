@@ -6,7 +6,6 @@ using Service;
 var builder = WebApplication.CreateBuilder(args);
 
 
-//Makes sure that the file is a new one everytime
 builder.Services.AddSingleton<IDatabaseRepository<Cheep>>(
     ObservationDatabase<Cheep>.Instance
 );
