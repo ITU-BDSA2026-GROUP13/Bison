@@ -59,9 +59,6 @@ public class EndpointTesting
         
         //Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode); //Statuscode not found?
-        //Assert.Equal(HttpStatusCode.OK, response.StatusCode); //Statuscode ok?
-        // These two options depend on the intended behavior of the program
-        
     }
 
     [Fact]
