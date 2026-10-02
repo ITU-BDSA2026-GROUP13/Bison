@@ -79,7 +79,7 @@ public class BisonFuzzE2ETests
         for (int i = 0; i < 300; i++)
         {
             int kind = ran.Next(10);
-
+    
             if (kind < 4) await PostCheepAsync(cheepGen, oracle, seed);
             else if (kind < 7) await PostCommentAsync(commentGen, oracle, seed);
             else if (kind < 9) await PostRandomProposalAsync(proposalGen, oracle, seed);

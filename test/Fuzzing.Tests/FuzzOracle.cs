@@ -74,12 +74,12 @@ public class FuzzOracle
         return proposals;
     }
 
-    private static IEnumerable<Cheep> Sorted(IEnumerable<Cheep> xs) =>
-        xs.OrderBy(c => c.CheepID);
+    private static IEnumerable<Cheep> Sorted(IEnumerable<Cheep> cheeps) =>
+        cheeps.OrderBy(c => c.CheepID);
 
-    private static IEnumerable<Comment> Sorted(IEnumerable<Comment> xs) =>
-        xs.OrderBy(c => c.CheepID).ThenBy(c => c.Timestamp).ThenBy(c => c.Message, StringComparer.Ordinal);
+    private static IEnumerable<Comment> Sorted(IEnumerable<Comment> cheeps) =>
+        cheeps.OrderBy(c => c.CheepID).ThenBy(c => c.Timestamp).ThenBy(c => c.Message, StringComparer.Ordinal);
 
-    private static IEnumerable<Proposal> Sorted(IEnumerable<Proposal> xs) =>
-        xs.OrderBy(p => p.CheepID).ThenBy(p => p.Timestamp).ThenBy(p => p.TaxonID, StringComparer.Ordinal);
+    private static IEnumerable<Proposal> Sorted(IEnumerable<Proposal> cheeps) =>
+        cheeps.OrderBy(p => p.CheepID).ThenBy(p => p.Timestamp).ThenBy(p => p.TaxonID, StringComparer.Ordinal);
 }
