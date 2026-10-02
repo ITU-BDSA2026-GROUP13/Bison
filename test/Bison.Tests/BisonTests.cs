@@ -69,23 +69,41 @@ public class BisonTests
         AssertValidReferenceAdds(proposalDatabase, () =>
             proposalService.addProposal(new Proposal(69, "Purpurhejre")));
     }
+    [Fact]
+    public void TestEmptyComment()
+    {
+        Assert.Throws<ArgumentException>(() => 
+            commentService.addComment(new Comment(69, "")));
+    }
+    
+    [Fact]
+    public void TestEmptyProposal()
+    {
+        Assert.Throws<ArgumentException>(() => 
+            proposalService.addProposal(new Proposal(69, "")));
+    }
 
     [Fact]
     public void TestConversionOfUnixTimestamps()
     {
+        //Arrange
         long timestamp = 1700000000;
 
+        //Act
         var time = DateTimeOffset.FromUnixTimeSeconds(timestamp).ToLocalTime();
         string timeString = time.ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
         // InvariantCulture takes care of Windows and Linux formatting date separators differently.
         
         var expectedTime = new DateTimeOffset(2023, 11, 14, 22, 13, 20, TimeSpan.Zero).ToLocalTime();
+        
+        //Assert
         Assert.Equal(expectedTime.ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture), timeString);
     }
 
     [Fact]
     public void TestPrintingOfCheeps()
     {
+        //Arrange
         string firstCheepTime = DateTimeOffset.FromUnixTimeSeconds(1000)
             .ToLocalTime()
             .ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
@@ -103,9 +121,12 @@ public class BisonTests
 
             try
             {
+                //Act
                 UserInterface.PrintCheeps(cheeps.Read());
                 string actualOutput = sw.ToString().ReplaceLineEndings("\n");
                 // Normalization around line seperators between Windows and Linux Culture. 
+                
+                //Assert
                 Assert.Equal(expectedOutput, actualOutput);
             }
             finally
@@ -115,6 +136,31 @@ public class BisonTests
         }
         
     }
+    
+    [Fact]
+    public void TestPrintEmptyCheeps()
+    {
+        //Arrange
+        var emptyDb = new CSVDatabase<Cheep>("empty.csv");
+        
+        using StringWriter sw = new();
+        TextWriter originalOutput = Console.Out;
+        Console.SetOut(sw);
+        try
+        {
+            //Act
+            UserInterface.PrintCheeps(emptyDb.Read());
+            
+            //Assert
+            Assert.Contains("Cheeps:", sw.ToString());
+        }
+        finally
+        {
+            Console.SetOut(originalOutput);
+        }
+    }
+    
+    
     
     
     // HELPING METHODS (Generic type assertions)
