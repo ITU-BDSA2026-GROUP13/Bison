@@ -33,7 +33,18 @@ app.MapGet("/observations",
 
 app.MapGet("/comments",
     (long id, CommentService service) =>
-        service.getComments(id));
+    {
+        try
+        {
+            service.getComments(id);
+            return Results.Ok();
+        }
+        catch (InvalidOperationException)
+        {
+            return Results.BadRequest("Referenced observation does not exist");
+        }
+    });
+        
 
 app.MapPost("/observation",
     (Cheep cheep, ObservationService service) =>

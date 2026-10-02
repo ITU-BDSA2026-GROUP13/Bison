@@ -19,12 +19,16 @@ public class CommentService
     public void addComment(Comment comment)
     {
         if (!CommentHandling.doesObservationExist(comment.CheepID, observations.Read())) throw new InvalidOperationException("Observation id does not exist");
+        if (string.IsNullOrEmpty(comment.Message)) throw new ArgumentException("Comment message is empty");
         comments.Store(comment);
     }
 
     public IEnumerable<Comment> getComments(long observationID)
     {
+        if (!CommentHandling.doesObservationExist(observationID, observations.Read())) throw new InvalidOperationException("Observation id does not exist");
         return comments.Read().Where(c => c.CheepID == observationID);
     }
+    
+    
 }
 

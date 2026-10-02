@@ -18,6 +18,7 @@ public class ProposalService
     public void addProposal(Proposal proposal)
     {
         if (!CommentHandling.doesObservationExist(proposal.CheepID, observations.Read())) throw new InvalidOperationException("Observation id does not exist");
+        if (string.IsNullOrEmpty(proposal.TaxonID)) throw new ArgumentException("Proposal Taxon is not valid");
         proposals.Store(proposal);
     }
 
