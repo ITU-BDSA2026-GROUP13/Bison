@@ -2,11 +2,11 @@ namespace Bison;
 
 public static class CommentHandling {
     
-    public static bool doesObservationExist(long cheepId, IEnumerable<Cheep> db) 
+    public static bool doesObservationExist(long observationID, IEnumerable<Observation> db) 
     {
-        foreach (Cheep cheep in db)
+        foreach (Observation observation in db)
         {
-            if (cheep.CheepID == cheepId) return true;
+            if (observation.ObservationID == observationID) return true;
         }
 
         return false;

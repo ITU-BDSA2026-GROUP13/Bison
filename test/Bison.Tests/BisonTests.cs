@@ -11,10 +11,10 @@ using Bison;
 public class BisonTests
 {
     /*
-    private readonly string testFileNameCheep = "cheep_bison_observe_test_cli_db.csv";
+    private readonly string testFileNameObservation = "observation_bison_observe_test_cli_db.csv";
     private readonly string testFileNameComment = "comment_bison_observe_test_cli_db.csv";
     private readonly string testFileNameProposal = "proposal_bison_test_cli_db.csv";
-    private readonly CSVDatabase<Cheep> cheeps;
+    private readonly CSVDatabase<Observation> observations;
     private readonly CSVDatabase<Comment> comments;
     private readonly CSVDatabase<Proposal> proposalDatabase;
     private readonly CommentService commentService;
@@ -22,19 +22,19 @@ public class BisonTests
 
     public BisonTests()
     {
-        if (File.Exists(testFileNameCheep)) File.Delete(testFileNameCheep);
+        if (File.Exists(testFileNameObservation)) File.Delete(testFileNameObservation);
         if (File.Exists(testFileNameComment)) File.Delete(testFileNameComment);
         if (File.Exists(testFileNameProposal)) File.Delete(testFileNameProposal);
 
-        cheeps = new CSVDatabase<Cheep>(testFileNameCheep);
+        observations = new CSVDatabase<Observation>(testFileNameObservation);
         comments = new CSVDatabase<Comment>(testFileNameComment);
         proposalDatabase = new CSVDatabase<Proposal>(testFileNameProposal);
 
-        commentService = new CommentService(comments, cheeps);
-        proposalService = new ProposalService(proposalDatabase, cheeps);
+        commentService = new CommentService(comments, observations);
+        proposalService = new ProposalService(proposalDatabase, observations);
 
-        cheeps.Store(new Cheep(69, "Lars", "test test", "Slagelse", 1000));
-        cheeps.Store(new Cheep(70, "Lasse", "lort", "Slagelse", 2000));
+        observations.Store(new Observation(69, "Lars", "test test", "Slagelse", 1000));
+        observations.Store(new Observation(70, "Lasse", "lort", "Slagelse", 2000));
     }
 */
 [Fact]
@@ -118,10 +118,10 @@ public class BisonTests
         List<T> after = database.Read().ToList();
         Assert.NotEqual(before.Count, after.Count);
         Assert.Single(after);
-        Assert.Equal(69, after[0].CheepID);
+        Assert.Equal(69, after[0].ObservationID);
 
-        List<Cheep> observations = cheeps.Read().ToList();
-        Assert.Contains(observations, cheep => cheep.CheepID == after[0].CheepID);
+        List<Observation> observations = observations.Read().ToList();
+        Assert.Contains(observations, observation => observation.ObservationID == after[0].ObservationID);
     }
     */
 }

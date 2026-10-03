@@ -12,9 +12,9 @@ public class BisonUnitTests
     {
         //Arrange
         var comments = new InMemoryTestDatabaseRepository<Comment>();
-        var observations = new InMemoryTestDatabaseRepository<Cheep>();
+        var observations = new InMemoryTestDatabaseRepository<Observation>();
         var service = new CommentService(comments, observations);
-        observations.Store(new Cheep(69, "Lars", "test", "Slagelse", 1000));
+        observations.Store(new Observation(69, "Lars", "test", "Slagelse", 1000));
 
         //Act
         service.addComment(new Comment(69, "comment"));
@@ -22,7 +22,7 @@ public class BisonUnitTests
 
         //Assert
         Assert.Single(storedComments);
-        Assert.Equal(69, storedComments[0].CheepID);
+        Assert.Equal(69, storedComments[0].ObservationID);
         Assert.Equal("comment", storedComments[0].Message);
     }
 
@@ -31,7 +31,7 @@ public class BisonUnitTests
     {
         //Arrange
         var comments = new InMemoryTestDatabaseRepository<Comment>();
-        var observations = new InMemoryTestDatabaseRepository<Cheep>();
+        var observations = new InMemoryTestDatabaseRepository<Observation>();
         var service = new CommentService(comments, observations);
 
         //Act
@@ -50,9 +50,9 @@ public class BisonUnitTests
         comments.Store(new Comment(69, "comment for 69"));
         comments.Store(new Comment(70, "comment for 70"));
         comments.Store(new Comment(69, "another comment for 69"));
-        var observations = new InMemoryTestDatabaseRepository<Cheep>();
-        observations.Store(new Cheep(69, "Lars", "test", "Randers", 1000));
-        observations.Store(new Cheep(70, "Peter", "tester", "Taastrup", 1000));
+        var observations = new InMemoryTestDatabaseRepository<Observation>();
+        observations.Store(new Observation(69, "Lars", "test", "Randers", 1000));
+        observations.Store(new Observation(70, "Peter", "tester", "Taastrup", 1000));
         var service = new CommentService(comments, observations);
         
 
@@ -61,8 +61,8 @@ public class BisonUnitTests
 
         //Assert
         Assert.Equal(2, result.Count);
-        Assert.Equal(69, result[0].CheepID);
-        Assert.Equal(69, result[1].CheepID);
+        Assert.Equal(69, result[0].ObservationID);
+        Assert.Equal(69, result[1].ObservationID);
     }
     */
 
@@ -70,37 +70,37 @@ public class BisonUnitTests
     public void TestObservationReducedConstructor() 
     {
         //Arrange + Act
-        Cheep cheep = new Cheep("Jeg så en ko", "Isen");
+        Observation observation = new Observation("Jeg så en ko", "Isen");
 
         //Assert
-        Assert.Equal("Jeg så en ko", cheep.Observation);
-        Assert.Equal("Isen", cheep.Location);
+        Assert.Equal("Jeg så en ko", observation.ObservationMessage);
+        Assert.Equal("Isen", observation.Location);
     }
 
     [Fact]
     public void TestObservationFullConstructor() {
         //Arrange + Act
-        Cheep cheep = new Cheep(67, "Lars", "Jeg så en ko", "Isen", 1000);
+        Observation observation = new Observation(67, "Lars", "Jeg så en ko", "Isen", 1000);
 
         //Assert
-        Assert.Equal(67, cheep.CheepID);
-        Assert.Equal("Lars", cheep.Author);
-        Assert.Equal("Jeg så en ko", cheep.Observation);
-        Assert.Equal("Isen", cheep.Location);
-        Assert.Equal(1000, cheep.Timestamp);
+        Assert.Equal(67, observation.ObservationID);
+        Assert.Equal("Lars", observation.Author);
+        Assert.Equal("Jeg så en ko", observation.ObservationMessage);
+        Assert.Equal("Isen", observation.Location);
+        Assert.Equal(1000, observation.Timestamp);
     }
 
     [Fact]
     public void TestAuthorMatchingEnvironmentUsername()
     {
         //Arrange
-        Cheep cheep = new Cheep("Jeg så en ko", "Isen");
+        Observation observation = new Observation("Jeg så en ko", "Isen");
 
         //Act
-        string cheep_author = cheep.Author;
+        string observation_author = observation.Author;
 
         //Assert
-        Assert.Equal(Environment.UserName, cheep_author);
+        Assert.Equal(Environment.UserName, observation_author);
     }
 
     [Fact]
@@ -110,11 +110,11 @@ public class BisonUnitTests
         long time_before = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); 
         
         //Act
-        Cheep cheep = new Cheep("Jeg så en ko", "Isen");
+        Observation observation = new Observation("Jeg så en ko", "Isen");
         long time_after = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); 
 
         //Assert
-        Assert.InRange(cheep.Timestamp, time_before, time_after);
+        Assert.InRange(observation.Timestamp, time_before, time_after);
     }
 
     [Fact]
@@ -124,7 +124,7 @@ public class BisonUnitTests
         Comment comment = new Comment(69, "Thats right I saw it too");
 
         //Assert
-        Assert.Equal(69, comment.CheepID);
+        Assert.Equal(69, comment.ObservationID);
         Assert.Equal("Thats right I saw it too", comment.Message);
     }
 
@@ -135,7 +135,7 @@ public class BisonUnitTests
         Comment comment = new Comment(69, "Lars", "Thats right I saw it too", 1000);
 
         //Assert
-        Assert.Equal(69, comment.CheepID);
+        Assert.Equal(69, comment.ObservationID);
         Assert.Equal("Lars", comment.Author);
         Assert.Equal("Thats right I saw it too", comment.Message);
         Assert.Equal(1000, comment.Timestamp);
@@ -145,11 +145,11 @@ public class BisonUnitTests
     public void TestDoesObservationExistMethodYES() 
     {
         //Arrange
-        List<Cheep> cheeps = new List<Cheep>(){new Cheep(69, "Lars", "test", "Slagelse", 1000)};
+        List<Observation> observations = new List<Observation>(){new Observation(69, "Lars", "test", "Slagelse", 1000)};
         Comment comment = new Comment(69, "Thats right I saw it too");
 
         //Act
-        bool result = CommentHandling.doesObservationExist(comment.CheepID, cheeps);
+        bool result = CommentHandling.doesObservationExist(comment.ObservationID, observations);
 
         //Assert
         Assert.True(result);
@@ -159,11 +159,11 @@ public class BisonUnitTests
     public void TestDoesObservationExistMethodNO()
     {
         //Arrange
-        List<Cheep> cheeps = new List<Cheep>(){new Cheep(69, "Lars", "test", "Slagelse", 1000)};
+        List<Observation> observations = new List<Observation>(){new Observation(69, "Lars", "test", "Slagelse", 1000)};
         Comment comment = new Comment(67, "Thats right I saw it too");
 
         //Act
-        bool result = CommentHandling.doesObservationExist(comment.CheepID, cheeps);
+        bool result = CommentHandling.doesObservationExist(comment.ObservationID, observations);
 
         //Assert
         Assert.False(result);

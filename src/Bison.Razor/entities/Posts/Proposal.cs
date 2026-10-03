@@ -8,18 +8,18 @@ public record Proposal : UserAddition
     public string TaxonID { get; set; }
     
     public Proposal() { }   // bruges af JSON
-    public Proposal(long CheepID, string TaxonID)
+    public Proposal(long ObservationID, string TaxonID)
     {
         this.Author = Environment.UserName;
         this.Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        this.CheepID = CheepID;
+        this.ObservationID = ObservationID;
         this.TaxonID = TaxonID;
     }
     
     [JsonConstructor]
-    public Proposal(long CheepID, string Author, string TaxonID,  long Timestamp)
+    public Proposal(long ObservationID, string Author, string TaxonID,  long Timestamp)
     {
-        this.CheepID = CheepID;
+        this.ObservationID = ObservationID;
         this.Author = Author;
         this.TaxonID = TaxonID;
         this.Timestamp = Timestamp;
