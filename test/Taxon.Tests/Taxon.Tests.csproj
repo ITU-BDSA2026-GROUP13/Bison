@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-  <ProjectReference Include="..\..\src\Bison.CLI\Bison.CLI.csproj" />
+    <ProjectReference Include="..\..\src\Bison.Razor\Bison.Razor.csproj" />
   </ItemGroup>
 
 </Project>
