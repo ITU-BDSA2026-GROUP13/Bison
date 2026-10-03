@@ -2,5 +2,5 @@
 
 public abstract record UserAddition : Post
 {
-    public long CheepID { get; set; }
+    public long ObservationID { get; set; }
 }
