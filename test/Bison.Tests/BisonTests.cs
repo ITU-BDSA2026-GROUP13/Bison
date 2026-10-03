@@ -1,15 +1,16 @@
 namespace Bison.Tests;
 
+using System.Globalization;
+
 // These test can be adapted to the the structure (TO BE CONTINUED!)
-/*
+
 using System;
 using Xunit;
 using Bison;
-using SimpleDB;
-using Service;
 
 public class BisonTests
 {
+    /*
     private readonly string testFileNameCheep = "cheep_bison_observe_test_cli_db.csv";
     private readonly string testFileNameComment = "comment_bison_observe_test_cli_db.csv";
     private readonly string testFileNameProposal = "proposal_bison_test_cli_db.csv";
@@ -35,6 +36,24 @@ public class BisonTests
         cheeps.Store(new Cheep(69, "Lars", "test test", "Slagelse", 1000));
         cheeps.Store(new Cheep(70, "Lasse", "lort", "Slagelse", 2000));
     }
+*/
+[Fact]
+    public void TestConversionOfUnixTimestamps()
+    {
+        //Arrange
+        long timestamp = 1700000000;
+
+        //Act
+        var time = DateTimeOffset.FromUnixTimeSeconds(timestamp).ToLocalTime();
+        string timeString = time.ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+        // InvariantCulture takes care of Windows and Linux formatting date separators differently.
+        
+        var expectedTime = new DateTimeOffset(2023, 11, 14, 22, 13, 20, TimeSpan.Zero).ToLocalTime();
+        
+        //Assert
+        Assert.Equal(expectedTime.ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture), timeString);
+    }
+    /*
 
     [Fact]
     public void TestCommentReferenceNonExistingObservation()
@@ -104,5 +123,6 @@ public class BisonTests
         List<Cheep> observations = cheeps.Read().ToList();
         Assert.Contains(observations, cheep => cheep.CheepID == after[0].CheepID);
     }
+    */
 }
-*/
+
