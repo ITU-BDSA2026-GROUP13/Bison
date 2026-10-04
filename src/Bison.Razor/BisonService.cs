@@ -4,8 +4,8 @@ public record ObservationViewModel(string Author, string Message, string Timesta
 
 public interface IObservationService
 {
-    public List<ObservationViewModel> GetObservations();
-    public List<ObservationViewModel> GetObservationsFromAuthor(string author);
+    public List<ObservationViewModel> GetObservations(int page);
+    public List<ObservationViewModel> GetObservationsFromAuthor(string author, int page = 1);
 }
 
 public class ObservationService : IObservationService
@@ -23,15 +23,14 @@ public class ObservationService : IObservationService
             new ObservationViewModel("Paul", "There is a bison on Amager", UnixTimeStampToDateTimeString(1690895308)),
         };
 
-    public List<ObservationViewModel> GetObservations()
+    public List<ObservationViewModel> GetObservations(int page)
     {
-        return db.GetObservations();
+        return db.getObservations(page);
     }
 
-    public List<ObservationViewModel> GetObservationsFromAuthor(string author)
+    public List<ObservationViewModel> GetObservationsFromAuthor(string author, int page = 1)
     {
-        // filter by the provided author name
-        return db.GetObservations(author);
+        return db.getObservations(author, page);
     }
 
     private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
@@ -41,5 +40,6 @@ public class ObservationService : IObservationService
         dateTime = dateTime.AddSeconds(unixTimeStamp);
         return dateTime.ToString("MM/dd/yy H:mm:ss");
     }
+
 
 }
