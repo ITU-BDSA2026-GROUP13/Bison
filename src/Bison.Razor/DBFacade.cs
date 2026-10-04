@@ -13,15 +13,13 @@ public class DBFacade
     public DBFacade(string dbPath)
     {
         connectionString = $"Data source={dbPath}";
-        using var connection = new SqliteConnection(connectionString);
-        connection.Open();
-
-        using var command = connection.CreateCommand();
-        command.CommandText = "SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = 'observation'";
-        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+        if (new FileInfo(dbPath).Length == 0)
         {
+            var connection = new SqliteConnection(connectionString);
+            connection.Open();
             RunEmbeddedScript(connection, "schema.sql");
             RunEmbeddedScript(connection, "dump.sql");
+            connection.Close();
         }
     }
 
@@ -59,7 +57,7 @@ public class DBFacade
             string timestamp = reader.GetInt64(2).ToString();
             result.Add(new ObservationViewModel(author, message, timestamp));
         }
-        //connection.Close();
+        connection.Close();
         return result;
     }
 
@@ -88,7 +86,7 @@ public class DBFacade
             string timestamp = reader.GetInt64(2).ToString();
             result.Add(new ObservationViewModel(author, message, timestamp));
         }
-        //connection.Close();
+        connection.Close();
         return result;
     }
     
