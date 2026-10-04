@@ -32,7 +32,7 @@ public class DBFacade
         command.ExecuteNonQuery();
     }
 
-    public List<ObservationViewModel> getObservations()
+    public List<ObservationViewModel> GetObservations()
     {
         var connection = new SqliteConnection(connectionString);
         connection.Open();
@@ -56,7 +56,7 @@ public class DBFacade
         return result;
     }
 
-    public List<ObservationViewModel> getObservations(string author)
+    public List<ObservationViewModel> GetObservations(string author)
     {
         var connection = new SqliteConnection(connectionString);
         connection.Open();

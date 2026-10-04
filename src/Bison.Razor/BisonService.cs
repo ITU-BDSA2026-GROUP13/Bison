@@ -25,13 +25,13 @@ public class ObservationService : IObservationService
 
     public List<ObservationViewModel> GetObservations()
     {
-        return db.getObservations();
+        return db.GetObservations();
     }
 
     public List<ObservationViewModel> GetObservationsFromAuthor(string author)
     {
         // filter by the provided author name
-        return db.getObservations(author);
+        return db.GetObservations(author);
     }
 
     private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
