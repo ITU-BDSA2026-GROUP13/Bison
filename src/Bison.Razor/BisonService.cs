@@ -1,3 +1,5 @@
+using Bison;
+
 public record ObservationViewModel(string Author, string Message, string Timestamp);
 
 public interface IObservationService
@@ -8,6 +10,12 @@ public interface IObservationService
 
 public class ObservationService : IObservationService
 {
+    readonly DBFacade db;
+
+    public ObservationService(DBFacade db)
+    {
+        this.db = db;
+    }
     // These would normally be loaded from a database for example
     private static readonly List<ObservationViewModel> _obs = new()
         {
@@ -17,13 +25,13 @@ public class ObservationService : IObservationService
 
     public List<ObservationViewModel> GetObservations()
     {
-        return _obs;
+        return db.GetObservations();
     }
 
     public List<ObservationViewModel> GetObservationsFromAuthor(string author)
     {
         // filter by the provided author name
-        return _obs.Where(x => x.Author == author).ToList();
+        return db.GetObservations(author);
     }
 
     private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
