@@ -8,6 +8,8 @@ public class DBFacade
 {
     private readonly string connectionString;
 
+    private const int PageSize = 32;
+
     public DBFacade(string dbPath)
     {
         connectionString = $"Data source={dbPath}";
@@ -32,16 +34,19 @@ public class DBFacade
         command.ExecuteNonQuery();
     }
 
-    public List<ObservationViewModel> GetObservations()
+    public List<ObservationViewModel> getObservations(int page)
     {
-        var connection = new SqliteConnection(connectionString);
+        using var connection = new SqliteConnection(connectionString);
         connection.Open();
         
         var command = connection.CreateCommand();
         command.CommandText = @"SELECT u.username, o.text, o.pub_date
                                 FROM observation o
                                 JOIN user u ON o.author_id = u.user_id
-                                ORDER BY o.pub_date DESC";
+                                ORDER BY o.pub_date DESC
+                                LIMIT @pageSize OFFSET @offset";
+        command.Parameters.AddWithValue("@pageSize", PageSize);
+        command.Parameters.AddWithValue("@offset", (Math.Max(page, 1) - 1) * PageSize);
 
         using var reader = command.ExecuteReader();
         var result = new List<ObservationViewModel>();
@@ -56,9 +61,9 @@ public class DBFacade
         return result;
     }
 
-    public List<ObservationViewModel> GetObservations(string author)
+    public List<ObservationViewModel> getObservations(string author, int page)
     {
-        var connection = new SqliteConnection(connectionString);
+        using var connection = new SqliteConnection(connectionString);
         connection.Open();
 
         var command = connection.CreateCommand();
@@ -66,8 +71,11 @@ public class DBFacade
                                 FROM observation o
                                 JOIN user u ON o.author_id = u.user_id
                                 WHERE u.username = @author
-                                ORDER BY o.pub_date DESC";
+                                ORDER BY o.pub_date DESC
+                                LIMIT @pageSize OFFSET @offset";
         command.Parameters.AddWithValue("@author", author);
+        command.Parameters.AddWithValue("@pageSize", PageSize);
+        command.Parameters.AddWithValue("@offset", (Math.Max(page, 1) - 1) * PageSize);
         
         using var reader = command.ExecuteReader();
         var result = new List<ObservationViewModel>();
