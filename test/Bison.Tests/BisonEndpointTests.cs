@@ -36,7 +36,25 @@ public class BisonEndpointTests
         //Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
+
+    [Fact]
+    public async void TestAccesingNonExistingPageRequest()
+    {
+        //Arrange
+        string nonExistingPageUrl = "http://localhost:5273/Lars";
+        
+        //Act
+        var response = await client.GetAsync(nonExistingPageUrl);
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode); 
+        // We may need to change existing behavior to fit BadRequest rather than NotFound.
+        // Question is: Do we want to return a "Page Not Found" or an intended error message. 
+    }
     
+    //TODO: Test remaining getting endpoints (Comments, Proposals)
+    
+    //TODO: Test POSTING endpoints (All)
     
     
     
