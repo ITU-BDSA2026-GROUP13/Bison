@@ -1,12 +1,15 @@
 using Bison;
 
 public record ObservationViewModel(long ObservationId, string Author, string Message, string Timestamp);
+public record CommentViewModel(long Comment_id, long Observation_id, string Author, string Message, string Timestamp);
 
-public interface IObservationService
+public interface IObservationService    
 {
     public List<ObservationViewModel> GetObservations(int page);
     public List<ObservationViewModel> GetObservationsFromAuthor(string author, int page = 1);
     public ObservationViewModel? GetObservationFromId(long? id);
+
+    public List<CommentViewModel> GetCommentViewModels(long? observationId);
 }
 
 public class ObservationService : IObservationService
@@ -31,6 +34,11 @@ public class ObservationService : IObservationService
     public ObservationViewModel? GetObservationFromId(long? id)
     {
         return db.getObservationFromId(id);
+    }
+
+    public List<CommentViewModel> GetCommentViewModels(long? observationId)
+    {
+        return db.GetCommentViewModels(observationId);
     }
 
     private static string UnixTimeStampToDateTimeString(double unixTimeStamp)

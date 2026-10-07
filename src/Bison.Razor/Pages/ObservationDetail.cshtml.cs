@@ -8,6 +8,7 @@ public class ObservationDetailModel : PageModel
     readonly IObservationService _service;
     public int CurrentPage { get; set; }
     public ObservationViewModel? Observation { get; set; }
+    public List<CommentViewModel>? Comments { get; set; }
 
     public ObservationDetailModel(IObservationService service)
     {
@@ -19,6 +20,7 @@ public class ObservationDetailModel : PageModel
         if (id == null) return Redirect("/obs");
         this.CurrentPage = Math.Max(page, 1);
         this.Observation = _service.GetObservationFromId(id);
+        this.Comments = _service.GetCommentViewModels(id);
         return Page();
     }
 }

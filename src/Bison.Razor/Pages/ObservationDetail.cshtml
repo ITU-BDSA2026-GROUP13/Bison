@@ -25,5 +25,25 @@
 
 <div>
     <h3>Comments</h3>
-    @* same pattern *@
+    @if (Model.Comments.Any())
+    {
+        <ul id="commentList" class="comments">
+            @foreach (var ob in Model.Comments)
+            {
+                <li>
+                    <p>
+                        <strong>
+                            <a href="@ob.Author">@ob.Author</a>
+                        </strong>
+                        @ob.Message
+                        <small>&mdash; @ob.Timestamp</small>
+                    </p>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <em>There are no Observations so far.</em>
+    }
 </div>

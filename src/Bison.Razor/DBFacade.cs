@@ -20,6 +20,7 @@ public class DBFacade
             connection.Open();
             RunEmbeddedScript(connection, "schema.sql");
             RunEmbeddedScript(connection, "dump.sql");
+            Console.WriteLine(GetCommentViewModels);
             connection.Close();
         }
     }
@@ -114,6 +115,45 @@ public class DBFacade
         string timestamp = reader.GetInt64(3).ToString();
         return new ObservationViewModel(observationId, author, message, timestamp);
     }
+
+    // 
+    public List<CommentViewModel> GetCommentViewModels(long? observation_Id)
+    {
+        using var connection = new SqliteConnection(connectionString);
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = @"SELECT o.observation_id, u.username, o.text, o.pub_date
+                                FROM observation o
+                                JOIN comment c ON o.observation_id = c.observation_id
+                                WHERE c.observation_id = @observation_Id
+                                ORDER BY c.pub_date DESC
+                               ";
+
+        command.Parameters.AddWithValue("@observationId", observation_Id);
+        
+
+        using var reader = command.ExecuteReader();
+        var result = new List<CommentViewModel>();
+        while (reader.Read())
+        {
+            long comment_id = reader.GetInt64(0);
+            Console.WriteLine(comment_id);
+            long observationId = reader.GetInt64(1);
+            Console.WriteLine(observationId);
+            string author = reader.GetString(2);
+            Console.WriteLine(author);
+            string message = reader.GetString(3);
+            Console.WriteLine(message);
+            string timestamp = reader.GetInt64(4).ToString();
+            Console.WriteLine(timestamp);
+            result.Add(new CommentViewModel(comment_id, observationId, author, message, timestamp));
+        }
+
+        connection.Close();
+        return result;
+    }
+    
     
     
 }
