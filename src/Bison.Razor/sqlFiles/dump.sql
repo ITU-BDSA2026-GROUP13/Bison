@@ -507,4 +507,4 @@ INSERT INTO observation VALUES(498,2,'A Glossy Ibis wading through the reed bed.
 INSERT INTO observation VALUES(499,3,'Several Grey Herons feeding together at the lagoon. Hunts alone along the edge of the water.',1790813500);
 INSERT INTO observation VALUES(500,3,'Great Egret on the pond at the edge of town. Nests in colonies, often in trees near water.',1790896667);
 
-INSERT INTO comment VALUES(1,12,'Wow what a good find!', 1773196320);
+INSERT INTO comment VALUES(1,12,2,'Wow what a good find!', 1773196320);

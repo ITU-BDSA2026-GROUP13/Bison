@@ -123,14 +123,13 @@ public class DBFacade
         connection.Open();
 
         var command = connection.CreateCommand();
-        command.CommandText = @"SELECT o.observation_id, u.username, o.text, o.pub_date
-                                FROM observation o
-                                JOIN comment c ON o.observation_id = c.observation_id
+        command.CommandText = @"SELECT c.comment_id, c.observation_id, u.username, c.text, c.pub_date
+                                FROM comment c
+                                JOIN user u ON c.author_id = u.user_id
                                 WHERE c.observation_id = @observation_Id
-                                ORDER BY c.pub_date DESC
-                               ";
+                                ORDER BY c.pub_date DESC";
 
-        command.Parameters.AddWithValue("@observationId", observation_Id);
+        command.Parameters.AddWithValue("@observation_Id", observation_Id);
         
 
         using var reader = command.ExecuteReader();
@@ -138,15 +137,10 @@ public class DBFacade
         while (reader.Read())
         {
             long comment_id = reader.GetInt64(0);
-            Console.WriteLine(comment_id);
             long observationId = reader.GetInt64(1);
-            Console.WriteLine(observationId);
             string author = reader.GetString(2);
-            Console.WriteLine(author);
             string message = reader.GetString(3);
-            Console.WriteLine(message);
             string timestamp = reader.GetInt64(4).ToString();
-            Console.WriteLine(timestamp);
             result.Add(new CommentViewModel(comment_id, observationId, author, message, timestamp));
         }
 

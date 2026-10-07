@@ -16,12 +16,11 @@ create table observation (
 
 drop table if exists comment;
 create table comment (
-                            comment_id integer autoincrement,
-                            observation_id integer,
+                            comment_id integer primary key autoincrement,
+                            observation_id integer not null,
                             author_id integer not null,
                             text string not null,
                             pub_date integer,
-                            foreign key (observation_id) references observation(observation_id),
-                            PRIMARY KEY (comment_id,observation_id)
+                            foreign key (observation_id) references observation(observation_id)
                             
 );

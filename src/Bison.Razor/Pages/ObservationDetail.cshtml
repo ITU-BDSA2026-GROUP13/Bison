@@ -28,15 +28,15 @@
     @if (Model.Comments.Any())
     {
         <ul id="commentList" class="comments">
-            @foreach (var ob in Model.Comments)
+            @foreach (var cm in Model.Comments)
             {
                 <li>
                     <p>
                         <strong>
-                            <a href="@ob.Author">@ob.Author</a>
+                            <a href="@cm.Author">@cm.Author</a>
                         </strong>
-                        @ob.Message
-                        <small>&mdash; @ob.Timestamp</small>
+                        @cm.Message
+                        <small>&mdash; @cm.Timestamp</small>
                     </p>
                 </li>
             }
