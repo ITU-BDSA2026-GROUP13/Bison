@@ -1,11 +1,12 @@
 using Bison;
 
-public record ObservationViewModel(string Author, string Message, string Timestamp);
+public record ObservationViewModel(long ObservationId, string Author, string Message, string Timestamp);
 
 public interface IObservationService
 {
     public List<ObservationViewModel> GetObservations(int page);
     public List<ObservationViewModel> GetObservationsFromAuthor(string author, int page = 1);
+    public ObservationViewModel? GetObservationFromId(long? id);
 }
 
 public class ObservationService : IObservationService
@@ -16,13 +17,7 @@ public class ObservationService : IObservationService
     {
         this.db = db;
     }
-    // These would normally be loaded from a database for example
-    private static readonly List<ObservationViewModel> _obs = new()
-        {
-            new ObservationViewModel("Peter", "I saw a heron", UnixTimeStampToDateTimeString(1690892208)),
-            new ObservationViewModel("Paul", "There is a bison on Amager", UnixTimeStampToDateTimeString(1690895308)),
-        };
-
+    
     public List<ObservationViewModel> GetObservations(int page)
     {
         return db.getObservations(page);
@@ -31,6 +26,11 @@ public class ObservationService : IObservationService
     public List<ObservationViewModel> GetObservationsFromAuthor(string author, int page = 1)
     {
         return db.getObservations(author, page);
+    }
+
+    public ObservationViewModel? GetObservationFromId(long? id)
+    {
+        return db.getObservationFromId(id);
     }
 
     private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
