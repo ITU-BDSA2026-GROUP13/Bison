@@ -12,6 +12,7 @@ public class DBFacade
 
     public DBFacade(string dbPath)
     {
+        File.Create(dbPath);
         connectionString = $"Data source={dbPath}";
         if (new FileInfo(dbPath).Length == 0)
         {
