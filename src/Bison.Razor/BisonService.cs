@@ -2,8 +2,8 @@ using Bison;
 
 public record ObservationViewModel(long ObservationId, string Author, string Message, string Timestamp);
 public record CommentViewModel(long Comment_id, long Observation_id, string Author, string Message, string Timestamp);
-
 public record ProposalViewModel(long Proposal_id, long Observation_id, string Author, string Taxon_id, string Timestamp);
+
 public interface IObservationService    
 {
     public List<ObservationViewModel> GetObservations(int page);
@@ -17,10 +17,12 @@ public interface IObservationService
 public class ObservationService : IObservationService
 {
     readonly DBFacade db;
+    readonly Taxonomy tax;
 
-    public ObservationService(DBFacade db)
+    public ObservationService(DBFacade db, Taxonomy tax)
     {
         this.db = db;
+        this.tax = tax;
     }
     
     public List<ObservationViewModel> GetObservations(int page)
@@ -45,7 +47,12 @@ public class ObservationService : IObservationService
 
     public List<ProposalViewModel> GetProposalViewModel(long? proposalId)
     {
-        return db.GetProposalViewModels(proposalId);
+        return db.GetProposalViewModels(proposalId).Select(p =>
+            {
+                var name = tax.GetTaxonById(p.Taxon_id)?.VernacularName;
+                return p with { Taxon_id = string.IsNullOrWhiteSpace(name) ? p.Taxon_id : name };
+            })
+            .ToList();;
     }
 
     private static string UnixTimeStampToDateTimeString(double unixTimeStamp)

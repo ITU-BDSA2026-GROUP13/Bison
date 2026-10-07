@@ -154,7 +154,7 @@ public class DBFacade
         connection.Open();
 
         var command = connection.CreateCommand();
-        command.CommandText = @"SELECT p.proposal_id, p.observation_id, p.author_id, p.taxonId, p.pub_date
+        command.CommandText = @"SELECT p.proposal_id, p.observation_id, u.username, p.taxonId, p.pub_date
                                 FROM proposal p
                                 JOIN user u ON p.author_id = u.user_id
                                 WHERE p.observation_id = @observation_Id

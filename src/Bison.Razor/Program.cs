@@ -4,9 +4,11 @@ var builder = WebApplication.CreateBuilder(args);
 var dbPath = Environment.GetEnvironmentVariable("BISONDBPATH") ??
              Path.Combine(Path.GetTempPath(), "bison.db");
 
-
+Taxonomy taxonomy = new Taxonomy();
+taxonomy.Taxonloader();
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddSingleton(taxonomy);
 builder.Services.AddSingleton(new DBFacade(dbPath));
 builder.Services.AddSingleton<IObservationService, ObservationService>();
 
