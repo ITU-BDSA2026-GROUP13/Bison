@@ -3,6 +3,7 @@ using Bison;
 public record ObservationViewModel(long ObservationId, string Author, string Message, string Timestamp);
 public record CommentViewModel(long Comment_id, long Observation_id, string Author, string Message, string Timestamp);
 
+public record ProposalViewModel(long Proposal_id, long Observation_id, string Author, string Taxon_id, string Timestamp);
 public interface IObservationService    
 {
     public List<ObservationViewModel> GetObservations(int page);
@@ -10,6 +11,7 @@ public interface IObservationService
     public ObservationViewModel? GetObservationFromId(long? id);
 
     public List<CommentViewModel> GetCommentViewModels(long? observationId);
+    public List<ProposalViewModel> GetProposalViewModel(long? proposalId);
 }
 
 public class ObservationService : IObservationService
@@ -39,6 +41,11 @@ public class ObservationService : IObservationService
     public List<CommentViewModel> GetCommentViewModels(long? observationId)
     {
         return db.GetCommentViewModels(observationId);
+    }
+
+    public List<ProposalViewModel> GetProposalViewModel(long? proposalId)
+    {
+        return db.GetProposalViewModels(proposalId);
     }
 
     private static string UnixTimeStampToDateTimeString(double unixTimeStamp)

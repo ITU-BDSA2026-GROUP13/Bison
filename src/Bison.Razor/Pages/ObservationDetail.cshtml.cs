@@ -9,6 +9,7 @@ public class ObservationDetailModel : PageModel
     public int CurrentPage { get; set; }
     public ObservationViewModel? Observation { get; set; }
     public List<CommentViewModel>? Comments { get; set; }
+    public List<ProposalViewModel>? Proposals { get; set; }
 
     public ObservationDetailModel(IObservationService service)
     {
@@ -21,6 +22,7 @@ public class ObservationDetailModel : PageModel
         this.CurrentPage = Math.Max(page, 1);
         this.Observation = _service.GetObservationFromId(id);
         this.Comments = _service.GetCommentViewModels(id);
+        this.Proposals = _service.GetProposalViewModel(id);
         return Page();
     }
 }

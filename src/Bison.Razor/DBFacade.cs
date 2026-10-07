@@ -147,6 +147,37 @@ public class DBFacade
         connection.Close();
         return result;
     }
+
+    public List<ProposalViewModel> GetProposalViewModels(long? observation_Id)
+    {
+        using var connection = new SqliteConnection(connectionString);
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = @"SELECT p.proposal_id, p.observation_id, p.author_id, p.taxonId, p.pub_date
+                                FROM proposal p
+                                JOIN user u ON p.author_id = u.user_id
+                                WHERE p.observation_id = @observation_Id
+                                ORDER BY p.pub_date DESC";
+
+        command.Parameters.AddWithValue("@observation_Id", observation_Id);
+
+
+        using var reader = command.ExecuteReader();
+        var result = new List<ProposalViewModel>();
+        while (reader.Read())
+        {
+            long proposal_Id = reader.GetInt64(0);
+            long observationId = reader.GetInt64(1);
+            string author = reader.GetString(2);
+            string taxonId = reader.GetString(3);
+            string pub_data = reader.GetInt64(4).ToString();
+            result.Add(new ProposalViewModel(proposal_Id,observationId,author,taxonId,pub_data));
+        }
+
+        connection.Close();
+        return result;
+    }
     
     
     

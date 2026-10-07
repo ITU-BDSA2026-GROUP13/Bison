@@ -21,6 +21,27 @@
 <div>
     <h3>Proposals</h3>
     @* if there are proposals: a <ul> with a foreach; else an <em> message *@
+    @if (Model.Proposals.Any())
+    {
+        <ul id="proposalList" class="proposal">
+            @foreach (var p in Model.Proposals)
+            {
+                <li>
+                    <p>
+                        <strong>
+                            <a href="@p.Author">@p.Author</a>
+                        </strong>
+                        @p.Taxon_id
+                        <small>&mdash; @p.Timestamp</small>
+                    </p>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <em>There are no Observations so far.</em>
+    }
 </div>
 
 <div>
@@ -44,6 +65,6 @@
     }
     else
     {
-        <em>There are no Observations so far.</em>
+        <em>There are no comments so far.</em>
     }
 </div>
