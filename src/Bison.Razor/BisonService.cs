@@ -10,19 +10,29 @@ public interface IObservationService
     public List<ObservationViewModel> GetObservationsFromAuthor(string author, int page = 1);
     public ObservationViewModel? GetObservationFromId(long? id);
 
-    public List<CommentViewModel> GetCommentViewModels(long? observationId);
-    public List<ProposalViewModel> GetProposalViewModel(long? proposalId);
 }
+
+public interface ICommentService
+{
+        public List<CommentViewModel> GetCommentViewModels(long? observationId);
+
+}
+
+public interface IProposalService
+{
+        public List<ProposalViewModel> GetProposalViewModel(long? proposalId);
+
+}
+
 
 public class ObservationService : IObservationService
 {
     readonly DBFacade db;
-    readonly Taxonomy tax;
 
-    public ObservationService(DBFacade db, Taxonomy tax)
+
+    public ObservationService(DBFacade db)
     {
         this.db = db;
-        this.tax = tax;
     }
     
     public List<ObservationViewModel> GetObservations(int page)
@@ -40,11 +50,50 @@ public class ObservationService : IObservationService
         return db.getObservationFromId(id);
     }
 
+    private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
+    {
+        // Unix timestamp is seconds past epoch
+        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        dateTime = dateTime.AddSeconds(unixTimeStamp);
+        return dateTime.ToString("MM/dd/yy H:mm:ss");
+    }
+
+
+}
+
+public class CommentService : ICommentService
+{
+     readonly DBFacade db;
+
+    public CommentService(DBFacade db)
+    {
+        this.db = db;
+
+    }
     public List<CommentViewModel> GetCommentViewModels(long? observationId)
     {
         return db.GetCommentViewModels(observationId);
     }
+    private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
+    {
+        // Unix timestamp is seconds past epoch
+        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        dateTime = dateTime.AddSeconds(unixTimeStamp);
+        return dateTime.ToString("MM/dd/yy H:mm:ss");
+    }
+    
+}
 
+public class ProposalService : IProposalService
+{
+     readonly DBFacade db;
+    readonly Taxonomy tax;
+
+    public ProposalService(DBFacade db, Taxonomy tax)
+    {
+        this.db = db;
+        this.tax = tax;
+    }
     public List<ProposalViewModel> GetProposalViewModel(long? proposalId)
     {
         return db.GetProposalViewModels(proposalId).Select(p =>
