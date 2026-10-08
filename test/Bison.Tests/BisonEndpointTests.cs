@@ -11,7 +11,7 @@ public class BisonEndpointTests
     
     
     [Fact]
-    public async void TestGetAllObservationsRequest()
+    public async Task TestGetAllObservationsRequest()
     {
         //Arrange
         string observationsUrl = "http://localhost:5273/obs";
@@ -25,7 +25,7 @@ public class BisonEndpointTests
     }
     
     [Fact]
-    public async void TestGetUserTimelineRequest()
+    public async Task TestGetUserTimelineRequest()
     {
         //Arrange
         string userTimelineUrl = "http://localhost:5273/Lars";
@@ -38,7 +38,7 @@ public class BisonEndpointTests
     }
 
     [Fact]
-    public async void TestAccesingNonExistingPageRequest()
+    public async Task TestAccesingNonExistingPageRequest()
     {
         //Arrange
         string nonExistingPageUrl = "http://localhost:5273/Lars";
@@ -50,6 +50,35 @@ public class BisonEndpointTests
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode); 
         // We may need to change existing behavior to fit BadRequest rather than NotFound.
         // Question is: Do we want to return a "Page Not Found" or an intended error message. 
+    }
+
+    [Fact]
+    public async Task TestAllObservationsNotEmpty()
+    {
+        //Arrange
+        string observationsUrl = "http://localhost:5273/obs";
+        
+        //Act
+        var response = await client.GetAsync(observationsUrl);
+        var body = await response.Content.ReadAsStringAsync();
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.NotEmpty(body);
+    }
+
+    [Fact]
+    public async Task TestGetSinglePageObservationRequest()
+    {
+        //Arrange
+        string observationsUrl = "http://localhost:5273/ob/1";
+        
+        //Act
+        var response = await client.GetAsync(observationsUrl);
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        
     }
     
     //TODO: Test remaining getting endpoints (Comments, Proposals)
