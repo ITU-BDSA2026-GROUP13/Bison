@@ -20,7 +20,6 @@ public class DBFacade
             connection.Open();
             RunEmbeddedScript(connection, "schema.sql");
             RunEmbeddedScript(connection, "dump.sql");
-            Console.WriteLine(GetCommentViewModels);
             connection.Close();
         }
     }

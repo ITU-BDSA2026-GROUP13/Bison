@@ -21,6 +21,7 @@ public class ObservationDetailModel : PageModel
         if (id == null) return Redirect("/obs");
         this.CurrentPage = Math.Max(page, 1);
         this.Observation = _service.GetObservationFromId(id);
+        if (Observation == null) return NotFound();
         this.Comments = _service.GetCommentViewModels(id);
         this.Proposals = _service.GetProposalViewModel(id);
         return Page();
