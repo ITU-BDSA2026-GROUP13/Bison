@@ -18,5 +18,21 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
+    - name: Start Server
+      working-directory: src/Bison.Razor
+      run: dotnet run --no-build --urls http://localhost:5273 > api.log 2>&1 &
+    - name: Wait for server to start
+      run: |
+        for i in {1..30}; do
+          if curl -s http://localhost:5273/obs > /dev/null 2>&1; then
+            echo "Server is running!"
+            exit 0
+          fi
+          echo "Waiting for Server to start...($i/30)"
+          sleep 1
+        done
+        echo "Server failed to start within 30 seconds"
+        cat src/Bison.Razor/api.log
+        exit 1
     - name: Test
       run: dotnet test --no-build --verbosity normal
