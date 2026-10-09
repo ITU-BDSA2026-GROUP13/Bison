@@ -73,7 +73,7 @@ public class BisonIntegrationTests : IDisposable
     }
     
     [Fact]
-    public async Task TestObRequestContainsCommentsAndProposalSegments()
+    public async Task TestObRequestContainsCommentsAndProposalHeaders()
     {
         //Arrange
         int observationId = 1;
@@ -118,7 +118,7 @@ public class BisonIntegrationTests : IDisposable
     //----Dont know if these are UnitTests----//
      
     [Fact]
-    public async Task TestGetObs()
+    public async Task TestObservationRetrievedMatchesRequested()
     {
         //Arrange
         long observationId = 67;
@@ -155,7 +155,7 @@ public class BisonIntegrationTests : IDisposable
     }
 
     [Fact]
-    public async Task TestGetComments()
+    public async Task TestCommentsRetrievedMatchesCommentsOnTheObservation()
     {
         //Arrange
         var observationId = 12;
@@ -185,7 +185,7 @@ public class BisonIntegrationTests : IDisposable
         
     }
 
-    public async Task TestGetProposals()
+    public async Task TestProposalRetrievedMatchesRequested()
     {
         //Arrange
         var observationId = 12;
