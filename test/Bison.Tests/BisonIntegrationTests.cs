@@ -42,13 +42,23 @@ public class BisonIntegrationTests
         Assert.Contains("<title>Bison</title>", html); // Right url still contains content
     }
     
-    
-    // TODO: Test Comments and Proposals can be posted, and exist after posting. 
-    
-    
-
     [Fact]
-    public async Task TestProppsalAndCommentsForSingleObservation()
+    public async Task TestAllObservationsNotEmpty()
+    {
+        //Arrange
+        string observationsUrl = "http://localhost:5273/obs";
+        
+        //Act
+        var response = await client.GetAsync(observationsUrl);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var body = await response.Content.ReadAsStringAsync();
+        
+        //Assert
+        Assert.NotEmpty(body);
+    }
+    
+    [Fact]
+    public async Task TestObRequestContainsCommentsAndProposalSegments()
     {
         //Arrange
         var observationId = 1;
@@ -56,12 +66,14 @@ public class BisonIntegrationTests
         
         //Act
         var response = await client.GetAsync(observationsUrl);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var html = await response.Content.ReadAsStringAsync();
         
         //Assert
         Assert.Contains("<h3> Proposals </h3>", html);
         Assert.Contains("<h3> Comments </h3>", html);
     }
+    
     [Fact]
     public async Task TestObsForSingleObservationsNotEqual()
     {
@@ -71,23 +83,23 @@ public class BisonIntegrationTests
 
         string observationsUrl = $"http://localhost:5273/ob/{observationId1}";
         string observationsUrl2 = $"http://localhost:5273/ob/{observationId2}";
-
         
         //Act
         var response1 = await client.GetAsync(observationsUrl);
+        Assert.Equal(HttpStatusCode.OK, response1.StatusCode);
         var response2 = await client.GetAsync(observationsUrl2);
+        Assert.Equal(HttpStatusCode.OK, response2.StatusCode);
 
         var html1 = await response1.Content.ReadAsStringAsync();
         var html2 = await response2.Content.ReadAsStringAsync();
-
-        
-
         
         //Assert
         Assert.NotEqual(html1, html2);
     }
-
-
+    
+    // TODO: Test Comments and Proposals can be posted, and exist after posting.
+    
+    
     //----Dont know if these are UnitTests----//
     [Fact]
     public async Task TestGetObs()
