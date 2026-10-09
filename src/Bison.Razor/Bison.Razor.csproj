@@ -19,6 +19,12 @@
     <EmbeddedResource Include="..\..\Resources\joined.csv" LogicalName="joined.csv" />
     <EmbeddedResource Include=".\sqlFiles\schema.sql" LogicalName="schema.sql"/>
     <EmbeddedResource Include=".\sqlFiles\dump.sql" LogicalName="dump.sql"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Pages\ObservationDetail.cs">
+      <DependentUpon>ObservationDetail.cshtml</DependentUpon>
+    </Compile>
   </ItemGroup> 
 
 </Project>

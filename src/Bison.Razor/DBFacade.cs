@@ -41,7 +41,7 @@ public class DBFacade
         connection.Open();
         
         var command = connection.CreateCommand();
-        command.CommandText = @"SELECT u.username, o.text, o.pub_date
+        command.CommandText = @"SELECT o.observation_id, u.username, o.text, o.pub_date
                                 FROM observation o
                                 JOIN user u ON o.author_id = u.user_id
                                 ORDER BY o.pub_date DESC
@@ -53,10 +53,11 @@ public class DBFacade
         var result = new List<ObservationViewModel>();
         while (reader.Read())
         {
-            string author = reader.GetString(0);
-            string message = reader.GetString(1);
-            string timestamp = reader.GetInt64(2).ToString();
-            result.Add(new ObservationViewModel(author, message, timestamp));
+            long observationId = reader.GetInt64(0);
+            string author = reader.GetString(1);
+            string message = reader.GetString(2);
+            string timestamp = reader.GetInt64(3).ToString();
+            result.Add(new ObservationViewModel(observationId, author, message, timestamp));
         }
         connection.Close();
         return result;
@@ -68,7 +69,7 @@ public class DBFacade
         connection.Open();
 
         var command = connection.CreateCommand();
-        command.CommandText = @"SELECT u.username, o.text, o.pub_date
+        command.CommandText = @"SELECT o.observation_id, u.username, o.text, o.pub_date
                                 FROM observation o
                                 JOIN user u ON o.author_id = u.user_id
                                 WHERE u.username = @author
@@ -82,14 +83,101 @@ public class DBFacade
         var result = new List<ObservationViewModel>();
         while (reader.Read())
         {
-            string username = reader.GetString(0);
-            string message = reader.GetString(1);
-            string timestamp = reader.GetInt64(2).ToString();
-            result.Add(new ObservationViewModel(author, message, timestamp));
+            long observationId = reader.GetInt64(0);
+            string username = reader.GetString(1);
+            string message = reader.GetString(2);
+            string timestamp = reader.GetInt64(3).ToString();
+            result.Add(new ObservationViewModel(observationId, username, message, timestamp));
         }
         connection.Close();
         return result;
     }
+
+    public ObservationViewModel? getObservationFromId(long? id)
+    {
+        using var connection = new SqliteConnection(connectionString);
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = @"SELECT o.observation_id, u.username, o.text, o.pub_date  
+                                FROM observation o 
+                                JOIN user u ON o.author_id = u.user_id
+                                WHERE o.observation_id = @id";
+        command.Parameters.AddWithValue("@id", id);
+
+
+        using var reader = command.ExecuteReader();
+        if (!reader.Read()) return null;
+        long observationId = reader.GetInt64(0);
+        string author = reader.GetString(1);
+        string message = reader.GetString(2);
+        string timestamp = reader.GetInt64(3).ToString();
+        return new ObservationViewModel(observationId, author, message, timestamp);
+    }
+
+    // 
+    public List<CommentViewModel> GetCommentViewModels(long? observation_Id)
+    {
+        using var connection = new SqliteConnection(connectionString);
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = @"SELECT c.comment_id, c.observation_id, u.username, c.text, c.pub_date
+                                FROM comment c
+                                JOIN user u ON c.author_id = u.user_id
+                                WHERE c.observation_id = @observation_Id
+                                ORDER BY c.pub_date DESC";
+
+        command.Parameters.AddWithValue("@observation_Id", observation_Id);
+        
+
+        using var reader = command.ExecuteReader();
+        var result = new List<CommentViewModel>();
+        while (reader.Read())
+        {
+            long comment_id = reader.GetInt64(0);
+            long observationId = reader.GetInt64(1);
+            string author = reader.GetString(2);
+            string message = reader.GetString(3);
+            string timestamp = reader.GetInt64(4).ToString();
+            result.Add(new CommentViewModel(comment_id, observationId, author, message, timestamp));
+        }
+
+        connection.Close();
+        return result;
+    }
+
+    public List<ProposalViewModel> GetProposalViewModels(long? observation_Id)
+    {
+        using var connection = new SqliteConnection(connectionString);
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = @"SELECT p.proposal_id, p.observation_id, u.username, p.taxonId, p.pub_date
+                                FROM proposal p
+                                JOIN user u ON p.author_id = u.user_id
+                                WHERE p.observation_id = @observation_Id
+                                ORDER BY p.pub_date DESC";
+
+        command.Parameters.AddWithValue("@observation_Id", observation_Id);
+
+
+        using var reader = command.ExecuteReader();
+        var result = new List<ProposalViewModel>();
+        while (reader.Read())
+        {
+            long proposal_Id = reader.GetInt64(0);
+            long observationId = reader.GetInt64(1);
+            string author = reader.GetString(2);
+            string taxonId = reader.GetString(3);
+            string pub_data = reader.GetInt64(4).ToString();
+            result.Add(new ProposalViewModel(proposal_Id,observationId,author,taxonId,pub_data));
+        }
+
+        connection.Close();
+        return result;
+    }
+    
     
     
 }

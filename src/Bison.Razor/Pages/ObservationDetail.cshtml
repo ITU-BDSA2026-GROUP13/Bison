@@ -1,0 +1,70 @@
+﻿@page "/ob/{id:long?}"
+@model Bison.Razor.Pages.ObservationDetailModel
+@{
+    ViewData["Title"] = "Bison";
+    Layout = "Shared/_Layout";
+}
+
+<div>
+    <h2>Observation</h2>
+
+    @if (Model.Observation != null)
+    {
+        <p>
+            <strong><a href="/obs/@Model.Observation.Author">@Model.Observation.Author</a></strong>
+            @Model.Observation.Message
+            <small>&mdash; @Model.Observation.Timestamp</small>
+        </p>
+    }
+</div>
+
+<div>
+    <h3>Proposals</h3>
+    @* if there are proposals: a <ul> with a foreach; else an <em> message *@
+    @if (Model.Proposals.Any())
+    {
+        <ul id="proposalList" class="proposal">
+            @foreach (var p in Model.Proposals)
+            {
+                <li>
+                    <p>
+                        <strong>
+                            <a href="/obs/@p.Author">@p.Author</a>
+                        </strong>
+                        @p.Taxon_id
+                        <small>&mdash; @p.Timestamp</small>
+                    </p>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <em>There are no proposals so far.</em>
+    }
+</div>
+
+<div>
+    <h3>Comments</h3>
+    @if (Model.Comments.Any())
+    {
+        <ul id="commentList" class="comments">
+            @foreach (var cm in Model.Comments)
+            {
+                <li>
+                    <p>
+                        <strong>
+                            <a href="/obs/@cm.Author">@cm.Author</a>
+                        </strong>
+                        @cm.Message
+                        <small>&mdash; @cm.Timestamp</small>
+                    </p>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <em>There are no comments so far.</em>
+    }
+</div>
