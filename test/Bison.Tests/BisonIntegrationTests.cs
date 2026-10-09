@@ -1,11 +1,26 @@
 ﻿namespace Bison.Tests;
 
 using System.Net;
+using Bison;
 using Xunit;
 
-public class BisonIntegrationTests
+public class BisonIntegrationTests : IDisposable
 {
     private readonly HttpClient client = new HttpClient();
+
+    private readonly DBFacade db;
+
+    private readonly string dbPath = Path.Combine(Path.GetTempPath(), $"bison-{Guid.NewGuid():N}.db");
+
+    public BisonIntegrationTests()
+    {
+        db = new DBFacade(dbPath);
+    }
+
+    public void Dispose()
+    {
+        File.Delete(dbPath);
+    }
     
     [Fact]
     public async Task TestObsPageContainsContent()
@@ -70,8 +85,8 @@ public class BisonIntegrationTests
         string html = await response.Content.ReadAsStringAsync();
         
         //Assert
-        Assert.Contains("<h3> Proposals </h3>", html);
-        Assert.Contains("<h3> Comments </h3>", html);
+        Assert.Contains("<h3>Proposals</h3>", html);
+        Assert.Contains("<h3>Comments</h3>", html);
     }
     
     [Fact]
@@ -101,64 +116,87 @@ public class BisonIntegrationTests
     
     
     //----Dont know if these are UnitTests----//
-    /*
+     
     [Fact]
     public async Task TestGetObs()
     {
         //Arrange
-        var observationId1 = 1;
+        long observationId = 67;
+        string userName = "Mette";
+        string observationMessage = "Squacco Heron on the pond at the edge of town. Hunts alone along the edge of the water.";
+        string timeStamp = "1774916365";
 
-        var observationViewModel1 = new ObservationViewModel(observationId1, "Lars", "Jeg så en ko", "Isen", 1000);
-        
+        //Act
+        var observation = db.getObservationFromId(observationId);
+
         //Assert
-        Assert.Equal(observationViewModel1.GetObservationViewModels(observationId1), (observationId1, "Lars", "Jeg så en ko", "Isen", 1000));
+        Assert.Equal(userName, observation.Author);
+        Assert.Equal(observationMessage, observation.Message);
+        Assert.Equal(timeStamp, observation.Timestamp);
     }
+
     // a test to see if the razor page is the same for the observation 1 and 00001
     [Fact]
     public async Task TestObsGetFor1and00001()
     {
         //Arrange
-        var observationId1 = 1;
-        var observationId2 = 00001;
+        long observationId1 = 67;
+        long observationId2 = 00000067;
 
-        var observationViewModel1 = new ObservationViewModel(observationId1, "Lars", "Jeg så en ko", "Isen", 1000);
-        var observationViewModel2 = new ObservationViewModel(observationId2, "Karina", "Det er en hest", "Landro", 2000);
-        
+        //Act
+        var observation1 = db.getObservationFromId(observationId1);
+        var observation2 = db.getObservationFromId(observationId2);
+
         //Assert
-        Assert.Equal(observationViewModel1.GetObservationFromId(observationId1), (observationId2, "Karina", "Det er en hest", "Landro", 2000));
+        Assert.Equal(observation1.Author, observation2.Author);
+        Assert.Equal(observation1.Message, observation1.Message);
+        Assert.Equal(observation1.Timestamp, observation1.Timestamp);
+        Assert.Equal(observation1, observation2);
     }
 
     [Fact]
     public async Task TestGetComments()
     {
         //Arrange
-        var observationId = 1;
+        var observationId = 12;
+
         var commentId1 = 1;
         var commentId2 = 2;
-
-        var observationViewModel = new ObservationViewModel(observationId, "Lars", "Jeg så en ko", "Isen", 1000);
-        var commentViewModel1 = new CommentViewModel(commentId1, observationId ,"Karina","Det passer bare slet ikke",2000);
-        var commentViewModel2 = new CommentViewModel(commentId2, observationId ,"Bo", "Det er jo en Hest", 2500);
     
+        //Act
+        var observationId12_comments = db.GetCommentViewModels(observationId);
+        
         //Assert
-        Assert.Contains(observationViewModel.GetCommentViewModels(observationId),(commentId1, observationId ,"Karina","Det passer bare slet ikke",2000));
-        Assert.Contains(observationViewModel.GetCommentViewModels(observationId), (commentId2, observationId ,"Bo", "Det er jo en Hest", 2500));
+        bool foundId1 = false;
+        bool foundId2 = false;
+        foreach (CommentViewModel comment in observationId12_comments )
+        {
+            if (comment.Comment_id == commentId1) foundId1 = true;
+            if (comment.Comment_id == commentId2) foundId2 = true;
+        }
+
+        Assert.True(foundId1);
+        Assert.True(foundId2);
+
+        foreach (CommentViewModel comment in observationId12_comments)
+        {
+            Assert.Equal(observationId, comment.Observation_id);
+        }
+        
     }
 
     public async Task TestGetProposals()
     {
         //Arrange
-        var observationId = 1;
-        var proposalId1 = 1;
-        var proposalId2 = 2;
-
-        var observationViewModel = new ObservationViewModel(observationId, "Lars", "Jeg så en ko", "Isen", 1000);
-        var proposalViewModel1 = new ProposalViewModel(proposalId1, observationId ,"Lars","MSTSNM9913","Bos taurus ");
-        var proposalViewModel2 = new ProposalViewModel(proposalId2, observationId ,"Bo", "MSTSNM9796", "Equus caballus");
+        var observationId = 12;
+        var proposalId = 1;
     
+        //Act
+        var observationId12_proposals = db.GetProposalViewModels(observationId);
+        
         //Assert
-        Assert.Contains(observationViewModel.GetCommentViewModels(observationId),(proposalId1, observationId ,"Lars","MSTSNM9913","Bos taurus "));
-        Assert.Contains(observationViewModel.GetCommentViewModels(observationId), (proposalId2, observationId ,"Bo", "MSTSNM9796", "Equus caballus"));
+        Assert.Equal(observationId, observationId12_proposals[0].Observation_id);
+        Assert.Equal(proposalId, observationId12_proposals[0].Proposal_id);
     }
-    */
+    
 }

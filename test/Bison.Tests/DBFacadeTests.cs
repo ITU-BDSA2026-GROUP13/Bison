@@ -3,18 +3,22 @@ using Microsoft.Data.Sqlite;
 
 namespace Bison.Tests;
 
-public class DBFacadeTests
+public class DBFacadeTests : IDisposable
 {
     private const int PageSize = 32;
 
     private readonly DBFacade db;
 
-    private readonly string dbPath = Environment.GetEnvironmentVariable("BISONDBPATH") ??
-        Path.Combine(Path.GetTempPath(), "bison.db");
+    private readonly string dbPath = Path.Combine(Path.GetTempPath(), $"bison-{Guid.NewGuid():N}.db");
 
     public DBFacadeTests()
     {
         db = new DBFacade(dbPath);
+    }
+
+    public void Dispose()
+    {
+        File.Delete(dbPath);
     }
 
     [Fact]
