@@ -27,7 +27,7 @@ public class BisonEndpointTests
     public async Task TestGetUserTimelineRequest()
     {
         //Arrange
-        string userTimelineUrl = "http://localhost:5273/Lars";
+        string userTimelineUrl = "http://localhost:5273/obs/Johan";
         
         //Act
         var response = await client.GetAsync(userTimelineUrl);
@@ -77,6 +77,28 @@ public class BisonEndpointTests
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         // We may need to change existing behavior to fit BadRequest rather than NotFound.
         // Same question as wrong endpoint above
+    }
+
+    [Fact]
+    public async Task TestCapitalLettersMatterOnEndpoints()
+    {
+        //Arrange
+        string capitalUrl = "http://localhost:5273/obs/Johan";
+        string nonCapitalUrl = "http://localhost:5273/obs/johan";
+        
+        //Act
+        var cappitalResponse = await client.GetAsync(capitalUrl);
+        Assert.Equal(HttpStatusCode.OK, cappitalResponse.StatusCode);
+        var nonCapitalResponse = await client.GetAsync(nonCapitalUrl);
+        Assert.Equal(HttpStatusCode.OK, nonCapitalResponse.StatusCode);
+        
+        string capitalBody = await client.GetStringAsync(capitalUrl);
+        string nonCapitalBody = await client.GetStringAsync(nonCapitalUrl);
+        
+        //Assert
+        Assert.Equal(capitalBody, nonCapitalBody);
+        //Test currently fails, meaning that there is a difference between user "johan" and "Johan" in url.  
+        //Is this the intended behavior?
     }
     
 

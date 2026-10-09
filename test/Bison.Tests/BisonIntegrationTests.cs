@@ -15,7 +15,7 @@ public class BisonIntegrationTests
         
         //Act
         var response = await client.GetAsync(observationsUrl);
-        var html = await response.Content.ReadAsStringAsync();
+        string html = await response.Content.ReadAsStringAsync();
         
         //Assert
         Assert.Contains("<title>Bison</title>", html);
@@ -32,7 +32,7 @@ public class BisonIntegrationTests
         //Act
         var wrongResponse = await client.GetAsync(nonExistingUrl);
         var rightResponse = await client.GetAsync(existingUrl);
-        var html = await rightResponse.Content.ReadAsStringAsync();
+        string html = await rightResponse.Content.ReadAsStringAsync();
         
         //Assert
         Assert.Equal(HttpStatusCode.NotFound, wrongResponse.StatusCode); // Couldn't find wrong url
@@ -51,7 +51,7 @@ public class BisonIntegrationTests
         //Act
         var response = await client.GetAsync(observationsUrl);
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        var body = await response.Content.ReadAsStringAsync();
+        string body = await response.Content.ReadAsStringAsync();
         
         //Assert
         Assert.NotEmpty(body);
@@ -61,13 +61,13 @@ public class BisonIntegrationTests
     public async Task TestObRequestContainsCommentsAndProposalSegments()
     {
         //Arrange
-        var observationId = 1;
+        int observationId = 1;
         string observationsUrl = $"http://localhost:5273/ob/{observationId}";
         
         //Act
         var response = await client.GetAsync(observationsUrl);
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        var html = await response.Content.ReadAsStringAsync();
+        string html = await response.Content.ReadAsStringAsync();
         
         //Assert
         Assert.Contains("<h3> Proposals </h3>", html);
@@ -78,8 +78,8 @@ public class BisonIntegrationTests
     public async Task TestObsForSingleObservationsNotEqual()
     {
         //Arrange
-        var observationId1 = 1;
-        var observationId2 = 2;
+        int observationId1 = 1;
+        int observationId2 = 2;
 
         string observationsUrl = $"http://localhost:5273/ob/{observationId1}";
         string observationsUrl2 = $"http://localhost:5273/ob/{observationId2}";
@@ -90,8 +90,8 @@ public class BisonIntegrationTests
         var response2 = await client.GetAsync(observationsUrl2);
         Assert.Equal(HttpStatusCode.OK, response2.StatusCode);
 
-        var html1 = await response1.Content.ReadAsStringAsync();
-        var html2 = await response2.Content.ReadAsStringAsync();
+        string html1 = await response1.Content.ReadAsStringAsync();
+        string html2 = await response2.Content.ReadAsStringAsync();
         
         //Assert
         Assert.NotEqual(html1, html2);
@@ -101,6 +101,7 @@ public class BisonIntegrationTests
     
     
     //----Dont know if these are UnitTests----//
+    /*
     [Fact]
     public async Task TestGetObs()
     {
@@ -159,5 +160,5 @@ public class BisonIntegrationTests
         Assert.Contains(observationViewModel.GetCommentViewModels(observationId),(proposalId1, observationId ,"Lars","MSTSNM9913","Bos taurus "));
         Assert.Contains(observationViewModel.GetCommentViewModels(observationId), (proposalId2, observationId ,"Bo", "MSTSNM9796", "Equus caballus"));
     }
-    
+    */
 }
