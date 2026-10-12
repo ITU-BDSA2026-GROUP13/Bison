@@ -6,7 +6,7 @@ public static class CommentHandling {
     {
         foreach (Observation observation in db)
         {
-            if (observation.ObservationID == observationID) return true;
+            if (observation.PostId == observationID) return true;
         }
 
         return false;
