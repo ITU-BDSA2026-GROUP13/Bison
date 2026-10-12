@@ -18,8 +18,6 @@ public class BisonDBContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.HasSequence<long>("PostIds");
-        
         modelBuilder.Entity<Author>(entity =>
         {
             entity.HasKey(a => a.AuthorId);
@@ -29,35 +27,34 @@ public class BisonDBContext : DbContext
 
         modelBuilder.Entity<Post>(entity =>
         {
-            entity.UseTpcMappingStrategy();
+            entity.UseTptMappingStrategy();
             entity.HasKey(p => p.PostId);
-            entity.Property(p => p.PostId).HasDefaultValueSql("NEXT VALUE FOR PostIds");
             entity.HasOne(p => p.Author).WithMany(a => a.Posts).IsRequired();
             entity.Property(p => p.Text).IsRequired().HasMaxLength(220);
-            entity.Property(p => p.Timestamp).IsRequired();
+            entity.Property(p => p.TimeStamp).IsRequired();
         });
 
         modelBuilder.Entity<Observation>(entity =>
         {
-            entity.Property(o => o.Location).IsRequired();
+            entity.Property(o => o.Location).IsRequired(false);
             entity.HasOne(o => o.Taxon).WithMany().IsRequired();
         });
 
         modelBuilder.Entity<Comment>(entity =>
         {
-            entity.HasOne(c => c.Observation).WithMany().IsRequired();
+            entity.HasOne(c => c.Observation).WithMany(o => o.Comments).IsRequired();
         });
 
         modelBuilder.Entity<Proposal>(entity =>
         {
-            entity.HasOne(p => p.Observation).WithMany().IsRequired();
+            entity.HasOne(p => p.Observation).WithMany(o => o.Proposals).IsRequired();
             entity.HasOne(p => p.Taxon).WithMany().IsRequired();
         });
 
         modelBuilder.Entity<Taxon>(entity =>
         {
             entity.HasKey(t => t.TaxonId);
-            entity.Property(t => t.dwc_TaxonId).IsRequired();
+            entity.Property(t => t.dwc_TaxonID).IsRequired();
             entity.HasOne(t => t.Parent).WithMany(t => t.Children).IsRequired(false);
         });
     }
