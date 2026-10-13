@@ -1,4 +1,7 @@
 using Bison;
+using Bison.Repository;
+using Bison.Services;
+using Bison.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
 
@@ -13,13 +16,18 @@ builder.Services.AddRazorPages();
 //builder.Services.AddSingleton(taxonomy);
 dbPath = Path.GetFullPath(dbPath);
 Directory.CreateDirectory(Path.GetDirectoryName(dbPath)!);
-builder.Services.AddSingleton(new DBFacade(dbPath));
-builder.Services.AddSingleton<IObservationService, ObservationService>();
-builder.Services.AddSingleton<ICommentService, CommentService>();
-//builder.Services.AddSingleton<IProposalService, ProposalService>();
+//builder.Services.AddSingleton(new DBFacade(dbPath));
 
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<BisonDBContext>(options => options.UseSqlite(connectionString));
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IObservationRepository, ObservationRepository>();
+builder.Services.AddScoped<IObservationService, ObservationService>();
+//builder.Services.AddSingleton<ICommentService, CommentService>();
+//builder.Services.AddSingleton<IProposalService, ProposalService>();
+
+
 
 var app = builder.Build();
 
