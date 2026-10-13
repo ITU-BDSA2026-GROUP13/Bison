@@ -23,6 +23,10 @@
                         </strong>
                         @ob.Text
                         <small>&mdash; @ob.TimeStamp</small>
+                        <br>
+                        <small>
+                            <a href="?taxonId=@ob.Taxon.dwc_TaxonID"> - @ob.Taxon.VernacularName</a>
+                        </small>
                     </p>
                 </li>
             }
@@ -34,13 +38,13 @@
     }
 </div>
 <div class="pagination">
-        @if (Model.CurrentPage > 1)
-        {
-            <a href="?page=@(Model.CurrentPage - 1)">Previous</a>
-        }
-        <span>Page @Model.CurrentPage</span>
-        @if (Model.Observations.Count == 32)
-        {
-            <a href="?page=@(Model.CurrentPage + 1)">Next</a>
-        }
+    @if (Model.CurrentPage > 1)
+    {
+        <a href="?taxonId=@Model.FilteredTaxon&page=@(Model.CurrentPage - 1)">Previous</a>
+    }
+    <span>Page @Model.CurrentPage</span>
+    @if (Model.Observations.Count == 32)
+    {
+        <a href="?taxonId=@Model.FilteredTaxon&page=@(Model.CurrentPage + 1)">Next</a>
+    }
 </div>
