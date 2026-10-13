@@ -8,12 +8,12 @@
 <div>
     <h2>Observation</h2>
 
-    @if (Model.Observation.Any())
-    {
+    @if (Model.Observation != null)
+    { 
         <p>
-            <strong><a href="/obs/@Model.Observation.First().Author">@Model.Observation.First().Author</a></strong>
-            @Model.Observation.First().Text
-            <small>&mdash; @Model.Observation.First().TimeStamp</small>
+            <strong><a href="/obs/@Model.Observation.Author.Name">@Model.Observation.Author.Name</a></strong>
+            @Model.Observation.Text
+            <small>&mdash; @Model.Observation.TimeStamp</small>
         </p>
     }
 </div>
@@ -29,9 +29,9 @@
                 <li>
                     <p>
                         <strong>
-                            <a href="/obs/@p.Author">@p.Author</a>
+                            <a href="/obs/@p.Author.Name">@p.Author.Name</a>
                         </strong>
-                        @p.Taxon.TaxonId
+                        @(p.Taxon.VernacularName ?? p.Taxon.dwc_TaxonID)
                         <small>&mdash; @p.TimeStamp</small>
                     </p>
                 </li>
@@ -54,7 +54,7 @@
                 <li>
                     <p>
                         <strong>
-                            <a href="/obs/@cm.Author">@cm.Author</a>
+                            <a href="/obs/@cm.Author.Name">@cm.Author.Name</a>
                         </strong>
                         @cm.Text
                         <small>&mdash; @cm.TimeStamp</small>

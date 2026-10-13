@@ -28,6 +28,18 @@ public class ProposalRepository : IProposalRepository
         return response;
     }
 
+    public Task<List<Proposal>> GetProposalsByObsId(long obsId)
+    {
+        var query = (from post in dbContext.Proposals
+            where post.Observation.PostId == obsId
+            select post)
+            .Include(p => p.Author)
+            .Include(p => p.Taxon);
+
+        var response = query.ToListAsync();
+        return response;
+    }
+
     public Task UpdateProposal(Proposal proposal)
     {
         throw new NotImplementedException();

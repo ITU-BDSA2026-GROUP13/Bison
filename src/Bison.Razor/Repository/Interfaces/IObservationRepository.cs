@@ -4,7 +4,7 @@ public interface IObservationRepository
 {
     Task CreateObservation(Observation observation);
     
-    Task<List<Observation>> ReadObservation(long observationId);
+    Task<Observation?> ReadObservation(long observationId);
 
     Task<List<Observation>> GetObservationsByPage(int page);
     

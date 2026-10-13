@@ -17,13 +17,14 @@ public class ObservationRepository : IObservationRepository
         await dbContext.Posts.AddAsync(observation);
     }
 
-    public async Task<List<Observation>> ReadObservation(long observationId)
+    public async Task<Observation?> ReadObservation(long observationId)
     {
-        var query = from post in dbContext.Observations 
+        var query = (from post in dbContext.Observations 
             where post.PostId == observationId
-                select post;
+            select post)
+            .Include(o => o.Author);
 
-        var response = await query.ToListAsync();
+        var response = await query.FirstOrDefaultAsync();
         return response;
     }
 

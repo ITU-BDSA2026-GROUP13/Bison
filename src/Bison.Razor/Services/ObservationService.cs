@@ -24,7 +24,7 @@ public class ObservationService : IObservationService
         return unitOfWork.observationRepo.GetObservationsByAuthorAndPage(authorId, page);
     }
 
-    public Task<List<Observation>> GetObservationById(long id)
+    public Task<Observation?> GetObservationById(long id)
     {
         return unitOfWork.observationRepo.ReadObservation(id);
     }

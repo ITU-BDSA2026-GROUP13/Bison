@@ -2,5 +2,5 @@
 
 public interface IProposalService
 {
-    public List<Proposal> GetProposalById(long? proposalId);
+    public Task<List<Proposal>> GetProposalsByObsId(long obsId);
 }
