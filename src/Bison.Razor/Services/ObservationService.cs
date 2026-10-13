@@ -28,5 +28,16 @@ public class ObservationService : IObservationService
     {
         return unitOfWork.observationRepo.ReadObservation(id);
     }
+
+    public Task<List<Observation>> GetObservationByTaxonAndPage(string? taxon, int page = 1)
+    {
+        return unitOfWork.observationRepo.GetObservationByTaxonAndPage(taxon, page);
+    }
+
+    public Task<List<Observation>> GetObservationByTaxonAndAuthorAndPage(string? taxonId, long authorId, int page = 1)
+    {
+        return unitOfWork.observationRepo.GetObservationByTaxonAndAuthorAndPage(taxonId, authorId, page);
+    }
+    
     
 }

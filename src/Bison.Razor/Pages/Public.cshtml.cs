@@ -10,16 +10,18 @@ public class PublicModel : PageModel
     private readonly IObservationService _service;
     public List<Observation> Observations { get; set; }
     public int CurrentPage { get; set; }
+    public string? FilteredTaxon { get; set;  }
 
     public PublicModel(IObservationService service)
     {
         _service = service;
     }
 
-    public async Task<ActionResult> OnGet([FromQuery] int page = 1)
+    public async Task<ActionResult> OnGet([FromQuery] int page = 1, string? taxonId = null)
     {
         CurrentPage = Math.Max(page, 1);
-        Observations = await _service.GetObservations(page);
+        FilteredTaxon = taxonId;
+        Observations = await _service.GetObservationByTaxonAndPage(taxonId,page);
         return Page();
     }
 }

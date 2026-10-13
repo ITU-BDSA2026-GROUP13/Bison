@@ -56,6 +56,40 @@ public class ObservationRepository : IObservationRepository
         var response = await query.ToListAsync();
         return response;
     }
+    
+    public async Task<List<Observation>> GetObservationByTaxonAndPage(string? taxonId, int page)
+    {
+        int pageSize = 32;
+        var query = (from observation in dbContext.Observations
+                where taxonId == null || observation.Taxon.dwc_TaxonID == taxonId
+                orderby observation.TimeStamp descending
+                select observation)
+            .Skip((Math.Max(page, 1) - 1) * pageSize)
+            .Take(pageSize)
+            .Include(x => x.Taxon)
+            .Include(x => x.Author);
+
+        var response = await query.ToListAsync();
+        return response;
+    }
+    
+    public async Task<List<Observation>> GetObservationByTaxonAndAuthorAndPage(string? taxonId, long authorId, int page = 1)
+    {
+        int pageSize = 32;
+        var query = (from observation in dbContext.Observations
+                where taxonId == null && observation.Author.AuthorId == authorId 
+                      || 
+                      observation.Taxon.dwc_TaxonID == taxonId && observation.Author.AuthorId == authorId 
+                orderby observation.TimeStamp descending
+                select observation)
+            .Skip((Math.Max(page, 1) - 1) * pageSize)
+            .Take(pageSize)
+            .Include(x => x.Taxon)
+            .Include(x => x.Author);
+
+        var response = await query.ToListAsync();
+        return response;
+    }
 
     public Task UpdateObservation(Observation observation)
     {
