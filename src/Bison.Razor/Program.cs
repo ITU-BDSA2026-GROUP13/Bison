@@ -10,10 +10,8 @@ var dbPath = Environment.GetEnvironmentVariable("BISONDBPATH") ??
              Path.Combine(Path.GetTempPath(), "bison.db");
 
 
-//taxonomy.Taxonloader();
 // Add services to the container.
 builder.Services.AddRazorPages();
-//builder.Services.AddSingleton(taxonomy);
 dbPath = Path.GetFullPath(dbPath);
 Directory.CreateDirectory(Path.GetDirectoryName(dbPath)!);
 //builder.Services.AddSingleton(new DBFacade(dbPath));
@@ -24,8 +22,8 @@ builder.Services.AddDbContext<BisonDBContext>(options => options.UseSqlite(conne
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IObservationRepository, ObservationRepository>();
 builder.Services.AddScoped<IObservationService, ObservationService>();
-//builder.Services.AddSingleton<ICommentService, CommentService>();
-//builder.Services.AddSingleton<IProposalService, ProposalService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<IProposalService, ProposalService>();
 
 
 

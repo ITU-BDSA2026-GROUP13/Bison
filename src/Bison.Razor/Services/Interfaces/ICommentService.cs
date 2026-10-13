@@ -2,5 +2,5 @@
 
 public interface ICommentService
 {
-    public List<Comment> GetCommentsById(long? postId);
+    public Task<List<Comment>> GetCommentsByObsId(long postId);
 }

@@ -12,7 +12,7 @@ public class ObservationDetailModel : PageModel
     readonly IProposalService _servicepro;
     
     public int CurrentPage { get; set; }
-    public List<Observation>? Observation { get; set; }
+    public Observation? Observation { get; set; }
     public List<Comment>? Comments { get; set; }
     public List<Proposal>? Proposals { get; set; }
 
@@ -26,14 +26,14 @@ public class ObservationDetailModel : PageModel
         _servicepro = servicepro;
     }
 
-    public async Task<ActionResult> OnGet(long id, [FromQuery] int page = 1)
+    public async Task<ActionResult> OnGet(long? id, [FromQuery] int page = 1)
     {
         if (id == null) return Redirect("/obs");
         this.CurrentPage = Math.Max(page, 1);
-        this.Observation = await _serviceob.GetObservationById(id);
+        this.Observation = await _serviceob.GetObservationById(id.Value);
         if (Observation == null) return NotFound();
-        //this.Comments = _serviceco.GetCommentViewModels(id);
-        //this.Proposals = _servicepro.GetProposalViewModel(id);   
+        this.Comments = await _serviceco.GetCommentsByObsId(id.Value);
+        this.Proposals = await _servicepro.GetProposalsByObsId(id.Value);   
         return Page();
     }
 }
