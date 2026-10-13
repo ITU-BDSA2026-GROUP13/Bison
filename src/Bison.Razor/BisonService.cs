@@ -84,6 +84,7 @@ public class CommentService : ICommentService
     
 }
 
+/*
 public class ProposalService : IProposalService
 {
      readonly DBFacade db;
@@ -114,3 +115,4 @@ public class ProposalService : IProposalService
 
 
 }
+*/

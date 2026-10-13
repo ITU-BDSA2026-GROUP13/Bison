@@ -1,7 +1,9 @@
 ﻿namespace Bison;
 
-public abstract record Post
+public abstract class Post
 {
-    public string Author { get; set; }
-    public long Timestamp { get; set; }
+    public long PostId { get; set; }
+    public Author Author { get; set; }
+    public string Text { get; set; }
+    public DateTime TimeStamp { get; set; }
 }
