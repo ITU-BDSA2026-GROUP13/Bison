@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Bison.Razor.Pages;
 
+using Services.Interfaces;
+
 public class PublicModel : PageModel
 {
     private readonly IObservationService _service;
-    public List<ObservationViewModel> Observations { get; set; }
+    public List<Observation> Observations { get; set; }
     public int CurrentPage { get; set; }
 
     public PublicModel(IObservationService service)
@@ -14,10 +16,10 @@ public class PublicModel : PageModel
         _service = service;
     }
 
-    public ActionResult OnGet([FromQuery] int page = 1)
+    public async Task<ActionResult> OnGet([FromQuery] int page = 1)
     {
         CurrentPage = Math.Max(page, 1);
-        Observations = _service.GetObservations(page);
+        Observations = await _service.GetObservations(page);
         return Page();
     }
 }

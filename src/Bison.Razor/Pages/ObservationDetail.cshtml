@@ -8,12 +8,12 @@
 <div>
     <h2>Observation</h2>
 
-    @if (Model.Observation != null)
+    @if (Model.Observation.Any())
     {
         <p>
-            <strong><a href="/obs/@Model.Observation.Author">@Model.Observation.Author</a></strong>
-            @Model.Observation.Message
-            <small>&mdash; @Model.Observation.Timestamp</small>
+            <strong><a href="/obs/@Model.Observation.First().Author">@Model.Observation.First().Author</a></strong>
+            @Model.Observation.First().Text
+            <small>&mdash; @Model.Observation.First().TimeStamp</small>
         </p>
     }
 </div>
@@ -31,8 +31,8 @@
                         <strong>
                             <a href="/obs/@p.Author">@p.Author</a>
                         </strong>
-                        @p.Taxon_id
-                        <small>&mdash; @p.Timestamp</small>
+                        @p.Taxon.TaxonId
+                        <small>&mdash; @p.TimeStamp</small>
                     </p>
                 </li>
             }
@@ -56,8 +56,8 @@
                         <strong>
                             <a href="/obs/@cm.Author">@cm.Author</a>
                         </strong>
-                        @cm.Message
-                        <small>&mdash; @cm.Timestamp</small>
+                        @cm.Text
+                        <small>&mdash; @cm.TimeStamp</small>
                     </p>
                 </li>
             }

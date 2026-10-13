@@ -1,5 +1,5 @@
 using Bison;
-
+/*
 public record ObservationViewModel(long ObservationId, string Author, string Message, string Timestamp);
 public record CommentViewModel(long Comment_id, long Observation_id, string Author, string Message, string Timestamp);
 public record ProposalViewModel(long Proposal_id, long Observation_id, string Author, string Taxon_id, string Timestamp);
@@ -11,6 +11,7 @@ public interface IObservationService
     public ObservationViewModel? GetObservationFromId(long? id);
 
 }
+
 
 public interface ICommentService
 {
@@ -60,6 +61,7 @@ public class ObservationService : IObservationService
 
 
 }
+
 
 public class CommentService : ICommentService
 {
