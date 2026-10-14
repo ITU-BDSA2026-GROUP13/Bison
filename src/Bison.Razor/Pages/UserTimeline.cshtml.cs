@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Bison.Razor.Pages;
 
+using Bison.DTOs;
 using Services.Interfaces;
 
 public class UserTimelineModel : PageModel
 {
     private readonly IObservationService _service;
     public int CurrentPage { get; set; }
-    public List<Observation> Observations { get; set; }
+    public List<ObservationDTO> Observations { get; set; } = new();
     public string? FilteredTaxon { get; set; }
 
 

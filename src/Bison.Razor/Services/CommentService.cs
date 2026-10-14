@@ -19,13 +19,12 @@ public class CommentService : ICommentService
     {
         List<Comment> comments = await unitOfWork.commentRepo.GetCommentsByObsId(postId);
 
-        return comments.Select(c => new CommentDTO
-        {
-            PostId = c.PostId,
-            AuthorId = c.AuthorId,
-            AuthorName = c.Author.Name,
-            Text = c.Text,
-            Timestamp = c.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")
-        }).ToList();
+        return comments.Select(c => new CommentDTO(
+            c.PostId,
+            c.Author.AuthorId,
+            c.Author.Name,
+            c.Text,
+            c.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss")
+        )).ToList();
     }
 }

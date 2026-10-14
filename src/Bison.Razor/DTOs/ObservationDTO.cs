@@ -3,8 +3,8 @@ namespace Bison.DTOs;
 
 public record ObservationDTO
     (
-        int ObservationId,
-        int AuthorId,
+        long ObservationId,
+        long AuthorId,
         string dwc_TaxonId,
         string AuthorName, 
         string TaxonName,

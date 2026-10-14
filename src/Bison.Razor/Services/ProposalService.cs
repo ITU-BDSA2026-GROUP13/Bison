@@ -18,15 +18,14 @@ public class ProposalService : IProposalService
     {
         List<Proposal> proposals = await unitOfWork.proposalRepo.GetProposalsByObsId(postId);
 
-        return proposals.Select(p => new ProposalDTO
-        {
-            PostId = p.PostId,
-            AuthorId = p.AuthorId,
-            dwc_TaxonId = p.Taxon.dwc_TaxonId,
-            TaxonName = p.Taxon.Name,
-            AuthorName = p.Author.Name,
-            Text = p.Text,
-            Timestamp = p.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")
-        }).ToList();
+        return proposals.Select(p => new ProposalDTO(
+            p.PostId,
+            p.Author.AuthorId,
+            p.Taxon.dwc_TaxonID,
+            p.Taxon.VernacularName ?? p.Taxon.dwc_TaxonID,
+            p.Author.Name,
+            p.Text,
+            p.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss")
+        )).ToList();
     }
 }

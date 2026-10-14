@@ -11,7 +11,7 @@
     @if (Model.Observation != null)
     { 
         <p>
-            <strong><a href="/obs/@Model.Observation.Author.Name">@Model.Observation.Author.Name</a></strong>
+            <strong><a href="/obs/@Model.Observation.AuthorId">@Model.Observation.AuthorName</a></strong>
             @Model.Observation.Text
             <small>&mdash; @Model.Observation.TimeStamp</small>
         </p>
@@ -29,9 +29,9 @@
                 <li>
                     <p>
                         <strong>
-                            <a href="/obs/@p.Author.Name">@p.Author.Name</a>
+                            <a href="/obs/@p.AuthorId">@p.AuthorName</a>
                         </strong>
-                        @(p.Taxon.VernacularName ?? p.Taxon.dwc_TaxonID)
+                        @p.TaxonName
                         <small>&mdash; @p.TimeStamp</small>
                     </p>
                 </li>
@@ -54,7 +54,7 @@
                 <li>
                     <p>
                         <strong>
-                            <a href="/obs/@cm.Author.Name">@cm.Author.Name</a>
+                            <a href="/obs/@cm.AuthorId">@cm.AuthorName</a>
                         </strong>
                         @cm.Text
                         <small>&mdash; @cm.TimeStamp</small>
