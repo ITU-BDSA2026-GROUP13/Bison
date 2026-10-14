@@ -1,6 +1,9 @@
 ﻿namespace Bison.Services.Interfaces;
 
+using Bison.DTOs;
+
+
 public interface IProposalService
 {
-    public Task<List<Proposal>> GetProposalsByObsId(long obsId);
+    public Task<List<ProposalDTO>> GetProposalsByObsId(long obsId);
 }

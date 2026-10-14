@@ -22,7 +22,8 @@ public class ObservationRepository : IObservationRepository
         var query = (from post in dbContext.Observations 
             where post.PostId == observationId
             select post)
-            .Include(o => o.Author);
+            .Include(o => o.Author)
+            .Include(o => o.Taxon);
 
         var response = await query.FirstOrDefaultAsync();
         return response;

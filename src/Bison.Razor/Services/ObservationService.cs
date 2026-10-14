@@ -1,5 +1,7 @@
 ﻿namespace Bison.Services;
 
+using Bison.DTOs;
+
 using Interfaces;
 using Repository;
 
@@ -14,30 +16,47 @@ public class ObservationService : IObservationService
         this.unitOfWork = unitOfWork;
     }
 
-    public async Task<List<Observation>> GetObservations(int page)
+    public async Task<List<ObservationDTO>> GetObservations(int page)
     {
-        return await unitOfWork.observationRepo.GetObservationsByPage(page);
+        List<Observation> observations = await unitOfWork.observationRepo.GetObservationsByPage(page);
+        return Translater(observations);
     }
 
-    public Task<List<Observation>> GetObservationsFromAuthorAndPage(long authorId, int page = 1)
+    public async Task<List<ObservationDTO>> GetObservationsFromAuthorAndPage(long authorId, int page = 1)
     {
-        return unitOfWork.observationRepo.GetObservationsByAuthorAndPage(authorId, page);
+        List<Observation> observations = await unitOfWork.observationRepo.GetObservationsByAuthorAndPage(authorId, page);
+        return Translater(observations);
     }
 
-    public Task<Observation?> GetObservationById(long id)
+    public async Task<ObservationDTO?> GetObservationById(long id)
     {
-        return unitOfWork.observationRepo.ReadObservation(id);
+        Observation? observation = await unitOfWork.observationRepo.ReadObservation(id);
+        return observation == null ? null : Translater(new List<Observation> { observation }).Single();
     }
 
-    public Task<List<Observation>> GetObservationByTaxonAndPage(string? taxon, int page = 1)
+    public async Task<List<ObservationDTO>> GetObservationByTaxonAndPage(string? taxon, int page = 1)
     {
-        return unitOfWork.observationRepo.GetObservationByTaxonAndPage(taxon, page);
+        List<Observation> observations = await unitOfWork.observationRepo.GetObservationByTaxonAndPage(taxon, page);
+        return Translater(observations);
     }
 
-    public Task<List<Observation>> GetObservationByTaxonAndAuthorAndPage(string? taxonId, long authorId, int page = 1)
+    public async Task<List<ObservationDTO>> GetObservationByTaxonAndAuthorAndPage(string? taxonId, long authorId, int page = 1)
     {
-        return unitOfWork.observationRepo.GetObservationByTaxonAndAuthorAndPage(taxonId, authorId, page);
+        List<Observation> observations = await unitOfWork.observationRepo.GetObservationByTaxonAndAuthorAndPage(taxonId, authorId, page);
+        return Translater(observations);
     }
     
+    private List<ObservationDTO> Translater(List<Observation> observations)
+    {
+        return observations.Select(o => new ObservationDTO(
+            o.PostId,
+            o.Author.AuthorId,
+            o.Taxon.dwc_TaxonID,
+            o.Author.Name,
+            o.Taxon.VernacularName ?? o.Taxon.dwc_TaxonID,
+            o.Text,
+            o.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss")
+        )).ToList();
+    }
     
 }

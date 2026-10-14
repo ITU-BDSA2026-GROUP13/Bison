@@ -22,13 +22,13 @@
                 <li>
                     <p>
                         <strong>
-                            <a href="obs/@obs.Author.AuthorId">@obs.Author.Name</a>
+                            <a href="obs/@obs.AuthorId">@obs.AuthorName</a>
                         </strong>
                         @obs.Text
                         <small>&mdash; @obs.TimeStamp</small>
                         <br>
                         <small>
-                             <a href="?taxonId=@obs.Taxon.dwc_TaxonID"> - @obs.Taxon.VernacularName</a>
+                             <a href="?taxonId=@obs.dwc_TaxonId"> - @obs.TaxonName</a>
                         </small>
                     </p>
                 </li>

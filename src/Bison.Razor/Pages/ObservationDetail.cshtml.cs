@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Bison.Razor.Pages;
 
+using Bison.DTOs;
 using Services.Interfaces;
 
 public class ObservationDetailModel : PageModel
@@ -12,9 +13,9 @@ public class ObservationDetailModel : PageModel
     readonly IProposalService _servicepro;
     
     public int CurrentPage { get; set; }
-    public Observation? Observation { get; set; }
-    public List<Comment>? Comments { get; set; }
-    public List<Proposal>? Proposals { get; set; }
+    public ObservationDTO? Observation { get; set; }
+    public List<CommentDTO> Comments { get; set; } = new();
+    public List<ProposalDTO> Proposals { get; set; } = new();
 
      public ObservationDetailModel(
           IObservationService serviceob,

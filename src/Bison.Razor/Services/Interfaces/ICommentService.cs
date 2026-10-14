@@ -1,6 +1,8 @@
 ﻿namespace Bison.Services.Interfaces;
 
+using Bison.DTOs;
+
 public interface ICommentService
 {
-    public Task<List<Comment>> GetCommentsByObsId(long postId);
+    public Task<List<CommentDTO>> GetCommentsByObsId(long postId);
 }
