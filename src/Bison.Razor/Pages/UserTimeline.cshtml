@@ -8,7 +8,13 @@
 
 <div>
     
-
+    @if (Model.FilteredTaxon != null)
+    {
+        <p>
+            Showing observations of <strong>@Model.FilteredTaxon</strong>
+            <a href="?">(clear filter)</a>
+        </p>
+    }
     @if (Model.Observations.Any())
     
     {

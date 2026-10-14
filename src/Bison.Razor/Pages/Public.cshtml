@@ -7,7 +7,13 @@
 
 <div>
     <h2> Public Timeline </h2>
-
+    @if (Model.FilteredTaxon != null)
+    {
+        <p>
+            Showing observations of <strong>@Model.FilteredTaxon</strong>
+            <a href="?">(clear filter)</a>
+        </p>
+    }
     @if (Model.Observations.Any())
     {
         <ul id="messagelist" class="observations">
