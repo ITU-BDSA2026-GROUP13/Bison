@@ -1,6 +1,12 @@
 namespace Bison.Tests;
 
 using Bison;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using Mocks;
+using Moq;
+using Repository;
+using Services;
 
 public class BisonUnitTests
 {
@@ -64,7 +70,7 @@ public class BisonUnitTests
         Assert.Equal(69, result[0].ObservationID);
         Assert.Equal(69, result[1].ObservationID);
     }
-    */
+    
 
     [Fact]
     public void TestObservationReducedConstructor() 
@@ -171,7 +177,7 @@ public class BisonUnitTests
 
 
     //Ikke sat repository eller service eller noge top, (to be continued... (DAMN!))
-    /*
+    
     private sealed class InMemoryTestDatabaseRepository<T> : IDatabaseRepository<T>
     {
         private readonly List<T> records = [];
@@ -190,4 +196,6 @@ public class BisonUnitTests
         }
     }
     */
+    
+    
 }

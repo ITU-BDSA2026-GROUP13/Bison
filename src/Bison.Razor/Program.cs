@@ -14,7 +14,6 @@ var dbPath = Environment.GetEnvironmentVariable("BISONDBPATH") ??
 builder.Services.AddRazorPages();
 dbPath = Path.GetFullPath(dbPath);
 Directory.CreateDirectory(Path.GetDirectoryName(dbPath)!);
-//builder.Services.AddSingleton(new DBFacade(dbPath));
 
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<BisonDBContext>(options => options.UseSqlite(connectionString));
