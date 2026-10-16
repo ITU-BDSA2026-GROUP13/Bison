@@ -1,7 +1,12 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.Playwright;
 using Microsoft.Playwright.Xunit;
 
 namespace Bison.Tests.E2E;
+
+//To run test locally must start server on the E2E profile run command:
+//------------------> dotnet run -lp E2E <-----------------------
+//in the Bison.razor project folder
 
 public class ObservationDetailPageTest : PageTest
 {

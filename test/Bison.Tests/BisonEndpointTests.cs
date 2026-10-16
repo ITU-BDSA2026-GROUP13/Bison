@@ -1,13 +1,12 @@
-﻿
-namespace Bison.Tests;
+﻿namespace Bison.Tests;
 
 using System;
 using System.Net;
 using Xunit;
 using Xunit.Abstractions;
+
 public class BisonEndpointTests
 {
-    /*
     private readonly HttpClient client = new HttpClient();
     
     
@@ -194,5 +193,7 @@ public class BisonEndpointTests
     
     
     //TODO: Test POSTING endpoints (All) (If this is how they will be added)
- */   
+    
+    
+    
 }
