@@ -10,6 +10,24 @@ public class BisonEndpointTests
     private readonly HttpClient client = new HttpClient();
     
     
+    // General
+    [Fact]
+    public async Task TestAccesingNonExistingPageRequest()
+    {
+        //Arrange
+        string nonExistingPageUrl = "http://localhost:5273/67Lars67";
+        
+        //Act
+        var response = await client.GetAsync(nonExistingPageUrl);
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode); 
+        // We may need to change existing behavior to fit BadRequest rather than NotFound.
+        // Question is: Do we want to return a "Page Not Found" or an intended error message. 
+    }
+    
+    
+    // All Observations Pages
     [Fact]
     public async Task TestGetAllObservationsRequest()
     {
@@ -20,51 +38,141 @@ public class BisonEndpointTests
         var response = await client.GetAsync(observationsUrl);
         
         //Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+    }
+
+    [Fact]
+    public async Task TestGetMultiplePagesOnObservationsRequest()
+    {
+        // Arrange
+        string observationsUrl = "http://localhost:5273/obs?taxonId=&page=2";
+        
+        // Act
+        var response = await client.GetAsync(observationsUrl);
+        
+        // Act
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+    }
+
+    [Fact]
+    public async Task TestExceedingPageAmountOnObservationsRequest()
+    {
+        // Arrange
+        string exceedingUrl = "http://localhost:5273/obs?taxonId=&page=999";
+        
+        // Act
+        var response = await client.GetAsync(exceedingUrl);
+        string content = await response.Content.ReadAsStringAsync();
+        
+        // Act
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        
+        Assert.Contains("There are no observations so far", content);
     }
     
+    [Fact]
+    public async Task TestExtremeExceedingPageAmountOnObservationsRequest()
+    {
+        // THIS TEST FAILS! We somehow redirect back to start when we over-exceed. Is this the intended behavior?
+        
+        // Arrange
+        string extremeExceedingUrl = "http://localhost:5273/obs?taxonId=&page=9999999999999999999999999";
+        
+        // Act
+        var response = await client.GetAsync(extremeExceedingUrl);
+        string content = await response.Content.ReadAsStringAsync();
+        
+        // Act
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        
+        Assert.Contains("There are no observations so far", content);
+    }
+    
+    // All Observations Filtering
     [Fact]
     public async Task TestGetUserTimelineRequest()
     {
         //Arrange
-        string userTimelineUrl = "http://localhost:5273/obs/Johan";
+        string userTimelineUrl = "http://localhost:5273/obs/1";
+        string username = "Roger Histand";
+        string otherUsername = "Nathan Sirmon";
         
         //Act
         var response = await client.GetAsync(userTimelineUrl);
+        string content = await response.Content.ReadAsStringAsync();
         
         //Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        
+        Assert.Contains(username, content);
+        Assert.DoesNotContain(otherUsername, content);
     }
-
+    
     [Fact]
-    public async Task TestAccesingNonExistingPageRequest()
+    public async Task TestTaxonFilteringOnObservationsRequest()
+    {
+        // Arrange
+        string taxon = "Skestork";
+        string taxonId = "MSTSNM:Arter:f3fa2bf9-f785-ea11-aa77-501ac539d1ea";
+        string otherTaxon = "Dværghejre";
+        string filteredUrl = "http://localhost:5273/obs?taxonId=" + taxonId;
+        
+        // Act
+        var response = await client.GetAsync(filteredUrl);
+        string content = await response.Content.ReadAsStringAsync();
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        
+        Assert.Contains(taxon, content);
+        Assert.DoesNotContain(otherTaxon, content);
+    }
+    
+    [Fact]
+    public async Task TestGetUserTimelineAndTaxonRequest()
     {
         //Arrange
-        string nonExistingPageUrl = "http://localhost:5273/Lars";
+        string username = "Roger Histand";
+        string otherUsername = "Nathan Sirmon";
+        string taxon = "Silkehejre";
+        string taxonId = "MSTSNM:Arter:ca4d8cf8-f785-ea11-aa77-501ac539d1ea";
+        string otherTaxon = "Dværghejre";
+        string userTimelineUrl = "http://localhost:5273/obs/1?taxonId=" + taxonId;
         
         //Act
-        var response = await client.GetAsync(nonExistingPageUrl);
+        var response = await client.GetAsync(userTimelineUrl);
+        string content = await response.Content.ReadAsStringAsync();
         
         //Assert
-        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode); 
-        // We may need to change existing behavior to fit BadRequest rather than NotFound.
-        // Question is: Do we want to return a "Page Not Found" or an intended error message. 
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        
+        Assert.Contains(username, content);
+        Assert.DoesNotContain(otherUsername, content);
+        
+        Assert.Contains(taxon, content);
+        Assert.DoesNotContain(otherTaxon, content);
     }
+    
 
+    
+    // Single Observation Pages
     [Fact]
     public async Task TestGetSinglePageObservationRequest()
     {
-        // NOTICE! Test currently fails, since endpoint doesn't exist yet.
         //Arrange
         string observationsUrl = "http://localhost:5273/ob/1";
         
         //Act
         var response = await client.GetAsync(observationsUrl);
+        string content = await response.Content.ReadAsStringAsync();
         
         //Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        
+        Assert.Contains("at the lake", content);
     }
 
+    [Fact]
     public async Task TestGetNonExistingSingleObRequest()
     {
         //Arrange
@@ -78,34 +186,8 @@ public class BisonEndpointTests
         // We may need to change existing behavior to fit BadRequest rather than NotFound.
         // Same question as wrong endpoint above
     }
-
-/* Lige nu er logik ikke implementeret så test kan ikke bruges.
-    [Fact]
-    public async Task TestCapitalLettersMatterOnEndpoints()
-    {
-        //Arrange
-        string capitalUrl = "http://localhost:5273/obs/Johan";
-        string nonCapitalUrl = "http://localhost:5273/obs/johan";
-        
-        //Act
-        var cappitalResponse = await client.GetAsync(capitalUrl);
-        Assert.Equal(HttpStatusCode.OK, cappitalResponse.StatusCode);
-        var nonCapitalResponse = await client.GetAsync(nonCapitalUrl);
-        Assert.Equal(HttpStatusCode.OK, nonCapitalResponse.StatusCode);
-        
-        string capitalBody = await client.GetStringAsync(capitalUrl);
-        string nonCapitalBody = await client.GetStringAsync(nonCapitalUrl);
-        
-        //Assert
-        Assert.Equal(capitalBody, nonCapitalBody);
-        //Test currently fails, meaning that there is a difference between user "johan" and "Johan" in url.  
-        //Is this the intended behavior?
-    }
-    */
     
-
     
-    //TODO: Test Future Getting endpoints
     //TODO: Test POSTING endpoints (All) (If this is how they will be added)
     
     
