@@ -37,7 +37,8 @@ public class ObservationRepository : IObservationRepository
                 select observation)
             .Skip((Math.Max(page, 1) - 1) * pageSize)
             .Take(pageSize)
-            .Include(x => x.Author);
+            .Include(x => x.Author)
+            .Include(x => x.Taxon);
         
         var response = await query.ToListAsync();
         return response;
@@ -52,7 +53,8 @@ public class ObservationRepository : IObservationRepository
                 select observation)
             .Skip((Math.Max(page, 1) - 1) * pageSize)
             .Take(pageSize)
-            .Include(x => x.Author);
+            .Include(x => x.Author)
+            .Include(x => x.Taxon);
         
         var response = await query.ToListAsync();
         return response;
