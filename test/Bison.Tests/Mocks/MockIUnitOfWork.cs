@@ -9,6 +9,7 @@ public class MockIUnitOfWork
         var mock = new Mock<IUnitOfWork>();
 
         mock.Setup(m => m.observationRepo).Returns(() => MockIObservationRepository.GetMock().Object);
+        mock.Setup(m => m.proposalRepo).Returns(() => MockIProposalRepository.GetMock().Object);
 
         return mock;
     }
