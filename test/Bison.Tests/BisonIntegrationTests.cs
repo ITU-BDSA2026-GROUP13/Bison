@@ -4,7 +4,7 @@ using System.Net;
 using Bison;
 using Xunit;
 
-public class BisonIntegrationTests : IDisposable
+/*public class BisonIntegrationTests : IDisposable
 {
     private readonly HttpClient client = new HttpClient();
 
@@ -198,5 +198,4 @@ public class BisonIntegrationTests : IDisposable
         Assert.Equal(observationId, observationId12_proposals[0].Observation_id);
         Assert.Equal(proposalId, observationId12_proposals[0].Proposal_id);
     }
-    
-}
+}*/

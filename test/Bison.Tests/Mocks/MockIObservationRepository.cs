@@ -1,0 +1,36 @@
+﻿namespace Bison.Tests.Mocks;
+
+using Moq;
+
+public class MockIObservationRepository
+{
+    public static Mock<IObservationRepository> GetMock()
+    {
+        var observations = new List<Observation>
+        {
+            new Observation
+            {
+                PostId = 8,
+                Author = new Author { AuthorId = 1, Name = "Mikkel", Email = "msyj@itu.dk" },
+                Taxon = new Taxon
+                    { TaxonId = 29, dwc_TaxonID = "MSTSNM:Arter:c68811f4-f785-ea11-aa77-501ac539d1ea", VernacularName = "Tophejre", Parent = null },
+                Text = "Der en fugl",
+                Location = "Der hjemme",
+                TimeStamp = DateTime.Now
+            },
+            new Observation
+            {
+                PostId = 67,
+                Author = new Author {AuthorId = 69, Name = "Jacob", Email = "jcor@itu.dk"},
+                Taxon = new Taxon { TaxonId = 420, dwc_TaxonID = "Anders", VernacularName = "Frederik", Parent = null},
+                Text = "Jeg har set noget Anderset",
+                Location = "Hos Lasse",
+                TimeStamp = DateTime.Now
+            }
+        };
+        var mock = new Mock<IObservationRepository>();
+        mock.Setup(m => m.ReadObservation(It.IsAny<long>()))
+            .ReturnsAsync((long id) => observations.FirstOrDefault(o => o.PostId == id));
+        return mock;
+    }
+}
