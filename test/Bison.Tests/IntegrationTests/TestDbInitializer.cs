@@ -1,4 +1,4 @@
-﻿namespace Bison.Tests.IntegrationTests;
+namespace Bison.Tests.IntegrationTests;
 
 /*
  * A small, predictable data set for the repository integration tests.
