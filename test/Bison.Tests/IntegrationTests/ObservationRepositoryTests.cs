@@ -1,4 +1,4 @@
-﻿﻿namespace Bison.Tests.IntegrationTests;
+﻿namespace Bison.Tests.IntegrationTests;
 
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
