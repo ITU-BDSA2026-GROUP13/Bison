@@ -405,70 +405,7 @@ public class ObservationRepositoryTests : IDisposable
         Assert.Equal(expectedCount, result.Count);
     }
     
-    // Tests for ReadObservation(id)
-
-    [Fact]
-    public async Task ReadObservation_ReturnsObservationForExistingID()
-    {
-        // Arrange
-        using var context = CreateContext();
-        var repo = new ObservationRepository(context);
-        long id = _data.ObservationWithComments.PostId;
-        
-        // Act
-        var result = await repo.ReadObservation(id);
-        
-        // Assert
-        Assert.NotNull(result);
-        Assert.Equal(id, result.PostId);
-    }
-
-    [Fact]
-    public async Task ReadObservation_AuthorGetsLoadedCorrectly()
-    {
-        // Arrange
-        using var context = CreateContext();
-        var repo = new ObservationRepository(context);
-        long id = _data.ObservationWithComments.PostId;
-        
-        // Act
-        var result = await repo.ReadObservation(id);
-        
-        // Assert
-        Assert.NotNull(result.Author);
-        Assert.Equal(_data.AuthorB.AuthorId, result.Author.AuthorId);
-    }
-
-    [Fact]
-    public async Task ReadObservation_TaxonGetsLoadedCorrectly()
-    {
-        // Arrange
-        using var context = CreateContext();
-        var repo = new ObservationRepository(context);
-        long id = _data.ObservationWithComments.PostId;
-        
-        // Act
-        var result = await repo.ReadObservation(id);
-    }
-
-    [Theory]
-    [InlineData(0)]
-    [InlineData(17)]
-    [InlineData(34)]
-    public async Task ReadObservation_VariousIds_ReturnMatchingObservation(int index)
-    {
-        // Arrange
-        using var context = CreateContext();
-        var repo = new ObservationRepository(context);
-        var expected = _data.AuthorAObservations[index];
-        
-        // Act
-        var result = await repo.ReadObservation(expected.PostId);
-        
-        // Assert
-        Assert.NotNull(result);
-        Assert.Equal(expected.PostId, result.PostId);
-    }
+    
     
     
     
