@@ -15,11 +15,29 @@ jobs:
         with:
           dotnet-version: 8.0.x
       - name: Restore dependencies
-        run: dotnet restore src/Bison.Razor/Bison.Razor.csproj
+        run: dotnet restore
       - name: Build
-        run: dotnet build src/Bison.Razor/Bison.Razor.csproj --no-restore
+        run: dotnet build --no-restore
+      - name: Ensure browsers are installed
+        run: pwsh test/Bison.Tests/bin/Debug/net8.0/playwright.ps1 install --with-deps
+      - name: Start Server
+        working-directory: src/Bison.Razor
+        run: dotnet run --no-build --launch-profile E2E > api.log 2>&1 &
+      - name: Wait for server to start
+        run: |
+          for i in {1..30}; do
+            if curl -s http://localhost:5273/obs > /dev/null 2>&1; then
+              echo "Server is running!"
+              exit 0
+            fi
+            echo "Waiting for Server to start...($i/30)"
+            sleep 1
+          done
+          echo "Server failed to start within 30 seconds"
+          cat src/Bison.Razor/api.log
+          exit 1
       - name: Test
-        run: dotnet test src/Bison.Razor/Bison.Razor.csproj --no-build --verbosity normal
+        run: dotnet test --no-build --verbosity normal
   
   publish:
     needs: test
