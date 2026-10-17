@@ -10,7 +10,7 @@ public class ObservationRepositoryTests : IDisposable
     readonly SqliteConnection _connection;
     readonly DbContextOptions<BisonDBContext> _contextOptions;
     readonly TestData _data;
-
+    
     public ObservationRepositoryTests()
     {
         // Open connection to sqlite in-memory DB
@@ -42,10 +42,10 @@ public class ObservationRepositoryTests : IDisposable
         using var context = CreateContext();
         var repo = new ObservationRepository(context);
         long id = _data.ObservationWithComments.PostId;
-
+        
         // Act
         var result = await repo.ReadObservation(id);
-
+        
         // Assert
         Assert.NotNull(result);
         Assert.Equal(id, result.PostId);
@@ -58,10 +58,10 @@ public class ObservationRepositoryTests : IDisposable
         using var context = CreateContext();
         var repo = new ObservationRepository(context);
         long id = _data.ObservationWithComments.PostId;
-
+        
         // Act
         var result = await repo.ReadObservation(id);
-
+        
         // Assert
         Assert.NotNull(result.Author);
         Assert.Equal(_data.AuthorB.AuthorId, result.Author.AuthorId);
@@ -74,7 +74,7 @@ public class ObservationRepositoryTests : IDisposable
         using var context = CreateContext();
         var repo = new ObservationRepository(context);
         long id = _data.ObservationWithComments.PostId;
-
+        
         // Act
         var result = await repo.ReadObservation(id);
     }
@@ -89,13 +89,12 @@ public class ObservationRepositoryTests : IDisposable
         using var context = CreateContext();
         var repo = new ObservationRepository(context);
         var expected = _data.AuthorAObservations[index];
-
+        
         // Act
         var result = await repo.ReadObservation(expected.PostId);
-
+        
         // Assert
         Assert.NotNull(result);
         Assert.Equal(expected.PostId, result.PostId);
     }
-
 }
