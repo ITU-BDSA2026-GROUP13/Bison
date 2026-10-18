@@ -3,12 +3,14 @@ namespace Bison.Tests;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Bison.Repository;
+using Bison.Tests.IntegrationTests;
 using Xunit;
 
 public class UnitOfWorkIntegrationTests : IDisposable
 {
     private readonly SqliteConnection connection;
     private readonly DbContextOptions<BisonDBContext> options;
+    private readonly TestData data;
 
     public UnitOfWorkIntegrationTests()
     {
@@ -22,17 +24,19 @@ public class UnitOfWorkIntegrationTests : IDisposable
 
         using var ctx = new BisonDBContext(options);
         ctx.Database.Migrate();
+        data = TestDbInitializer.Seed(ctx);
     }
 
     public void Dispose() => connection.Dispose();
 
-    private static Observation NewObservation(long postId, long authorId, long taxonId) => new()
+    // Reuses the seeded author and taxon via their ids, so no duplicate rows are inserted
+    private Observation NewObservation(BisonDBContext ctx,long postId) => new()
     {
         PostId = postId,
-        Author = new Author { AuthorId = authorId, Name = "Mikkel", Email = "msyj@itu.dk" },
-        Taxon = new Taxon { TaxonId = taxonId, dwc_TaxonID = $"TEST:{taxonId}", VernacularName = "Tophejre", Parent = null },
-        Text = "Der en fugl",
-        Location = "Der hjemme",
+        Author = ctx.Authors.Find(data.AuthorC.AuthorId)!,
+        Taxon = ctx.Taxons.Find(data.Swan.TaxonId)!,
+        Text = "A new bird",
+        Location = "Home",
         TimeStamp = DateTime.Now
     };
 
@@ -42,17 +46,17 @@ public class UnitOfWorkIntegrationTests : IDisposable
         using (var ctx = new BisonDBContext(options))
         {
             IUnitOfWork uow = new UnitOfWork(ctx);
-            await uow.observationRepo.CreateObservation(NewObservation(1, 1, 1));
+            await uow.observationRepo.CreateObservation(NewObservation(ctx, 9001));
             uow.Save();
         }
 
         // Fresh context proves the data is in the database, not just the change tracker
         using var verify = new BisonDBContext(options);
-        var result = await new ObservationRepository(verify).ReadObservation(1);
+        var result = await new ObservationRepository(verify).ReadObservation(9001);
 
         Assert.NotNull(result);
-        Assert.Equal("Mikkel", result.Author.Name);
-        Assert.Equal("TEST:1", result.Taxon.dwc_TaxonID);
+        Assert.Equal("AuthorC", result.Author.Name);
+        Assert.Equal("TEST:swan", result.Taxon.dwc_TaxonID);
     }
 
     [Fact]
@@ -61,12 +65,12 @@ public class UnitOfWorkIntegrationTests : IDisposable
         using (var ctx = new BisonDBContext(options))
         {
             IUnitOfWork uow = new UnitOfWork(ctx);
-            await uow.observationRepo.CreateObservation(NewObservation(1, 1, 1));
+            await uow.observationRepo.CreateObservation(NewObservation(ctx, 9001));
             // No uow.Save()
         }
 
         using var verify = new BisonDBContext(options);
-        var result = await new ObservationRepository(verify).ReadObservation(1);
+        var result = await new ObservationRepository(verify).ReadObservation(9001);
 
         Assert.Null(result);
     }
@@ -74,30 +78,24 @@ public class UnitOfWorkIntegrationTests : IDisposable
     [Fact]
     public async Task Save_WhenOneInsertFails_PersistsNothing()
     {
-        // Arrange: PostId 1 already exists in the database
-        using (var ctx = new BisonDBContext(options))
-        {
-            IUnitOfWork uow = new UnitOfWork(ctx);
-            await uow.observationRepo.CreateObservation(NewObservation(1, 1, 1));
-            uow.Save();
-        }
+        var existingId = data.OtherObservation.PostId; // already seeded, so inserting it again fails
 
-        // Act: one valid insert (PostId 2) and one duplicate key (PostId 1) in the same Save()
+        // Act: one valid insert (9001) and one duplicate key in the same Save()
         using (var ctx = new BisonDBContext(options))
         {
             IUnitOfWork uow = new UnitOfWork(ctx);
-            await uow.observationRepo.CreateObservation(NewObservation(2, 2, 2));
-            await uow.observationRepo.CreateObservation(NewObservation(1, 1, 1));
+            await uow.observationRepo.CreateObservation(NewObservation(ctx, 9001));
+            await uow.observationRepo.CreateObservation(NewObservation(ctx, existingId));
 
             Assert.ThrowsAny<DbUpdateException>(() => uow.Save());
         }
 
-        // Assert: atomicity, so the valid PostId 2 must not have been saved either
+        // Assert: atomicity, so the valid 9001 must not have been saved either
         using var verify = new BisonDBContext(options);
         var repo = new ObservationRepository(verify);
 
-        Assert.NotNull(await repo.ReadObservation(1));
-        Assert.Null(await repo.ReadObservation(2));
+        Assert.NotNull(await repo.ReadObservation(existingId));
+        Assert.Null(await repo.ReadObservation(9001));
     }
 
     [Fact]
