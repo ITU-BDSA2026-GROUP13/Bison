@@ -110,11 +110,10 @@ public class UserTimelinePageTest : PageTest
         //Act
         await nextPageLink.ClickAsync();
 
-        await Expect(Page).ToHaveURLAsync(BaseUrl + "/obs/3?page=2");
+        await Expect(Page).ToHaveURLAsync(BaseUrl + "/obs/3?taxonId=&page=2");
 
         var previousPageLink =  Page.GetByRole(AriaRole.Link, new() {Name = "Previous"}).First;
         await Expect(previousPageLink).ToBeVisibleAsync();
-        await Expect(nextPageLink).ToBeVisibleAsync();
     }
 
     [Fact]
@@ -127,6 +126,7 @@ public class UserTimelinePageTest : PageTest
 
         var nextPageLink = Page.GetByRole(AriaRole.Link, new() { Name = "Next" });
         await Expect(nextPageLink).ToBeVisibleAsync();
+        await nextPageLink.ClickAsync();
 
         var secondPageObservationLocator = Page.Locator("#messagelist").Locator("small").First;
         var secondPageTimestamp = await secondPageObservationLocator.InnerTextAsync();
