@@ -22,7 +22,6 @@ public class ProposalServiceTests
         Assert.NotNull(result);
         Assert.Equal(2, result[0].PostId);
         Assert.Equal(3, result[1].PostId);
-        Assert.False(99 == result[1].PostId);
     }
 
     [Fact]
