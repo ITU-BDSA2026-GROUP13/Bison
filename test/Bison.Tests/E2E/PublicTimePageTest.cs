@@ -22,6 +22,7 @@ public class PublicTimePageTest : PageTest
         await Expect(Page.Locator("h2")).ToContainTextAsync("Public Timeline");
 
     }
+    
 
     [Fact]
     public async Task Author_Link_Goes_To_UserTimeline()
@@ -33,6 +34,32 @@ public class PublicTimePageTest : PageTest
             .ClickAsync();
 
         await Expect(Page).ToHaveURLAsync("http://localhost:5273/obs/4");
+    }
+    [Fact]
+    public async Task Author_Link_Goes_Not_To_Wrong_UserTimeline()
+    {
+        await Page.GotoAsync(BaseUrl);
+
+        await Page.Locator("#messagelist li").First
+            .GetByRole(AriaRole.Link, new() { Name = "Nathan Sirmon" })
+            .ClickAsync();
+
+        await Expect(Page).ToHaveURLAsync("http://localhost:5273/obs/3");
+    }
+    [Fact]
+    public async Task False_Author_Is_Not_Displayed()
+    {
+        //Arrange
+        await Page.GotoAsync(BaseUrl);
+
+        var posts = Page.Locator("#messagelist");
+        await Expect(posts).ToBeVisibleAsync();
+        //Act
+        var fakeAuthorLink = posts.GetByRole(AriaRole.Link, new() { Name = "Lebron James", Exact = true });
+        //Assert
+        await Expect(fakeAuthorLink).ToHaveCountAsync(0);
+
+        await Expect(posts).Not.ToContainTextAsync("Lebron James");
     }
     [Fact]
     public async Task Navigate_To_TaxonFilter_And_Back()
@@ -53,6 +80,36 @@ public class PublicTimePageTest : PageTest
         await clearFilterLink.ClickAsync();
         await Expect(Page).ToHaveURLAsync(BaseUrl + "?");
     }
+    [Fact]
+public async Task Unknown_TaxonId_Shows_Empty_Message()
+{
+    //Arrange
+    var unknownTaxonUrl = BaseUrl + "?taxonId=DOES-NOT-EXIST";
+
+    //Act
+    var response = await Page.GotoAsync(unknownTaxonUrl);
+
+    //Assert
+    Assert.Equal(200, response!.Status);
+    await Expect(Page.Locator("p").First).ToContainTextAsync("DOES-NOT-EXIST");
+    await Expect(Page.Locator("#messagelist")).ToHaveCountAsync(0);
+    await Expect(Page.Locator("em")).ToHaveTextAsync("There are no observations so far.");
+}
+
+[Fact]
+public async Task ClearFilter_Link_Is_Not_Shown_Without_Filter()
+{
+    //Arrange
+    var clearFilterLink = Page.GetByRole(AriaRole.Link, new() { Name = "(clear filter)" });
+
+    //Act
+    await Page.GotoAsync(BaseUrl);
+
+    //Assert
+    await Expect(Page.Locator("#messagelist")).ToBeVisibleAsync();
+    await Expect(clearFilterLink).ToHaveCountAsync(0);
+}
+
 
     [Fact]
     public async Task Pagination_Works_For_Obs()
@@ -78,6 +135,54 @@ public class PublicTimePageTest : PageTest
         await Expect(previousPageLink).ToBeVisibleAsync();
     }
     
+    [Fact]
+public async Task Previous_Link_Is_Not_Shown_On_First_Page()
+{
+    //Arrange
+    var pageIndicator = Page.Locator(".pagination span");
+    var previousLink = Page.GetByRole(AriaRole.Link, new() { Name = "Previous" });
+
+    //Act
+    await Page.GotoAsync(BaseUrl);
+
+    //Assert
+    await Expect(pageIndicator).ToHaveTextAsync("Page 1");
+    await Expect(previousLink).ToHaveCountAsync(0);
+}
+
+[Fact]
+public async Task Page_Beyond_Last_Shows_Empty_Message_And_No_Next()
+{
+    //Arrange
+    var pageIndicator = Page.Locator(".pagination span");
+    var nextLink = Page.GetByRole(AriaRole.Link, new() { Name = "Next" });
+
+    //Act
+    var response = await Page.GotoAsync(BaseUrl + "?page=9999");
+
+    //Assert
+    Assert.Equal(200, response!.Status);
+    await Expect(Page.Locator("em")).ToHaveTextAsync("There are no observations so far.");
+    await Expect(pageIndicator).ToHaveTextAsync("Page 9999");
+    await Expect(nextLink).ToHaveCountAsync(0);
+}
+
+[Theory]
+[InlineData("0")]
+[InlineData("-1")]
+[InlineData("abc")]
+public async Task Invalid_Page_Parameter_Does_Not_Crash(string page)
+{
+    //Arrange
+    var url = BaseUrl + "?page=" + page;
+
+    //Act
+    var response = await Page.GotoAsync(url);
+
+    //Assert
+    Assert.NotNull(response);
+    Assert.True(response.Status < 500, $"Got status {response.Status} for page={page}");
+}
 
 
 }
