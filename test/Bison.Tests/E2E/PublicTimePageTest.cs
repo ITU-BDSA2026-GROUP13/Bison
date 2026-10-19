@@ -23,20 +23,8 @@ public class PublicTimePageTest : PageTest
 
     }
 
-    
     [Fact]
-    public async Task Author_Link_Goes_To_UserTimeline1()
-    {
-        await Page.GotoAsync(BaseUrl);
-
-        await Page.Locator("#messagelist li").First
-            .GetByRole(AriaRole.Link, new() { Name = "Roger Histand" })
-            .ClickAsync();
-
-        await Expect(Page).ToHaveURLAsync("http://localhost:5273/obs/1");
-    }
-    [Fact]
-    public async Task Author_Link_Goes_To_UserTimeline3()
+    public async Task Author_Link_Goes_To_UserTimeline()
     {
         await Page.GotoAsync(BaseUrl);
 
