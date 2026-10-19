@@ -85,7 +85,7 @@ public class BisonEndpointTests
         // Act
         Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
         
-        Assert.Contains("There are no observations so far", content);
+        Assert.DoesNotContain("There are no observations so far", content); // Page redirects when exceeding the max. 
     }
     
     // All Observations Filtering
