@@ -16,6 +16,7 @@ public class CommentRepository : ICommentRepository
     public async Task CreateComment(Comment comment)
     {
         await dbContext.Posts.AddAsync(comment);
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task<List<Comment>> ReadComment(long commentId)
@@ -31,9 +32,10 @@ public class CommentRepository : ICommentRepository
     public async Task<List<Comment>> GetCommentsByObsId(long obsId)
     {
         var query = (from post in dbContext.Comments
-            where post.Observation.PostId == obsId
-            select post)
-            .Include(c => c.Author);
+                where post.Observation.PostId == obsId
+                select post)
+            .Include(c => c.Author)
+            .Include(c => c.Observation);
 
         var response = await query.ToListAsync();
         return response;
