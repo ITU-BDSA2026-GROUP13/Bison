@@ -18,6 +18,7 @@ public class ProposalRepository : IProposalRepository
         await dbContext.Posts.AddAsync(proposal);
     }
 
+    //Bruges ikke.
     public async Task<List<Proposal>> ReadProposal(long postId)
     {
         var query = from post in dbContext.Proposals

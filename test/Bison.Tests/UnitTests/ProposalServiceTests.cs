@@ -22,5 +22,22 @@ public class ProposalServiceTests
         Assert.NotNull(result);
         Assert.Equal(2, result[0].PostId);
         Assert.Equal(3, result[1].PostId);
+        Assert.False(99 == result[1].PostId);
+    }
+
+    [Fact]
+    public async Task nonExistingObservationIDReturnsEmpty()
+    {
+        // Arrange
+        var unitOfWork = MockIUnitOfWork.GetMock();
+        var service = new ProposalService(unitOfWork.Object);
+        long id = 99999;
+        
+        //Act 
+        List<ProposalDTO> result = await service.GetProposalsByObsId(id);
+        
+        //Assert
+        Assert.True(result.Count == 0);
+        Assert.Throws< ArgumentOutOfRangeException>(() => result[0]);
     }
 }
