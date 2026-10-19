@@ -23,6 +23,15 @@
     <Compile Update="Pages\ObservationDetail.cs">
       <DependentUpon>ObservationDetail.cshtml</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="publish\web.config" />
+    <_ContentIncludedByDefault Remove="publish\appsettings.Development.json" />
+    <_ContentIncludedByDefault Remove="publish\appsettings.json" />
+    <_ContentIncludedByDefault Remove="publish\Bison.Razor.deps.json" />
+    <_ContentIncludedByDefault Remove="publish\Bison.Razor.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="publish\Bison.Razor" />
   </ItemGroup> 
 
 </Project>
