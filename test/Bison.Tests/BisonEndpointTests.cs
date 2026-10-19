@@ -36,9 +36,11 @@ public class BisonEndpointTests
         
         //Act
         var response = await client.GetAsync(observationsUrl);
+        var content =  await response.Content.ReadAsStringAsync();
         
         //Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        Assert.Contains("Public Timeline", content);
     }
 
     [Fact]
@@ -49,9 +51,11 @@ public class BisonEndpointTests
         
         // Act
         var response = await client.GetAsync(observationsUrl);
+        var content = await response.Content.ReadAsStringAsync();
         
         // Act
         Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        Assert.Contains("Page 2", content);
     }
 
     [Fact]
