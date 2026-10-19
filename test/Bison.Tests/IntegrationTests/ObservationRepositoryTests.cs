@@ -32,6 +32,88 @@ public class ObservationRepositoryTests : IDisposable
 
     public void Dispose() => _connection.Dispose();
     
+    // Test for CreateObservation
+
+    [Fact]
+    public async Task CreateObservation_ObservationIsAdded()
+    {
+        // Arrange
+        using var context = CreateContext();
+        var repo = new ObservationRepository(context);
+        var unexpectedCount = context.Observations.Count();
+        
+        // Load author and taxon through this context, so EF doesn't try to insert them again
+        var author = await context.Authors.FindAsync(_data.AuthorB.AuthorId);
+        var taxon = await context.Taxons.FindAsync(_data.Heron.TaxonId);
+
+        var newObservation = new Observation
+        {
+            Author = author, 
+            Taxon = taxon, 
+            Text = "A heron by the river",
+            Location = "River",
+            TimeStamp = new DateTime(2026, 2, 1, 12, 0, 0)
+        };
+        
+        // Act
+        await repo.CreateObservation(newObservation);
+        await context.SaveChangesAsync();
+        
+        using var assertContext = CreateContext();
+        var assertRepo = new ObservationRepository(assertContext);
+        var result = await assertRepo.ReadObservation(newObservation.PostId);
+        
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(newObservation.PostId, result.PostId);
+        Assert.Equal(newObservation.Text, result.Text);
+        Assert.NotEqual(unexpectedCount, assertContext.Observations.Count());
+    }
+
+    [Fact]
+    public async Task CreateObservation_NullObservationThrowsException()
+    {
+        // Arrange
+        using var context = CreateContext();
+        var repo = new ObservationRepository(context);
+
+        Observation nullObservation = null;
+
+        // Act + Assert
+        await Assert.ThrowsAsync<ArgumentNullException>(() =>                       
+            repo.CreateObservation(null!));
+    }
+
+    [Fact]
+    public async Task CreateObservation_DoesNotSaveWithMissingRequiredField()
+    {
+        // Arrange
+        using var context = CreateContext();
+        var repo = new ObservationRepository(context);
+        var expectedCount = context.Observations.Count();
+        
+        // Load author and taxon through this context, so EF doesn't try to insert them again
+        var author = await context.Authors.FindAsync(_data.AuthorB.AuthorId);
+        var taxon = await context.Taxons.FindAsync(_data.Heron.TaxonId);
+
+        var observationWithoutTaxon = new Observation
+        {
+            Author = author, 
+            Taxon = taxon, 
+            Text = null,
+            Location = "River",
+            TimeStamp = new DateTime(2026, 2, 1, 12, 0, 0)
+        };
+        
+        // Act
+        await repo.CreateObservation(observationWithoutTaxon);
+        await Assert.ThrowsAsync<DbUpdateException>(() => context.SaveChangesAsync());
+
+        // Assert that nothing more has been saved
+        var assertContext = CreateContext();
+        Assert.Equal(expectedCount, assertContext.Observations.Count());
+    }
+    
     
     // Tests for ReadObservation
 
