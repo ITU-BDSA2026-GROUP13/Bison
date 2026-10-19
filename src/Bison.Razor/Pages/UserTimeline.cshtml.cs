@@ -20,7 +20,7 @@ public class UserTimelineModel : PageModel
     }
 
 
-    public async Task<ActionResult> OnGet(long authorId, [FromQuery] string? taxonId = null, int page = 1)
+    public async Task<ActionResult> OnGet(long authorId, [FromQuery] string? taxonId = null,  [FromQuery] int page = 1)
     {
         CurrentPage = Math.Max(page, 1);
         FilteredTaxon = taxonId;
