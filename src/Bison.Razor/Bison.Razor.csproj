@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="..\..\Resources\joined.csv" LogicalName="joined.csv" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Pages\ObservationDetail.cs">
       <DependentUpon>ObservationDetail.cshtml</DependentUpon>
     </Compile>
