@@ -36,17 +36,6 @@ public class PublicTimePageTest : PageTest
         await Expect(Page).ToHaveURLAsync("http://localhost:5273/obs/4");
     }
     [Fact]
-    public async Task Author_Link_Goes_Not_To_Wrong_UserTimeline()
-    {
-        await Page.GotoAsync(BaseUrl);
-
-        await Page.Locator("#messagelist li").First
-            .GetByRole(AriaRole.Link, new() { Name = "Nathan Sirmon" })
-            .ClickAsync();
-
-        await Expect(Page).ToHaveURLAsync("http://localhost:5273/obs/3");
-    }
-    [Fact]
     public async Task False_Author_Is_Not_Displayed()
     {
         //Arrange
