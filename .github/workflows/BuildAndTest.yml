@@ -18,9 +18,11 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
+    - name: Ensure browsers are installed
+      run: pwsh test/Bison.Tests/bin/Debug/net8.0/playwright.ps1 install --with-deps
     - name: Start Server
       working-directory: src/Bison.Razor
-      run: dotnet run --no-build --urls http://localhost:5273 > api.log 2>&1 &
+      run: dotnet run --no-build --launch-profile E2E > api.log 2>&1 &
     - name: Wait for server to start
       run: |
         for i in {1..30}; do
