@@ -3,12 +3,18 @@ using Bison.Repository;
 using Bison.Services;
 using Bison.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 var dbPath = Environment.GetEnvironmentVariable("BISONDBPATH") ??
              Path.Combine(Path.GetTempPath(), "bison.db");
 
+builder.Services.AddDefaultIdentity<Author>(Options => 
+        Options.SignIn.RequireConfirmedAccount = true
+    ).AddEntityFrameworkStores<BisonDBContext>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -47,6 +53,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapRazorPages();
 

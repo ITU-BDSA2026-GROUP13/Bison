@@ -22,7 +22,7 @@ public class ObservationService : IObservationService
         return Translater(observations);
     }
 
-    public async Task<List<ObservationDTO>> GetObservationsFromAuthorAndPage(long authorId, int page = 1)
+    public async Task<List<ObservationDTO>> GetObservationsFromAuthorAndPage(string authorId, int page = 1)
     {
         List<Observation> observations = await unitOfWork.observationRepo.GetObservationsByAuthorAndPage(authorId, page);
         return Translater(observations);
@@ -40,7 +40,7 @@ public class ObservationService : IObservationService
         return Translater(observations);
     }
 
-    public async Task<List<ObservationDTO>> GetObservationByTaxonAndAuthorAndPage(string? taxonId, long authorId, int page = 1)
+    public async Task<List<ObservationDTO>> GetObservationByTaxonAndAuthorAndPage(string? taxonId, string authorId, int page = 1)
     {
         List<Observation> observations = await unitOfWork.observationRepo.GetObservationByTaxonAndAuthorAndPage(taxonId, authorId, page);
         return Translater(observations);
@@ -50,9 +50,9 @@ public class ObservationService : IObservationService
     {
         return observations.Select(o => new ObservationDTO(
             o.PostId,
-            o.Author.AuthorId,
+            o.Author.Id,
             o.Taxon.dwc_TaxonID,
-            o.Author.Name,
+            o.Author.UserName ?? "",
             o.Taxon.VernacularName ?? o.Taxon.dwc_TaxonID,
             o.Text,
             o.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss")

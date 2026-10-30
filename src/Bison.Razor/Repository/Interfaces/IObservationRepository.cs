@@ -8,11 +8,11 @@ public interface IObservationRepository
 
     Task<List<Observation>> GetObservationsByPage(int page);
     
-    Task<List<Observation>> GetObservationsByAuthorAndPage(long authorId, int page);
+    Task<List<Observation>> GetObservationsByAuthorAndPage(string authorId, int page);
 
     Task<List<Observation>> GetObservationByTaxonAndPage(string? taxon, int page);
 
-    Task<List<Observation>> GetObservationByTaxonAndAuthorAndPage(string? taxonId, long authorId, int page);
+    Task<List<Observation>> GetObservationByTaxonAndAuthorAndPage(string? taxonId, string authorId, int page);
     
     Task UpdateObservation(Observation observation);
 }

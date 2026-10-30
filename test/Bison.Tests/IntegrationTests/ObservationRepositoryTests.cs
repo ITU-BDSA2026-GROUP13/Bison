@@ -43,7 +43,7 @@ public class ObservationRepositoryTests : IDisposable
         var unexpectedCount = context.Observations.Count();
         
         // Load author and taxon through this context, so EF doesn't try to insert them again
-        var author = await context.Authors.FindAsync(_data.AuthorB.AuthorId);
+        var author = await context.Authors.FindAsync(_data.AuthorB.Id);
         var taxon = await context.Taxons.FindAsync(_data.Heron.TaxonId);
 
         var newObservation = new Observation
@@ -93,7 +93,7 @@ public class ObservationRepositoryTests : IDisposable
         var expectedCount = context.Observations.Count();
         
         // Load author and taxon through this context, so EF doesn't try to insert them again
-        var author = await context.Authors.FindAsync(_data.AuthorB.AuthorId);
+        var author = await context.Authors.FindAsync(_data.AuthorB.Id);
         var taxon = await context.Taxons.FindAsync(_data.Heron.TaxonId);
 
         var observationWithoutTaxon = new Observation
@@ -146,7 +146,7 @@ public class ObservationRepositoryTests : IDisposable
         
         // Assert
         Assert.NotNull(result.Author);
-        Assert.Equal(_data.AuthorB.AuthorId, result.Author.AuthorId);
+        Assert.Equal(_data.AuthorB.Id, result.Author.Id);
     }
 
     [Fact]
@@ -323,7 +323,7 @@ public class ObservationRepositoryTests : IDisposable
         // Arrange
         using var context = CreateContext();
         var repo = new ObservationRepository(context);
-        var authorId = _data.AuthorB.AuthorId;
+        var authorId = _data.AuthorB.Id;
         var taxonId = "TEST:swan";
         
         // Act
@@ -339,7 +339,7 @@ public class ObservationRepositoryTests : IDisposable
         // Arrange
         using var context = CreateContext();
         var repo = new ObservationRepository(context);
-        var authorId = _data.AuthorB.AuthorId;
+        var authorId = _data.AuthorB.Id;
         string taxonId = null;
         
         // Act
@@ -355,7 +355,7 @@ public class ObservationRepositoryTests : IDisposable
         // Arrange
         using var context = CreateContext();
         var repo = new ObservationRepository(context);
-        var authorId = _data.AuthorA.AuthorId;
+        var authorId = _data.AuthorA.Id;
         var taxonId = _data.Swan.dwc_TaxonID;
 
         // Act
@@ -371,7 +371,7 @@ public class ObservationRepositoryTests : IDisposable
         // Arrange
         using var context = CreateContext();
         var repo = new ObservationRepository(context);
-        var authorId = _data.AuthorA.AuthorId;
+        var authorId = _data.AuthorA.Id;
         var taxonId = _data.Heron.dwc_TaxonID;
 
         // Act
@@ -381,7 +381,7 @@ public class ObservationRepositoryTests : IDisposable
         Assert.Equal(32, result.Count);
         Assert.All(result, o =>
         {
-            Assert.Equal(authorId, o.Author.AuthorId);
+            Assert.Equal(authorId, o.Author.Id);
             Assert.Equal(taxonId, o.Taxon.dwc_TaxonID);
         });
     }
@@ -395,7 +395,7 @@ public class ObservationRepositoryTests : IDisposable
         // Arrange
         using var context = CreateContext();
         var repo = new ObservationRepository(context);
-        var authorId = _data.AuthorA.AuthorId;
+        var authorId = _data.AuthorA.Id;
         var taxonId = _data.Heron.dwc_TaxonID;
 
         // Act
@@ -510,7 +510,7 @@ public class ObservationRepositoryTests : IDisposable
         // Arrange
         using var context = CreateContext();
         var repo = new ObservationRepository(context);
-        var authorId = _data.AuthorA.AuthorId;
+        var authorId = _data.AuthorA.Id;
         
         // Act
         var result = await repo.GetObservationsByAuthorAndPage(authorId, page);
