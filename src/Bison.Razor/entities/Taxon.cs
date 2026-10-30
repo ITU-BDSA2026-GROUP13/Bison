@@ -7,4 +7,12 @@ public class Taxon
     public string? VernacularName { get; set; } //The name in danish
     public Taxon? Parent { get; set; }
     public List<Taxon> Children { get; set; } = new();
+
+
+    public bool isSubTaxon(Taxon ancestor)
+    {
+        if (this == ancestor) return true;
+        if (Parent == null) return false;
+        return Parent.isSubTaxon(ancestor);
+    }
 }
