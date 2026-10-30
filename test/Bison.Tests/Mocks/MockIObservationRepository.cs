@@ -11,7 +11,7 @@ public class MockIObservationRepository
             new Observation
             {
                 PostId = 8,
-                Author = new Author { AuthorId = 1, Name = "Mikkel", Email = "msyj@itu.dk" },
+                Author = new Author { Id = "1", UserName = "Mikkel", Email = "msyj@itu.dk" },
                 Taxon = new Taxon
                     { TaxonId = 29, dwc_TaxonID = "MSTSNM:Arter:c68811f4-f785-ea11-aa77-501ac539d1ea", VernacularName = "Tophejre", Parent = null },
                 Text = "Der en fugl",
@@ -21,7 +21,7 @@ public class MockIObservationRepository
             new Observation
             {
                 PostId = 67,
-                Author = new Author {AuthorId = 69, Name = "Jacob", Email = "jcor@itu.dk"},
+                Author = new Author {Id = "69", UserName = "Jacob", Email = "jcor@itu.dk"},
                 Taxon = new Taxon { TaxonId = 420, dwc_TaxonID = "Anders", VernacularName = null, Parent = null},
                 Text = "Jeg har set noget Anderset",
                 Location = "Hos Lasse",
@@ -35,7 +35,7 @@ public class MockIObservationRepository
         mock.Setup(m => m.GetObservationByTaxonAndPage(It.IsAny<string>(), It.IsAny<int>()))
             .ReturnsAsync(observations);
         
-        mock.Setup(m => m.GetObservationByTaxonAndAuthorAndPage(It.IsAny<string>(), It.IsAny<long>(), It.IsAny<int>()))
+        mock.Setup(m => m.GetObservationByTaxonAndAuthorAndPage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
             .ReturnsAsync(observations);
         
         return mock;

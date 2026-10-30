@@ -33,7 +33,7 @@ public class UnitOfWorkIntegrationTests : IDisposable
     private Observation NewObservation(BisonDBContext ctx,long postId) => new()
     {
         PostId = postId,
-        Author = ctx.Authors.Find(data.AuthorC.AuthorId)!,
+        Author = ctx.Authors.Find(data.AuthorC.Id)!,
         Taxon = ctx.Taxons.Find(data.Swan.TaxonId)!,
         Text = "A new bird",
         Location = "Home",
@@ -55,7 +55,7 @@ public class UnitOfWorkIntegrationTests : IDisposable
         var result = await new ObservationRepository(verify).ReadObservation(9001);
 
         Assert.NotNull(result);
-        Assert.Equal("AuthorC", result.Author.Name);
+        Assert.Equal("AuthorC", result.Author.UserName);
         Assert.Equal("TEST:swan", result.Taxon.dwc_TaxonID);
     }
 

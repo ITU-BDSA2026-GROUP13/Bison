@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Bison
+@using System.Security.Claims
+@inject SignInManager<Author> SignInManager
+@inject UserManager<Author> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>@ViewData["Title"]</title>
@@ -10,7 +15,21 @@
     <h1><img src="/images/icon1.png" alt="Icon1"/>Bison</h1>
 
     <div class=body>
-            @RenderBody()
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <a href="/obs/@User.FindFirstValue(ClaimTypes.NameIdentifier)"><button type="button">My Observations</button></a>
+            <a href="/obs"><button type="button">Public Observations</button></a>
+            <a id="logoutForm" class form-inline asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout @User.FindFirstValue(ClaimTypes.Name)</button>
+            </a>
+        }
+        else
+        {
+            <a href="/obs"><button type="button">Public Observations</button></a>
+            <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register"><button type="button">Register</button></a>
+            <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login"><button type="button">Login</button></a>
+        }
+        @RenderBody()
     </div>
     <div class=footer>
         Bison &mdash; An ASP.NET Application

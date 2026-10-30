@@ -1,8 +1,9 @@
 ﻿namespace Bison;
 
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-public class BisonDBContext : DbContext
+public class BisonDBContext : IdentityDbContext<Author>
 {
     public DbSet<Author> Authors { get; set; }
     public DbSet<Post> Posts { get; set; }
@@ -18,10 +19,12 @@ public class BisonDBContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+        
         modelBuilder.Entity<Author>(entity =>
         {
-            entity.HasKey(a => a.AuthorId);
-            entity.Property(a => a.Name).IsRequired();
+            entity.HasKey(a => a.Id);
+            entity.Property(a => a.UserName).IsRequired();
             entity.Property(a => a.Email).IsRequired();
         });
 
