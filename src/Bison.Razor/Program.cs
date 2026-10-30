@@ -12,9 +12,20 @@ var builder = WebApplication.CreateBuilder(args);
 var dbPath = Environment.GetEnvironmentVariable("BISONDBPATH") ??
              Path.Combine(Path.GetTempPath(), "bison.db");
 
-builder.Services.AddDefaultIdentity<Author>(Options => 
-        Options.SignIn.RequireConfirmedAccount = true
-    ).AddEntityFrameworkStores<BisonDBContext>();
+builder.Services.AddDefaultIdentity<Author>(Options =>
+    {
+        Options.SignIn.RequireConfirmedAccount = true;
+        // Users log in by email, so no two users may share one
+        Options.User.RequireUniqueEmail = true;
+        
+        // To make sure the Definition is done is met,
+        // we have to make sure the passwords 123456 and password are valid.
+        // The following options makes sure of this
+        Options.Password.RequireDigit = false;
+        Options.Password.RequireNonAlphanumeric = false;
+        Options.Password.RequireLowercase = false;
+        Options.Password.RequireUppercase = false;
+    }).AddEntityFrameworkStores<BisonDBContext>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
