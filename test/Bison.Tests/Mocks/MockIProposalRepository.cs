@@ -9,7 +9,7 @@ public class MockIProposalRepository
         var observation = new Observation
         {
             PostId = 1,
-            Author = new Author { AuthorId = 69, Name = "Jacob", Email = "jcor@itu.dk" },
+            Author = new Author { Id = "69", UserName = "Jacob", Email = "jcor@itu.dk" },
             Taxon = new Taxon { TaxonId = 420, dwc_TaxonID = "Anders", VernacularName = "Frederik", Parent = null },
             Text = "Jeg har set observation 1",
             Location = "Hos Lasse",
@@ -22,7 +22,7 @@ public class MockIProposalRepository
             new Proposal
             {
                 PostId = 2,
-                Author = new Author { AuthorId = 69, Name = "Jacob", Email = "jcor@itu.dk" },
+                Author = new Author { Id = "69", UserName = "Jacob", Email = "jcor@itu.dk" },
                 Text = "Det har jeg også proposal id2",
                 TimeStamp = DateTime.Now,
 
@@ -33,7 +33,7 @@ public class MockIProposalRepository
             new Proposal
             {
                 PostId = 3,
-                Author = new Author { AuthorId = 69, Name = "Jacob", Email = "jcor@itu.dk" },
+                Author = new Author { Id = "69", UserName = "Jacob", Email = "jcor@itu.dk" },
                 Text = "Det har jeg også proposal id3",
                 TimeStamp = DateTime.Now,
 

@@ -44,11 +44,11 @@ public class ObservationRepository : IObservationRepository
         return response;
     }
 
-    public async Task<List<Observation>> GetObservationsByAuthorAndPage(long authorId, int page)
+    public async Task<List<Observation>> GetObservationsByAuthorAndPage(string authorId, int page)
     {
         int pageSize = 32;
         var query = (from observation in dbContext.Observations
-                where observation.Author.AuthorId == authorId
+                where observation.Author.Id == authorId
                 orderby observation.TimeStamp descending
                 select observation)
             .Skip((Math.Max(page, 1) - 1) * pageSize)
@@ -76,13 +76,13 @@ public class ObservationRepository : IObservationRepository
         return response;
     }
     
-    public async Task<List<Observation>> GetObservationByTaxonAndAuthorAndPage(string? taxonId, long authorId, int page = 1)
+    public async Task<List<Observation>> GetObservationByTaxonAndAuthorAndPage(string? taxonId, string authorId, int page = 1)
     {
         int pageSize = 32;
         var query = (from observation in dbContext.Observations
-                where taxonId == null && observation.Author.AuthorId == authorId 
+                where taxonId == null && observation.Author.Id == authorId 
                       || 
-                      observation.Taxon.dwc_TaxonID == taxonId && observation.Author.AuthorId == authorId 
+                      observation.Taxon.dwc_TaxonID == taxonId && observation.Author.Id == authorId 
                 orderby observation.TimeStamp descending
                 select observation)
             .Skip((Math.Max(page, 1) - 1) * pageSize)

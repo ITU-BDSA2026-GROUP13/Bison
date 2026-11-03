@@ -59,16 +59,16 @@ public static class DbInitializer
             foreach (var t in taxons) t.Parent?.Children.Add(t);
 
             // Authors
-            var a1 = new Author() { AuthorId = 1, Name = "Roger Histand", Email = "Roger+Histand@hotmail.com", Posts = new List<Post>() };
-            var a2 = new Author() { AuthorId = 2, Name = "Luanna Muro", Email = "Luanna-Muro@ku.dk", Posts = new List<Post>() };
-            var a3 = new Author() { AuthorId = 3, Name = "Wendell Ballan", Email = "Wendell-Ballan@gmail.com", Posts = new List<Post>() };
-            var a4 = new Author() { AuthorId = 4, Name = "Nathan Sirmon", Email = "Nathan+Sirmon@dtu.dk", Posts = new List<Post>() };
-            var a5 = new Author() { AuthorId = 5, Name = "Quintin Sitts", Email = "Quintin+Sitts@itu.dk", Posts = new List<Post>() };
-            var a6 = new Author() { AuthorId = 6, Name = "Mellie Yost", Email = "Mellie+Yost@ku.dk", Posts = new List<Post>() };
-            var a7 = new Author() { AuthorId = 7, Name = "Malcolm Janski", Email = "Malcolm-Janski@gmail.com", Posts = new List<Post>() };
-            var a8 = new Author() { AuthorId = 8, Name = "Octavio Wagganer", Email = "Octavio.Wagganer@dtu.dk", Posts = new List<Post>() };
-            var a9 = new Author() { AuthorId = 9, Name = "Johnnie Calixto", Email = "Johnnie+Calixto@itu.dk", Posts = new List<Post>() };
-            var a10 = new Author() { AuthorId = 10, Name = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com", Posts = new List<Post>() };
+            var a1 = new Author() { Id = "1", UserName = "Roger Histand", Email = "Roger+Histand@hotmail.com", Posts = new List<Post>() };
+            var a2 = new Author() { Id = "2", UserName = "Luanna Muro", Email = "Luanna-Muro@ku.dk", Posts = new List<Post>() };
+            var a3 = new Author() { Id = "3", UserName = "Wendell Ballan", Email = "Wendell-Ballan@gmail.com", Posts = new List<Post>() };
+            var a4 = new Author() { Id = "4", UserName = "Nathan Sirmon", Email = "Nathan+Sirmon@dtu.dk", Posts = new List<Post>() };
+            var a5 = new Author() { Id = "5", UserName = "Quintin Sitts", Email = "Quintin+Sitts@itu.dk", Posts = new List<Post>() };
+            var a6 = new Author() { Id = "6", UserName = "Mellie Yost", Email = "Mellie+Yost@ku.dk", Posts = new List<Post>() };
+            var a7 = new Author() { Id = "7", UserName = "Malcolm Janski", Email = "Malcolm-Janski@gmail.com", Posts = new List<Post>() };
+            var a8 = new Author() { Id = "8", UserName = "Octavio Wagganer", Email = "Octavio.Wagganer@dtu.dk", Posts = new List<Post>() };
+            var a9 = new Author() { Id = "9", UserName = "Johnnie Calixto", Email = "Johnnie+Calixto@itu.dk", Posts = new List<Post>() };
+            var a10 = new Author() { Id = "10", UserName = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com", Posts = new List<Post>() };
 
             var authors = new List<Author>() { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 };
 

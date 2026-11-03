@@ -47,7 +47,7 @@ public class ProposalRepositoryTests
         var heron = await context.Taxons
             .SingleAsync(t => t.dwc_TaxonID == _data.Heron.dwc_TaxonID);
         var author = await context.Authors
-            .SingleAsync(a => a.Name == "AuthorC");
+            .SingleAsync(a => a.UserName == "AuthorC");
         
         var newProposal = new Proposal
         {

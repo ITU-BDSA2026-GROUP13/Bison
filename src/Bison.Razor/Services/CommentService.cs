@@ -21,8 +21,8 @@ public class CommentService : ICommentService
 
         return comments.Select(c => new CommentDTO(
             c.PostId,
-            c.Author.AuthorId,
-            c.Author.Name,
+            c.Author.Id,
+            c.Author.UserName ?? "",
             c.Text,
             c.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss")
         )).ToList();

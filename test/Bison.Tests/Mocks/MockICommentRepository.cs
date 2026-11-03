@@ -12,7 +12,7 @@ public class MockICommentRepository
         var observation = new Observation // For referencing the same comment.
         {
             PostId = 6,
-            Author = new Author { AuthorId = 1, Name = "Mikkel", Email = "msyj@itu.dk" },
+            Author = new Author { Id = "1", UserName = "Mikkel", Email = "msyj@itu.dk" },
             Taxon = new Taxon
             {
                 TaxonId = 29, dwc_TaxonID = "MSTSNM:Arter:c68811f4-f785-ea11-aa77-501ac539d1ea", VernacularName = "Tophejre", Parent = null
@@ -27,7 +27,7 @@ public class MockICommentRepository
             new Comment
             {
                 PostId = 67,
-                Author = new Author { AuthorId = 2, Name = "Lasse", Email = "LassesGoofyMail@itu.dk" },
+                Author = new Author { Id = "2", UserName = "Lasse", Email = "LassesGoofyMail@itu.dk" },
                 Text = "Der var virkelig en fugl",
                 TimeStamp = DateTime.Now,
                 Observation = observation
@@ -35,7 +35,7 @@ public class MockICommentRepository
             new Comment
             {
                 PostId = 69,
-                Author = new Author {AuthorId = 3, Name = "Lars", Email = "Lars@Lars.dk"},
+                Author = new Author {Id = "3", UserName = "Lars", Email = "Lars@Lars.dk"},
                 Text = "Bro. Crazy fugl",
                 TimeStamp = DateTime.Now,
                 Observation = observation

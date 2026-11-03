@@ -22,9 +22,9 @@ public static class TestDbInitializer
     {
         var baseTime = new DateTime(2026, 1, 1, 12, 0, 0);
 
-        var authorA = new Author { Name = "AuthorA", Email = "a@test.dk" };
-        var authorB = new Author { Name = "AuthorB", Email = "b@test.dk" };
-        var authorC = new Author { Name = "AuthorC", Email = "c@test.dk" };
+        var authorA = new Author { UserName = "AuthorA", Email = "a@test.dk" };
+        var authorB = new Author { UserName = "AuthorB", Email = "b@test.dk" };
+        var authorC = new Author { UserName = "AuthorC", Email = "c@test.dk" };
 
         var heron = new Taxon { dwc_TaxonID = "TEST:heron", VernacularName = "Fiskehejre" };
         var swan = new Taxon { dwc_TaxonID = "TEST:swan", VernacularName = "Knopsvane" };

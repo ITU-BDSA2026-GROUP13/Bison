@@ -20,10 +20,10 @@ public class ProposalService : IProposalService
 
         return proposals.Select(p => new ProposalDTO(
             p.PostId,
-            p.Author.AuthorId,
+            p.Author.Id,
             p.Taxon.dwc_TaxonID,
             p.Taxon.VernacularName ?? p.Taxon.dwc_TaxonID,
-            p.Author.Name,
+            p.Author.UserName ?? "",
             p.Text,
             p.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss")
         )).ToList();

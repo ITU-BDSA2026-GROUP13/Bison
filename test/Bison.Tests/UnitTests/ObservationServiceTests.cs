@@ -21,7 +21,7 @@ public class ObservationServiceTests
         // Assert
         Assert.NotNull(result);
         Assert.Equal(id, result.ObservationId);
-        Assert.Equal(69, result.AuthorId);
+        Assert.Equal("69", result.AuthorId);
     }
 
     [Fact]
@@ -62,7 +62,7 @@ public class ObservationServiceTests
         var service = CreateService();
         
         // Act
-        var result = await service.GetObservationByTaxonAndAuthorAndPage(null, 1, 1);
+        var result = await service.GetObservationByTaxonAndAuthorAndPage(null, "1", 1);
         
         // Assert
         Assert.Equal(2, result.Count);
@@ -75,7 +75,7 @@ public class ObservationServiceTests
         var service = CreateService();
         
         // Act
-        var result = await service.GetObservationByTaxonAndAuthorAndPage(null, 1, 1);
+        var result = await service.GetObservationByTaxonAndAuthorAndPage(null, "1", 1);
 
         // Assert
         Assert.Equal(new long[] {8, 67}, result.Select(o => o.ObservationId));
@@ -88,7 +88,7 @@ public class ObservationServiceTests
         var service = CreateService();
 
         // Act
-        var result = await service.GetObservationByTaxonAndAuthorAndPage(null, 1, 1);
+        var result = await service.GetObservationByTaxonAndAuthorAndPage(null, "1", 1);
 
         // Assert
         Assert.Equal("Anders", result[1].TaxonName);
@@ -134,7 +134,7 @@ public class ObservationServiceTests
         // Assert
         var dto = result[0];
         Assert.Equal(8, dto.ObservationId);
-        Assert.Equal(1, dto.AuthorId);
+        Assert.Equal("1", dto.AuthorId);
         Assert.Equal("Mikkel", dto.AuthorName);
         Assert.Equal("Der en fugl", dto.Text);
         Assert.Equal("MSTSNM:Arter:c68811f4-f785-ea11-aa77-501ac539d1ea", dto.dwc_TaxonId);
