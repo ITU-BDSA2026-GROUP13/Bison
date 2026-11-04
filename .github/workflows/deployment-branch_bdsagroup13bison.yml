@@ -31,6 +31,9 @@ jobs:
 
       - name: Start server for tests
         working-directory: src/Bison.Razor
+        env:
+          Authentication__GitHub__ClientId: ${{ secrets.LOCAL_CLIENT_ID }}
+          Authentication__GitHub__ClientSecret: ${{ secrets.LOCAL_CLIENT_SECRET }}
         run: dotnet run --no-build --configuration Release --launch-profile E2E > api.log 2>&1 &
 
       - name: Wait for server to start
