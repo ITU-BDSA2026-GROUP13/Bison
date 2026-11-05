@@ -9,7 +9,7 @@ using System;
 using System.Numerics;
 using System.Collections;
 [assembly: DafnyAssembly.DafnySourceAttribute(@"// dafny 4.11.0.0
-// Command-line arguments: translate cs --include-runtime FilterBy.dfy
+// Command-line arguments: translate cs FilterBy.dfy --include-runtime --solver-path C:\Users\ander\.vscode\extensions\dafny-lang.ide-vscode-3.5.4\out\resources\4.11.0\github\dafny\z3\bin\z3-4.12.1.exe -o FilterBy.cs
 // FilterBy.dfy
 
 

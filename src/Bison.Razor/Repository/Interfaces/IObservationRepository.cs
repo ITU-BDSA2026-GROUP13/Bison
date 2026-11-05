@@ -13,6 +13,10 @@ public interface IObservationRepository
     Task<List<Observation>> GetObservationByTaxonAndPage(string? taxon, int page);
 
     Task<List<Observation>> GetObservationByTaxonAndAuthorAndPage(string? taxonId, string authorId, int page);
+
+    Task<List<Observation>> GetAllObservations();
+    Task<List<Observation>> GetAllObservationsByAuthor(string authorId);
+    Task<Taxon?> GetTaxonWithAncestors(string taxonId);
     
     Task UpdateObservation(Observation observation);
 }

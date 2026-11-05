@@ -94,6 +94,34 @@ public class ObservationRepository : IObservationRepository
         return response;
     }
 
+    // Fetches all observations (newest first) so the verified Dafny filter can run in memory
+    public async Task<List<Observation>> GetAllObservations()
+    {
+        return await dbContext.Observations
+            .OrderByDescending(o => o.TimeStamp)
+            .Include(o => o.Author)
+            .Include(o => o.Taxon)
+            .ToListAsync();
+    }
+
+    // Same as above, limited to one author
+    public async Task<List<Observation>> GetAllObservationsByAuthor(string authorId)
+    {
+        return await dbContext.Observations
+            .Where(o => o.Author.Id == authorId)
+            .OrderByDescending(o => o.TimeStamp)
+            .Include(o => o.Author)
+            .Include(o => o.Taxon)
+            .ToListAsync();
+    }
+
+    // Loads the whole taxa table so EF fixes up the Parent navigation that isSubTaxon relies on
+    public async Task<Taxon?> GetTaxonWithAncestors(string taxonId)
+    {
+        var taxa = await dbContext.Taxons.ToListAsync();
+        return taxa.FirstOrDefault(t => t.dwc_TaxonID == taxonId);
+    }
+
     public Task UpdateObservation(Observation observation)
     {
         throw new NotImplementedException();

@@ -28,6 +28,10 @@
       <DependentUpon>ObservationDetail.cshtml</DependentUpon>
     </Compile>
   </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Include="..\..\Dafny\FilterBy.cs" Link="Generated\FilterBy.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Migrations\" />
