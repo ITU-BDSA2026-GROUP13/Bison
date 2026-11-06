@@ -30,7 +30,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Compile Include="..\..\Dafny\FilterBy.cs" Link="Generated\FilterBy.cs" />
+    <ProjectReference Include="..\..\Dafny\Dafny.csproj"/>
   </ItemGroup>
 
   <ItemGroup>
