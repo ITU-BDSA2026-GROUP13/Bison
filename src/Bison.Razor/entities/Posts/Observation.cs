@@ -6,4 +6,6 @@ public class Observation : Post
     public string Location { get; set; }
     public List<Comment> Comments { get; set; } = new();
     public List<Proposal> Proposals { get; set; } = new();
+
+    public Taxon GetTaxon() => Taxon;
 }
