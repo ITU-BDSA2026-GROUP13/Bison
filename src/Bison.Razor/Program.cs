@@ -27,6 +27,14 @@ builder.Services.AddDefaultIdentity<Author>(Options =>
         Options.Password.RequireUppercase = false;
     }).AddEntityFrameworkStores<BisonDBContext>();
 
+builder.Services.AddAuthentication()
+    .AddGitHub(options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:GitHub:ClientId"]!;
+        options.ClientSecret =
+            builder.Configuration["Authentication:GitHub:ClientSecret"]!;
+    });
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 dbPath = Path.GetFullPath(dbPath);
