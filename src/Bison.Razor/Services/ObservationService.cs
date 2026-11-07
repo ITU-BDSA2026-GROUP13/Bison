@@ -38,18 +38,20 @@ public class ObservationService : IObservationService
     // Filters by taxon and its subtaxa using the verified Dafny code
     public async Task<List<ObservationDTO>> GetObservationByTaxonAndPage(string? taxonId, int page = 1)
     {
-        Taxon? root = taxonId == null ? null : await unitOfWork.observationRepo.GetTaxonWithAncestors(taxonId);
+        Taxon? root = taxonId == null ? null : await unitOfWork.observationRepo.GetTaxonFromId(taxonId);
         List<Observation> all = await unitOfWork.observationRepo.GetAllObservations();
 
+        if (root == null) return await GetObservations(page);
         return Translater(filterService.FilterAndPaginate(root, all, page));
     }
 
     // Same as above, but only for one author's observations
     public async Task<List<ObservationDTO>> GetObservationByTaxonAndAuthorAndPage(string? taxonId, string authorId, int page = 1)
     {
-        Taxon? root = taxonId == null ? null : await unitOfWork.observationRepo.GetTaxonWithAncestors(taxonId);
+        Taxon? root = taxonId == null ? null : await unitOfWork.observationRepo.GetTaxonFromId(taxonId);
         List<Observation> all = await unitOfWork.observationRepo.GetAllObservationsByAuthor(authorId);
 
+        if (root == null) return await GetObservationsFromAuthorAndPage(authorId, page);
         return Translater(filterService.FilterAndPaginate(root, all, page));
     }
 
