@@ -59,40 +59,6 @@ public class ObservationRepository : IObservationRepository
         var response = await query.ToListAsync();
         return response;
     }
-    
-    public async Task<List<Observation>> GetObservationByTaxonAndPage(string? taxonId, int page)
-    {
-        int pageSize = 32;
-        var query = (from observation in dbContext.Observations
-                where taxonId == null || observation.Taxon.dwc_TaxonID == taxonId
-                orderby observation.TimeStamp descending
-                select observation)
-            .Skip((Math.Max(page, 1) - 1) * pageSize)
-            .Take(pageSize)
-            .Include(x => x.Taxon)
-            .Include(x => x.Author);
-
-        var response = await query.ToListAsync();
-        return response;
-    }
-    
-    public async Task<List<Observation>> GetObservationByTaxonAndAuthorAndPage(string? taxonId, string authorId, int page = 1)
-    {
-        int pageSize = 32;
-        var query = (from observation in dbContext.Observations
-                where taxonId == null && observation.Author.Id == authorId 
-                      || 
-                      observation.Taxon.dwc_TaxonID == taxonId && observation.Author.Id == authorId 
-                orderby observation.TimeStamp descending
-                select observation)
-            .Skip((Math.Max(page, 1) - 1) * pageSize)
-            .Take(pageSize)
-            .Include(x => x.Taxon)
-            .Include(x => x.Author);
-
-        var response = await query.ToListAsync();
-        return response;
-    }
 
     // Fetches all observations (newest first) so the verified Dafny filter can run in memory
     public async Task<List<Observation>> GetAllObservations()
@@ -116,7 +82,7 @@ public class ObservationRepository : IObservationRepository
     }
 
     // Loads the whole taxa table so EF fixes up the Parent navigation that isSubTaxon relies on
-    public async Task<Taxon?> GetTaxonWithAncestors(string taxonId)
+    public async Task<Taxon?> GetTaxonFromId(string taxonId)
     {
         var taxa = await dbContext.Taxons.ToListAsync();
         return taxa.FirstOrDefault(t => t.dwc_TaxonID == taxonId);

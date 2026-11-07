@@ -2,7 +2,6 @@
 
 using Bison.Services;
 using Bison.Tests.Mocks;
-using Moq;
 
 public class ObservationServiceTests
 {
@@ -56,31 +55,19 @@ public class ObservationServiceTests
     // Tests GetObservationByTaxonAndAuthorAndPage()
 
     [Fact]
-    public async Task GetObservationByTaxonAndAuthorAndPage_ReturnsOneDtoPerObservation()
+    public async Task GetObservationByTaxonAndAuthorAndPage_ReturnsOnlyThatAuthorsObservations()
     {
         // Arrange
         var service = CreateService();
         
         // Act
-        var result = await service.GetObservationByTaxonAndAuthorAndPage(null, "1", 1);
+        var result = await service.GetObservationByTaxonAndAuthorAndPage(null, "69", 1);
         
         // Assert
-        Assert.Equal(2, result.Count);
+        Assert.Single(result);
+        Assert.Equal(67, result[0].ObservationId);
     }
 
-    [Fact]
-    public async Task GetObservationByTaxonAndAuthorAndPage_KeepsRepositoryOrder()
-    {
-        // Arrange
-        var service = CreateService();
-        
-        // Act
-        var result = await service.GetObservationByTaxonAndAuthorAndPage(null, "1", 1);
-
-        // Assert
-        Assert.Equal(new long[] {8, 67}, result.Select(o => o.ObservationId));
-    }
-    
     [Fact]
     public async Task GetObservationByTaxonAndAuthorAndPage_TaxonWithoutDanishName_UsesDwcTaxonId()
     {
@@ -88,10 +75,10 @@ public class ObservationServiceTests
         var service = CreateService();
 
         // Act
-        var result = await service.GetObservationByTaxonAndAuthorAndPage(null, "1", 1);
+        var result = await service.GetObservationByTaxonAndAuthorAndPage(null, "69", 1);
 
         // Assert
-        Assert.Equal("Anders", result[1].TaxonName);
+        Assert.Equal("Anders", result[0].TaxonName);
     }
     
     
@@ -103,7 +90,7 @@ public class ObservationServiceTests
         var service = CreateService();
         
         // Act
-        var result = await service.GetObservationByTaxonAndPage(null);
+        var result = await service.GetObservationByTaxonAndPage(null, 1);
         
         // Assert
         Assert.Equal(2, result.Count);
@@ -116,7 +103,7 @@ public class ObservationServiceTests
         var service = CreateService();
         
         // Act
-        var result = await service.GetObservationByTaxonAndPage(null);
+        var result = await service.GetObservationByTaxonAndPage(null, 1);
 
         // Assert
         Assert.Equal(new long[] {8, 67}, result.Select(o => o.ObservationId));
@@ -129,7 +116,7 @@ public class ObservationServiceTests
         var service = CreateService();
         
         // Act
-        var result = await service.GetObservationByTaxonAndPage(null);
+        var result = await service.GetObservationByTaxonAndPage(null, 1);
 
         // Assert
         var dto = result[0];
@@ -148,6 +135,6 @@ public class ObservationServiceTests
     private static ObservationService CreateService()
     {
         var unitOfWork = MockIUnitOfWork.GetMock();
-        return new ObservationService(unitOfWork.Object);
+        return new ObservationService(unitOfWork.Object, new ObservationFilterService());
     }
 }
