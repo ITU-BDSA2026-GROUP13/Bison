@@ -16,12 +16,17 @@ jobs:
           dotnet-version: 8.0.x
       - name: Restore dependencies
         run: dotnet restore
+      - name: Install Z3
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes z3
       - name: Verify and compile Dafny
         working-directory: src/Bison.Razor/Dafny
         run: |
           dotnet tool restore
-          dotnet tool run dafny -- verify FilterBy.dfy
-          dotnet tool run dafny -- translate cs FilterBy.dfy --include-runtime --output FilterBy.cs
+          Z3_PATH="$(command -v z3)"
+          dotnet tool run dafny -- verify FilterBy.dfy --solver-path "$Z3_PATH"
+          dotnet tool run dafny -- translate cs FilterBy.dfy --include-runtime --solver-path "$Z3_PATH" --output FilterBy.cs
       - name: Build
         run: dotnet build --no-restore
       - name: Ensure browsers are installed
