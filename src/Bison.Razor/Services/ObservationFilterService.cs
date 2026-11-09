@@ -10,7 +10,7 @@ public class ObservationFilterService : IObservationFilterService
     public List<Observation> Filter(Taxon? root, IEnumerable<Observation> observations)
     {
         // No taxon selected means no filtering
-        if (root == null) return observations.ToList();
+        if (root == null) return [];
 
         var input = Sequence<Observation>.FromArray(observations.ToArray());
         var result = WrappedFilterBy.__default.WrappedFilter(root, input);

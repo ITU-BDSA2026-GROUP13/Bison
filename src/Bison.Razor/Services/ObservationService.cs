@@ -40,7 +40,7 @@ public class ObservationService : IObservationService
     {
         if (taxonId == null) return await GetObservations(page);
         Taxon? root = taxonId == null ? null : await unitOfWork.observationRepo.GetTaxonFromId(taxonId);
-        List<Observation> all = root == null ? [] : await unitOfWork.observationRepo.GetAllObservations();
+        List<Observation> all = await unitOfWork.observationRepo.GetAllObservations();
 
         return Translater(filterService.FilterAndPaginate(root, all, page));
     }
@@ -50,7 +50,7 @@ public class ObservationService : IObservationService
     {
         if (taxonId == null) return await GetObservationsFromAuthorAndPage(authorId, page);
         Taxon? root = taxonId == null ? null : await unitOfWork.observationRepo.GetTaxonFromId(taxonId);
-        List<Observation> all = root == null ? [] : await unitOfWork.observationRepo.GetAllObservationsByAuthor(authorId);
+        List<Observation> all = await unitOfWork.observationRepo.GetAllObservationsByAuthor(authorId);
 
         return Translater(filterService.FilterAndPaginate(root, all, page));
     }
