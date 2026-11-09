@@ -64,7 +64,8 @@ public class ObservationService : IObservationService
             o.Author.UserName ?? "",
             o.Taxon.VernacularName ?? o.Taxon.dwc_TaxonID,
             o.Text,
-            o.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss")
-        )).ToList();
+            o.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss"),
+            o.ImageFile
+            )).ToList();
     }
 }
