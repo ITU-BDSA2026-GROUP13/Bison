@@ -1,0 +1,19 @@
+@using Bison
+
+@inject SignInManager<Author> SignInManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    // The add observation area
+    <form method="post" action="">
+        <input type="text" placeholder="Taxon Danish name" value="" required/><br/><br/>
+        <input type="text" placeholder="Observation text" name="text" value="" required/><br/><br/>
+        <input type="file" placeholder="Observation image" name="image" value=""
+               accept="image/png, image/jpeg"/><br/><br/>
+        <input type="submit" value="Submit" class="submit"/>
+    </form>
+}
+else
+{
+    
+}   

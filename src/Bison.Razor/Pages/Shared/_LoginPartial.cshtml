@@ -9,13 +9,6 @@
 {
     <a href="/obs/@User.FindFirstValue(ClaimTypes.NameIdentifier)"><button type="button">My Observations</button></a>
     <a href="/obs"><button type="button">Public Observations</button></a>
-    // The add observation area
-    <form method="post" action="">
-        <input type="text" placeholder="Taxon Danish name" value="" required/><br/><br/>
-        <input type="text" placeholder="Observation text" name="text" value="" required /><br/><br/>
-        <input type="file" placeholder="Observation image" name="image" value="" accept="image/png, image/jpeg" /><br/><br/>
-        <input type="submit" value="Submit" class="submit"/>
-    </form>
     <a id="logoutForm" class form-inline asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
         <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout @User.FindFirstValue(ClaimTypes.Name)</button>
     </a>

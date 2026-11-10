@@ -7,7 +7,7 @@
 }
 
 <div>
-    
+    <partial name="Shared/_AddObservationPartial"/>
     @if (Model.FilteredTaxon != null)
     {
         <p>
@@ -16,7 +16,7 @@
         </p>
     }
     @if (Model.Observations.Any())
-    
+
     {
         <h2> @Model.Observations.First().AuthorName Observations </h2>
         <ul id="messagelist" class="observations">
