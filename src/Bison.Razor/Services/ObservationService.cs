@@ -39,7 +39,7 @@ public class ObservationService : IObservationService
     public async Task<List<ObservationDTO>> GetObservationByTaxonAndPage(string? taxonId, int page = 1)
     {
         if (taxonId == null) return await GetObservations(page);
-        Taxon? root = taxonId == null ? null : await unitOfWork.observationRepo.GetTaxonFromId(taxonId);
+        Taxon? root = await unitOfWork.observationRepo.GetTaxonFromId(taxonId);
         List<Observation> all = await unitOfWork.observationRepo.GetAllObservations();
 
         return Translater(filterService.FilterAndPaginate(root, all, page));
@@ -49,7 +49,7 @@ public class ObservationService : IObservationService
     public async Task<List<ObservationDTO>> GetObservationByTaxonAndAuthorAndPage(string? taxonId, string authorId, int page = 1)
     {
         if (taxonId == null) return await GetObservationsFromAuthorAndPage(authorId, page);
-        Taxon? root = taxonId == null ? null : await unitOfWork.observationRepo.GetTaxonFromId(taxonId);
+        Taxon? root = await unitOfWork.observationRepo.GetTaxonFromId(taxonId);
         List<Observation> all = await unitOfWork.observationRepo.GetAllObservationsByAuthor(authorId);
 
         return Translater(filterService.FilterAndPaginate(root, all, page));
