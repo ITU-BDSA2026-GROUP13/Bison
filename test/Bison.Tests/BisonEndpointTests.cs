@@ -44,6 +44,22 @@ public class BisonEndpointTests
     }
 
     [Fact]
+    public async Task TestObservationsContainsRegistrationAndLoginRequest()
+    {
+        //Arrange
+        string observationsUrl = "http://localhost:5273/obs";
+        
+        //Act
+        var response = await client.GetAsync(observationsUrl);
+        var content =  await response.Content.ReadAsStringAsync();
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        Assert.Contains("Register", content);
+        Assert.Contains("Login", content);
+    }
+
+    [Fact]
     public async Task TestGetMultiplePagesOnObservationsRequest()
     {
         // Arrange
@@ -92,6 +108,7 @@ public class BisonEndpointTests
         Assert.DoesNotContain("There are no observations so far", content); // Page redirects when exceeding the max. 
     }
     
+    
     // All Observations Filtering
     [Fact]
     public async Task TestGetUserTimelineRequest()
@@ -110,6 +127,22 @@ public class BisonEndpointTests
         
         Assert.Contains(username, content);
         Assert.DoesNotContain(otherUsername, content);
+    }
+    
+    [Fact]
+    public async Task TestUserTimelineContainsRegistrationAndLoginRequest()
+    {
+        //Arrange
+        string userTimelineUrl = "http://localhost:5273/obs/1";
+        
+        //Act
+        var response = await client.GetAsync(userTimelineUrl);
+        var content =  await response.Content.ReadAsStringAsync();
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        Assert.Contains("Register", content);
+        Assert.Contains("Login", content);
     }
     
     [Fact]
@@ -157,17 +190,15 @@ public class BisonEndpointTests
         Assert.DoesNotContain(otherTaxon, content);
     }
     
-
-    
     // Single Observation Pages
     [Fact]
     public async Task TestGetSinglePageObservationRequest()
     {
         //Arrange
-        string observationsUrl = "http://localhost:5273/ob/1";
+        string observationUrl = "http://localhost:5273/ob/1";
         
         //Act
-        var response = await client.GetAsync(observationsUrl);
+        var response = await client.GetAsync(observationUrl);
         string content = await response.Content.ReadAsStringAsync();
         
         //Assert
@@ -191,6 +222,21 @@ public class BisonEndpointTests
         // Same question as wrong endpoint above
     }
     
+    [Fact]
+    public async Task TestSingleObContainsRegistrationAndLoginRequest()
+    {
+        //Arrange
+        string observationUrl = "http://localhost:5273/ob/1";
+        
+        //Act
+        var response = await client.GetAsync(observationUrl);
+        var content =  await response.Content.ReadAsStringAsync();
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        Assert.Contains("Register", content);
+        Assert.Contains("Login", content);
+    }
     
     //TODO: Test POSTING endpoints (All) (If this is how they will be added)
     
