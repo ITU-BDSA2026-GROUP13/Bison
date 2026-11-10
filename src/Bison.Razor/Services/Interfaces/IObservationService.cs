@@ -12,5 +12,5 @@ public interface IObservationService
 
     public Task<List<ObservationDTO>> GetObservationByTaxonAndPage(string? taxon, int page = 1);
 
-    public Task<List<ObservationDTO>> GetObservationByTaxonAndAuthorAndPage(string? taxonId, string authorId,int page);
+    public Task<List<ObservationDTO>> GetObservationByTaxonAndAuthorAndPage(string? taxonId, string authorId, int page);
 }

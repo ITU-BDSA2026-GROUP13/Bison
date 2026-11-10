@@ -2,6 +2,7 @@
 
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using Repository;
 
 public class ObservationRepositoryTests : IDisposable
@@ -244,168 +245,57 @@ public class ObservationRepositoryTests : IDisposable
         Assert.NotNull(result.Taxon);
         Assert.Null(result.Taxon.VernacularName);
     }
-    
-    // Tests for GetObservationByTaxonAndPage
-    [Theory]
-    [InlineData(1, "TEST:swan", 2)]
-    [InlineData(1, "TEST:heron", 32)]
-    [InlineData(2, "TEST:heron", 3)]
-    public async Task GetObservationByTaxonAndPage_TaxonReturnsCorrectAmountOfObservations(int page, string taxonId, int expected)
+
+
+    //Tests for GetTaxonFromId
+    [Fact]
+    public async Task GetTaxonFromId_ReturnedCorrectId()
     {
-        // Arrange
+        string expected_dwc_TaxonID = "TEST:heron";
         using var context = CreateContext();
         var repo = new ObservationRepository(context);
-        
-        // Act
-        var result = await repo.GetObservationByTaxonAndPage(taxonId, page);
 
-        // Assert
-        Assert.Equal(expected, result.Count);
+        var result = await repo.GetTaxonFromId(expected_dwc_TaxonID);
+
+        Assert.NotNull(result);
+        Assert.Equal(expected_dwc_TaxonID, result.dwc_TaxonID);
     }
 
     [Fact]
-    public async Task GetObservationByTaxonAndPage_NullTaxonReturnsAll_AndCheckSortedByTime()
+    public async Task GetTaxonFromId_UsingNonExistingTaxon()
     {
-        // Arrange
         using var context = CreateContext();
         var repo = new ObservationRepository(context);
-        
-        // Act
-        var page1 = await repo.GetObservationByTaxonAndPage(null, 1);
-        var page2 = await repo.GetObservationByTaxonAndPage(null, 2);
-        
-        // Assert
-        Assert.Equal(32, page1.Count);
-        Assert.Equal(6, page2.Count);
-        for (int i = 1; i < page1.Count; i++)
-        {
-            Assert.True(page1[i-1].TimeStamp >= page1[i].TimeStamp);
-        }
+
+        var result = await repo.GetTaxonFromId("lars");
+
+        Assert.Null(result);
     }
 
+    //Tests for GetAllObservations
     [Fact]
-    public async Task GetObservationByTaxonAndPage_UnknownTaxonReturnsEmptyList()
+    public async Task GetAllObservations_ReturnsAllObservations()
     {
-        // Arrange
         using var context = CreateContext();
         var repo = new ObservationRepository(context);
-        var unknownTaxonId = "ThisIsWeird";
-        
-        // Act
-        var result = await repo.GetObservationByTaxonAndPage(unknownTaxonId, 1);
 
-        // Assert
-        Assert.Empty(result);
+        var result = await repo.GetAllObservations();
+
+        Assert.NotNull(result);
+        Assert.Equal(38, result.Count());
     }
 
+    //Tests for GetAllObservationsByAuthor
     [Fact]
-    public async Task GetObservationByTaxonAndPage_CorrectTaxonInWholeList()
+
+    //Ikke sikker på PT hvordan denne skal testes da nu kommer id fra noget andet og ikke en del af dummy data?
+    public async Task GetAllObservationsByAuthor_GivenValidAuthor()
     {
-        // Arrange
         using var context = CreateContext();
         var repo = new ObservationRepository(context);
-        var expected = _data.Heron;
-        var taxonId = "TEST:heron";
 
-        // Act
-        var result = await repo.GetObservationByTaxonAndPage(taxonId, 1);
-
-        // Assert
-        Assert.Equal(32, result.Count);
-        Assert.All(result, o => Assert.Equal(expected.TaxonId, o.Taxon.TaxonId));
+        //var result = await repo.GetAllObservationsByAuthor()
     }
-    
-    // Test GetObservationByTaxonAndAuthorAndPage
-
-    [Fact]
-    public async Task GetObservationByTaxonAndAuthorAndPage_AuthorAndTaxonReturnsMatchingObservations()
-    {
-        // Arrange
-        using var context = CreateContext();
-        var repo = new ObservationRepository(context);
-        var authorId = _data.AuthorB.Id;
-        var taxonId = "TEST:swan";
-        
-        // Act
-        var result = await repo.GetObservationByTaxonAndAuthorAndPage(taxonId, authorId, 1);
-        
-        // Assert
-        Assert.Equal(2, result.Count);
-    }
-
-    [Fact]
-    public async Task GetObservationByTaxonAndAuthorAndPage_NullTaxonReturnsAllFromAuthor()
-    {
-        // Arrange
-        using var context = CreateContext();
-        var repo = new ObservationRepository(context);
-        var authorId = _data.AuthorB.Id;
-        string taxonId = null;
-        
-        // Act
-        var result = await repo.GetObservationByTaxonAndAuthorAndPage(taxonId, authorId, 1);
-        
-        // Assert
-        Assert.Equal(3, result.Count);
-    }
-
-    [Fact]
-    public async Task GetObservationByTaxonAndAuthorAndPage_AuthorWithoutTaxonReturnsEmpty()
-    {
-        // Arrange
-        using var context = CreateContext();
-        var repo = new ObservationRepository(context);
-        var authorId = _data.AuthorA.Id;
-        var taxonId = _data.Swan.dwc_TaxonID;
-
-        // Act
-        var result = await repo.GetObservationByTaxonAndAuthorAndPage(taxonId, authorId, 1);
-
-        // Assert
-        Assert.Empty(result);
-    }
-    
-    [Fact]
-    public async Task GetObservationByTaxonAndAuthorAndPage_ResultsMatchBothAuthorAndTaxon()
-    {
-        // Arrange
-        using var context = CreateContext();
-        var repo = new ObservationRepository(context);
-        var authorId = _data.AuthorA.Id;
-        var taxonId = _data.Heron.dwc_TaxonID;
-
-        // Act
-        var result = await repo.GetObservationByTaxonAndAuthorAndPage(taxonId, authorId, 1);
-
-        // Assert
-        Assert.Equal(32, result.Count);
-        Assert.All(result, o =>
-        {
-            Assert.Equal(authorId, o.Author.Id);
-            Assert.Equal(taxonId, o.Taxon.dwc_TaxonID);
-        });
-    }
-    
-    
-    [Theory]
-    [InlineData(1, 32)]
-    [InlineData(2, 3)]
-    public async Task GetObservationByTaxonAndAuthorAndPage_PaginationReturnsCorrectly(int page, int expectedCount)
-    {
-        // Arrange
-        using var context = CreateContext();
-        var repo = new ObservationRepository(context);
-        var authorId = _data.AuthorA.Id;
-        var taxonId = _data.Heron.dwc_TaxonID;
-
-        // Act
-        var result = await repo.GetObservationByTaxonAndAuthorAndPage(taxonId, authorId, page);
-
-        // Assert
-        Assert.Equal(expectedCount, result.Count);
-    }
-    
-    
     
     
     // Tests for methods we actually don't use... (Remembered this after writing them :((((( )

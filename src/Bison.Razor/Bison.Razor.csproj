@@ -30,7 +30,7 @@
       <DependentUpon>ObservationDetail.cshtml</DependentUpon>
     </Compile>
   </ItemGroup>
-
+  
   <ItemGroup>
     <Folder Include="Migrations\" />
   </ItemGroup>

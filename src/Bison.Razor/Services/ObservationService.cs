@@ -8,12 +8,13 @@ using Repository;
 
 public class ObservationService : IObservationService
 {
-    
     private readonly IUnitOfWork unitOfWork;
+    private readonly IObservationFilterService filterService;
 
-    public ObservationService(IUnitOfWork unitOfWork)
+    public ObservationService(IUnitOfWork unitOfWork, IObservationFilterService filterService)
     {
         this.unitOfWork = unitOfWork;
+        this.filterService = filterService;
     }
 
     public async Task<List<ObservationDTO>> GetObservations(int page)
@@ -34,18 +35,26 @@ public class ObservationService : IObservationService
         return observation == null ? null : Translater(new List<Observation> { observation }).Single();
     }
 
-    public async Task<List<ObservationDTO>> GetObservationByTaxonAndPage(string? taxon, int page = 1)
+    // Filters by taxon and its subtaxa using the verified Dafny code
+    public async Task<List<ObservationDTO>> GetObservationByTaxonAndPage(string? taxonId, int page = 1)
     {
-        List<Observation> observations = await unitOfWork.observationRepo.GetObservationByTaxonAndPage(taxon, page);
-        return Translater(observations);
+        if (taxonId == null) return await GetObservations(page);
+        Taxon? root = await unitOfWork.observationRepo.GetTaxonFromId(taxonId);
+        List<Observation> all = await unitOfWork.observationRepo.GetAllObservations();
+
+        return Translater(filterService.FilterAndPaginate(root, all, page));
     }
 
+    // Same as above, but only for one author's observations
     public async Task<List<ObservationDTO>> GetObservationByTaxonAndAuthorAndPage(string? taxonId, string authorId, int page = 1)
     {
-        List<Observation> observations = await unitOfWork.observationRepo.GetObservationByTaxonAndAuthorAndPage(taxonId, authorId, page);
-        return Translater(observations);
+        if (taxonId == null) return await GetObservationsFromAuthorAndPage(authorId, page);
+        Taxon? root = await unitOfWork.observationRepo.GetTaxonFromId(taxonId);
+        List<Observation> all = await unitOfWork.observationRepo.GetAllObservationsByAuthor(authorId);
+
+        return Translater(filterService.FilterAndPaginate(root, all, page));
     }
-    
+
     private List<ObservationDTO> Translater(List<Observation> observations)
     {
         return observations.Select(o => new ObservationDTO(
@@ -58,5 +67,4 @@ public class ObservationService : IObservationService
             o.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss")
         )).ToList();
     }
-    
 }
