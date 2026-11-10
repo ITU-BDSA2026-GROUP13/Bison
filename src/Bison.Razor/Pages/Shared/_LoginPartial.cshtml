@@ -11,10 +11,9 @@
     <a href="/obs"><button type="button">Public Observations</button></a>
     // The add observation area
     <form method="post" action="">
-        Company Name:<br/>
-        <input type="text" name="CompanyName" value=""/><br/>
-        Contact Name:<br/>
-        <input type="text" name="ContactName" value=""/><br/><br/>
+        <input type="text" placeholder="Taxon Danish name" value="" required/><br/><br/>
+        <input type="text" placeholder="Observation text" name="text" value="" required /><br/><br/>
+        <input type="file" placeholder="Observation image" name="image" value="" accept="image/png, image/jpeg" /><br/><br/>
         <input type="submit" value="Submit" class="submit"/>
     </form>
     <a id="logoutForm" class form-inline asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
