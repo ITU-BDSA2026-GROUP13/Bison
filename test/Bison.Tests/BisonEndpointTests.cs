@@ -43,21 +43,7 @@ public class BisonEndpointTests
         Assert.Contains("Public Timeline", content);
     }
 
-    [Fact]
-    public async Task TestObservationsContainsRegistrationAndLoginRequest()
-    {
-        //Arrange
-        string observationsUrl = "http://localhost:5273/obs";
-        
-        //Act
-        var response = await client.GetAsync(observationsUrl);
-        var content =  await response.Content.ReadAsStringAsync();
-        
-        //Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
-        Assert.Contains("Register", content);
-        Assert.Contains("Login", content);
-    }
+    
 
     [Fact]
     public async Task TestGetMultiplePagesOnObservationsRequest()
@@ -129,21 +115,7 @@ public class BisonEndpointTests
         Assert.DoesNotContain(otherUsername, content);
     }
     
-    [Fact]
-    public async Task TestUserTimelineContainsRegistrationAndLoginRequest()
-    {
-        //Arrange
-        string userTimelineUrl = "http://localhost:5273/obs/1";
-        
-        //Act
-        var response = await client.GetAsync(userTimelineUrl);
-        var content =  await response.Content.ReadAsStringAsync();
-        
-        //Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
-        Assert.Contains("Register", content);
-        Assert.Contains("Login", content);
-    }
+    
     
     [Fact]
     public async Task TestTaxonFilteringOnObservationsRequest()
@@ -222,6 +194,41 @@ public class BisonEndpointTests
         // Same question as wrong endpoint above
     }
     
+    
+    
+    // Login and Registration
+    [Fact]
+    public async Task TestObservationsContainsRegistrationAndLoginRequest()
+    {
+        //Arrange
+        string observationsUrl = "http://localhost:5273/obs";
+        
+        //Act
+        var response = await client.GetAsync(observationsUrl);
+        var content =  await response.Content.ReadAsStringAsync();
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        Assert.Contains("Register", content);
+        Assert.Contains("Login", content);
+    }
+    
+    [Fact]
+    public async Task TestUserTimelineContainsRegistrationAndLoginRequest()
+    {
+        //Arrange
+        string userTimelineUrl = "http://localhost:5273/obs/1";
+        
+        //Act
+        var response = await client.GetAsync(userTimelineUrl);
+        var content =  await response.Content.ReadAsStringAsync();
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        Assert.Contains("Register", content);
+        Assert.Contains("Login", content);
+    }
+    
     [Fact]
     public async Task TestSingleObContainsRegistrationAndLoginRequest()
     {
@@ -236,6 +243,66 @@ public class BisonEndpointTests
         Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
         Assert.Contains("Register", content);
         Assert.Contains("Login", content);
+    }
+    
+    [Fact]
+    public async Task TestLoginPageRequest()
+    {
+        //Arrange
+        string pageUrl = "http://localhost:5273/Identity/Account/Login";
+        
+        //Act
+        var response = await client.GetAsync(pageUrl);
+        var content =  await response.Content.ReadAsStringAsync();
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        Assert.Contains("Use a local account to log in.", content);
+    }
+    
+    [Fact]
+    public async Task TestRegisterPageRequest()
+    {
+        //Arrange
+        string pageUrl = "http://localhost:5273/Identity/Account/Register";
+        
+        //Act
+        var response = await client.GetAsync(pageUrl);
+        var content =  await response.Content.ReadAsStringAsync();
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        Assert.Contains("Create a new account.", content);
+    }
+    
+    [Fact]
+    public async Task TestForgotPasswordPageRequest()
+    {
+        //Arrange
+        string pageUrl = "http://localhost:5273/Identity/Account/ForgotPassword";
+        
+        //Act
+        var response = await client.GetAsync(pageUrl);
+        var content =  await response.Content.ReadAsStringAsync();
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        Assert.Contains("Enter your email.", content);
+    }
+    
+    [Fact]
+    public async Task TestResendEmailConfirmationPageRequest()
+    {
+        //Arrange
+        string pageUrl = "http://localhost:5273/Identity/Account/ResendEmailConfirmation";
+        
+        //Act
+        var response = await client.GetAsync(pageUrl);
+        var content =  await response.Content.ReadAsStringAsync();
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        Assert.Contains("Enter your email.", content);
     }
     
     //TODO: Test POSTING endpoints (All) (If this is how they will be added)
