@@ -49,6 +49,7 @@ builder.Services.AddScoped<IObservationService, ObservationService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IProposalService, ProposalService>();
 builder.Services.AddScoped<IObservationFilterService, ObservationFilterService>();
+builder.Services.AddScoped<ITaxonService, TaxonService>();
 
 
 

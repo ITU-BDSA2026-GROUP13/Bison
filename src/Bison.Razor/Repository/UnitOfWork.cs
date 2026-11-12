@@ -9,6 +9,7 @@ public class UnitOfWork : IUnitOfWork
     public IObservationRepository observationRepo { get; }
     public ICommentRepository commentRepo { get; }
     public IProposalRepository proposalRepo { get; }
+    public ITaxonRepository taxonRepo { get; }
     
     public UnitOfWork(BisonDBContext dbContext)
     {
@@ -17,6 +18,7 @@ public class UnitOfWork : IUnitOfWork
         this.observationRepo = new ObservationRepository(dbContext);
         this.commentRepo = new CommentRepository(dbContext);
         this.proposalRepo = new ProposalRepository(dbContext);
+        this.taxonRepo = new TaxonRepository(dbContext);
     }
 
     public void Save()
