@@ -1,19 +1,24 @@
 @using Bison
 
 @inject SignInManager<Author> SignInManager
-
+@model Bison.DTOs.ObservationCreateDTO
 @if (SignInManager.IsSignedIn(User))
 {
-    // The add observation area
+    // The not done implementation of a Razor pages form with use of tag helpers
+    // its missing the classes it refference
     <form method="post" action="">
-        <input type="text" placeholder="Taxon Danish name" value="" required/><br/><br/>
-        <input type="text" placeholder="Observation text" name="text" value="" required/><br/><br/>
-        <input type="file" placeholder="Observation image" name="image" value=""
-               accept="image/png, image/jpeg"/><br/><br/>
-        <input type="submit" value="Submit" class="submit"/>
+        <div class="form-group">
+            <label asp-for="TaxonName"></label>
+            <input class="form-control" asp-for="TaxonName"/>
+            <span asp-validation-for="TaxonName"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ObservationText"></label>
+            <input class="form-control" asp-for="ObservationText"/>
+            <span asp-validation-for="ObservationText"></span>
+        </div>
+        //TO DO IMAGE
+        <button type="submit" class="btn btn-primary">Opret</button>
     </form>
 }
-else
-{
-    
-}   
+
