@@ -2,23 +2,32 @@
 
 @inject SignInManager<Author> SignInManager
 @model Bison.DTOs.ObservationCreateDTO
+
 @if (SignInManager.IsSignedIn(User))
 {
     // The not done implementation of a Razor pages form with use of tag helpers
     // its missing the classes it refference
-    <form method="post" action="">
-        <div class="form-group">
-            <label asp-for="TaxonName"></label>
-            <input class="form-control" asp-for="TaxonName"/>
-            <span asp-validation-for="TaxonName"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="ObservationText"></label>
-            <input class="form-control" asp-for="ObservationText"/>
-            <span asp-validation-for="ObservationText"></span>
-        </div>
-        //TO DO IMAGE
-        <button type="submit" class="btn btn-primary">Opret</button>
-    </form>
+    <div class="observationbox">
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="TaxonId">Taxon</label>
+                <select class="form-select" asp-for="TaxonId" asp-items="Model.TaxonOptions">
+                    <option value="">-- Choose Taxon --</option>
+                </select>
+                <span asp-validation-for="TaxonId"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ObservationText"></label>
+                <input class="form-control" asp-for="ObservationText"/>
+                <span asp-validation-for="ObservationText"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image"></label>
+                <input class="form-control" asp-for="Image" accept="image/png, image/jpeg"/>
+                <span asp-validation-for="Image"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Opret</button>
+        </form>
+    </div>
 }
 
