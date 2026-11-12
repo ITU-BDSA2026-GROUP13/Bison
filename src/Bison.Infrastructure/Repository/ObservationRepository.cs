@@ -81,6 +81,7 @@ public class ObservationRepository : IObservationRepository
             .ToListAsync();
     }
 
+    // TODO: Refactor so this method becomes part of the TaxonRepository instead
     // Loads the whole taxa table so EF fixes up the Parent navigation that isSubTaxon relies on
     public async Task<Taxon?> GetTaxonFromId(string taxonId)
     {
