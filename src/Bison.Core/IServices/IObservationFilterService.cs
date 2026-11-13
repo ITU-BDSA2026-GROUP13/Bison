@@ -1,4 +1,6 @@
-namespace Bison.Services;
+namespace Bison.Services.Interfaces;
+
+using System.Collections.Generic;
 
 public interface IObservationFilterService
 {

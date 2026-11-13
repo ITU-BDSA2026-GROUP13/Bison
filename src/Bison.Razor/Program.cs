@@ -3,7 +3,6 @@ using Bison.Repository;
 using Bison.Services;
 using Bison.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity;

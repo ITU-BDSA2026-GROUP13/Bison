@@ -1,5 +1,7 @@
 ﻿namespace Bison;
 
+using System;
+
 public abstract class Post
 {
     public long PostId { get; set; }
