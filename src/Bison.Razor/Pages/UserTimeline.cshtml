@@ -1,5 +1,6 @@
 ﻿@page "/obs/{authorId}"
 @using Bison
+@using System.Security.Claims
 @model Bison.Razor.Pages.UserTimelineModel
 @inject SignInManager<Author> SignInManager
 @{
@@ -17,14 +18,15 @@
             <a href="?">(clear filter)</a>
         </p>
     }
+    
+    @if (Model.MyPage)
+    {
+        <h2> My Observations </h2>
+        <partial name="Shared/_AddObservationPartial" for="NewObservation"/>
+    }
     @if (Model.Observations.Any())
     {
-        @if (User.Identity.Name.Equals(Model.Observations.First().AuthorName))
-        {
-            <h2> My Observations </h2>
-            <partial name="Shared/_AddObservationPartial" for="NewObservation"/>
-        }
-        else
+        @if (!Model.MyPage) 
         {
             <h2> @Model.Observations.First().AuthorName Observations </h2>    
         }

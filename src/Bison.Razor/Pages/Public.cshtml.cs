@@ -29,9 +29,16 @@ public class PublicModel : ObservationFormPageModel
         int.TryParse(Request.Query["page"], out var page);
         CurrentPage = Math.Max(page, 1);
 
-        string? taxonId = Request.Query["taxonId"];
-        FilteredTaxon = taxonId;
+        string taxonId = Request.Query["taxonId"];
+        if (taxonId == "")
+        {
+            FilteredTaxon = null;
+        }
+        else
+        {
+            this.FilteredTaxon = taxonId; 
+        }
 
-        Observations = await _service.GetObservationByTaxonAndPage(taxonId, page);
+        Observations = await _service.GetObservationByTaxonAndPage(this.FilteredTaxon, page);
     }
 }

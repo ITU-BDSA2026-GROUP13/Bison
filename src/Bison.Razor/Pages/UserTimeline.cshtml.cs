@@ -5,6 +5,7 @@ namespace Bison.Razor.Pages;
 
 using Bison.DTOs;
 using Services.Interfaces;
+using System.Security.Claims;
 
 public class UserTimelineModel : ObservationFormPageModel
 {
@@ -12,6 +13,8 @@ public class UserTimelineModel : ObservationFormPageModel
     public int CurrentPage { get; set; }
     public List<ObservationDTO> Observations { get; set; } = new();
     public string? FilteredTaxon { get; set; }
+    public string? AuthorId { get; set; }
+    public bool MyPage { get; set; }
 
 
     public UserTimelineModel(IObservationService service, ITaxonService taxonService) : base(service, taxonService)
@@ -27,14 +30,24 @@ public class UserTimelineModel : ObservationFormPageModel
 
     protected override async Task LoadPageDataAsync()
     {
-        var authorId = RouteData.Values["authorId"]?.ToString();
+        this.AuthorId = RouteData.Values["authorId"]?.ToString();
+        
 
         int.TryParse(Request.Query["page"], out var page);
         CurrentPage = Math.Max(page, 1);
 
         string taxonId = Request.Query["taxonId"];
-        FilteredTaxon = taxonId;
+        if (taxonId == "")
+        {
+            FilteredTaxon = null;
+        }
+        else
+        {
+            this.FilteredTaxon = taxonId; 
+        }
 
-        Observations = await _service.GetObservationByTaxonAndAuthorAndPage(taxonId, authorId, page);
+        this.MyPage = User.FindFirstValue(ClaimTypes.NameIdentifier).Equals(this.AuthorId);
+
+        Observations = await _service.GetObservationByTaxonAndAuthorAndPage(this.FilteredTaxon, this.AuthorId, this.CurrentPage);
     }
 }
