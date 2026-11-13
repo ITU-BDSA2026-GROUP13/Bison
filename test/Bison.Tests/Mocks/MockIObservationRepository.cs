@@ -46,10 +46,7 @@ public class MockIObservationRepository
         mock.Setup(m => m.GetAllObservations()).ReturnsAsync(observations);
 
         mock.Setup(m => m.GetAllObservationsByAuthor(It.IsAny<string>()))
-            .ReturnsAsync((string authorId) => observations.Where(o => o.Author.Id == authorId).ToList());
-
-        mock.Setup(m => m.GetTaxonFromId(It.IsAny<string>()))
-            .ReturnsAsync((string taxonId) => taxons.FirstOrDefault(t => t.dwc_TaxonID == taxonId));
+            .ReturnsAsync((string authorId) => observations.Where(o => o.Author.Id == authorId).ToList());  
 
         mock.Setup(m => m.GetObservationsByPage(It.IsAny<int>()))
             .ReturnsAsync(observations);

@@ -12,10 +12,10 @@ public class TaxonRepository : ITaxonRepository
         this.dbContext = dbContext;
     }
 
-    public Task<Taxon?> GetTaxonById(string taxonId)
+    public async Task<Taxon?> GetTaxonById(string taxonId)
     {
-        // IMPLEMENT THIS WHEN DONE WITH THE OTHERS
-        throw new NotImplementedException();
+        var taxa = await dbContext.Taxons.ToListAsync();
+        return taxa.FirstOrDefault(t => t.dwc_TaxonID == taxonId);
     }
 
     public Task<Taxon?> GetTaxonByVernacularName(string vernacularName)
