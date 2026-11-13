@@ -9,5 +9,6 @@ public record ObservationDTO
         string AuthorName, 
         string TaxonName,
         string Text,
-        string TimeStamp
+        string TimeStamp,
+        string? PictureFileName = null
     ); 
