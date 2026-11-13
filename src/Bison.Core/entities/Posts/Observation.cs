@@ -1,5 +1,7 @@
 ﻿namespace Bison;
 
+using System.Collections.Generic;
+
 public class Observation : Post
 {
     public Taxon Taxon { get; set; }
