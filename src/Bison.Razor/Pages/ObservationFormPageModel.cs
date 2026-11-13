@@ -45,6 +45,8 @@ public abstract class ObservationFormPageModel : PageModel
         }
 
         // TODO: IMPLEMENT: await observationService.CreateObservation(NewObservation, User);
+        await observationService.CreateObservation(NewObservation, User);
+        
         return RedirectToPage();
     }
 
