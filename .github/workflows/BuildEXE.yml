@@ -21,7 +21,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes z3
       - name: Verify and compile Dafny
-        working-directory: src/Bison.Razor/Dafny
+        working-directory: src/Bison.Infrastructure/Dafny
         run: |
           dotnet tool restore
           Z3_PATH="$(command -v z3)"

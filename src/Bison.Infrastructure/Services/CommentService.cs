@@ -1,9 +1,8 @@
 ﻿namespace Bison.Services;
 
 using Bison.DTOs;
-
-
-using Interfaces;
+using Bison.Repository;
+using Bison.Services.Interfaces;
 
 public class CommentService : ICommentService
 {

@@ -1,5 +1,7 @@
 ﻿namespace Bison;
 
+using System.Collections.Generic;
+
 public class Taxon
 {
     public long TaxonId { get; set; }

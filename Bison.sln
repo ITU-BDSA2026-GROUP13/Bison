@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bison.Tests", "test\Bison.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bison.Razor", "src\Bison.Razor\Bison.Razor.csproj", "{A6018FA9-0152-4C8F-B74D-E5DCEBE5A777}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bison.Infrastructure", "src\Bison.Infrastructure\Bison.Infrastructure.csproj", "{D8E8B55C-A8C4-497B-92A4-9AF927D4BA12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bison.Core", "src\Bison.Core\Bison.Core.csproj", "{0E8DD604-49C6-417B-A7EF-1478B271CA09}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +29,14 @@ Global
 		{A6018FA9-0152-4C8F-B74D-E5DCEBE5A777}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6018FA9-0152-4C8F-B74D-E5DCEBE5A777}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6018FA9-0152-4C8F-B74D-E5DCEBE5A777}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8E8B55C-A8C4-497B-92A4-9AF927D4BA12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8E8B55C-A8C4-497B-92A4-9AF927D4BA12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8E8B55C-A8C4-497B-92A4-9AF927D4BA12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8E8B55C-A8C4-497B-92A4-9AF927D4BA12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E8DD604-49C6-417B-A7EF-1478B271CA09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E8DD604-49C6-417B-A7EF-1478B271CA09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E8DD604-49C6-417B-A7EF-1478B271CA09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E8DD604-49C6-417B-A7EF-1478B271CA09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,5 +44,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{445101C8-3E38-4F27-9225-9EC1DB7FD9A1} = {1454D38A-C3BE-4430-9BF6-B37069C7BEA3}
 		{A6018FA9-0152-4C8F-B74D-E5DCEBE5A777} = {1F9149FA-644E-43AA-869E-919575A1AC00}
+		{D8E8B55C-A8C4-497B-92A4-9AF927D4BA12} = {1F9149FA-644E-43AA-869E-919575A1AC00}
+		{0E8DD604-49C6-417B-A7EF-1478B271CA09} = {1F9149FA-644E-43AA-869E-919575A1AC00}
 	EndGlobalSection
 EndGlobal

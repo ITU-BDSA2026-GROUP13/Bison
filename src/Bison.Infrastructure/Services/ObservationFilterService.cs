@@ -1,6 +1,7 @@
 namespace Bison.Services;
 
 using Dafny;
+using Bison.Services.Interfaces;
 
 public class ObservationFilterService : IObservationFilterService
 {
