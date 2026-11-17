@@ -4,6 +4,7 @@ using Bison.DTOs;
 
 using Interfaces;
 using Microsoft.CodeAnalysis.Elfie.Serialization;
+using Razor.Services.Interfaces;
 using Repository;
 using System.Security.Claims;
 
@@ -11,11 +12,15 @@ public class ObservationService : IObservationService
 {
     private readonly IUnitOfWork unitOfWork;
     private readonly IObservationFilterService filterService;
+    private readonly IAuthorService authorService;
+    private readonly ITaxonService taxonService;
 
     public ObservationService(IUnitOfWork unitOfWork, IObservationFilterService filterService)
     {
         this.unitOfWork = unitOfWork;
         this.filterService = filterService;
+        this.authorService = authorService;
+        this.taxonService = taxonService;
     }
 
     public async Task<List<ObservationDTO>> GetObservations(int page)
@@ -59,10 +64,12 @@ public class ObservationService : IObservationService
     //The method for adding an observation to our databse
     public async Task CreateObservation(ObservationCreateDTO NewObservation, ClaimsPrincipal user)
     {
+        Author author = await authorService.GetAuthorByID(user.FindFirstValue(ClaimTypes.NameIdentifier));
+        Taxon taxon = await taxonService.GetTaxonById(NewObservation.TaxonId);
         var observationToAdd = new Observation()
         { 
             //To do get the auther from id exposed in claims and add it to the observation object 
-            //Author = user.FindFirstValue(ClaimTypes.NameIdentifier), Taxon = tArdeaCinerea, Text = "Grey heron standing still in the reeds at the lake.",
+            Author = author, Taxon = taxon, Text = NewObservation.ObservationText,
             TimeStamp = DateTime.Parse("2023-08-01 07:12:00")
         };
 
