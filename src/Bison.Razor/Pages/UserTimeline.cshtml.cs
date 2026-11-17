@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Bison.Razor.Pages;
 
 using Bison.DTOs;
+using Bison.Services.Interfaces;
 using Services.Interfaces;
 using System.Security.Claims;
 
