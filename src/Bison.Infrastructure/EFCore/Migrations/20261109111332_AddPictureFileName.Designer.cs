@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bison.Razor.Migrations
 {
     [DbContext(typeof(BisonDBContext))]
-    [Migration("20261113130205_AddPictureFileName")]
-    partial class AddPictureFileName
+    [Migration("20261109111332_New migration2")]
+    partial class Newmigration2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -283,6 +283,9 @@ namespace Bison.Razor.Migrations
             modelBuilder.Entity("Bison.Observation", b =>
                 {
                     b.HasBaseType("Bison.Post");
+
+                    b.Property<string>("ImageFile")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Location")
                         .HasColumnType("TEXT");
