@@ -12,5 +12,5 @@ public interface ITaxonRepository
 
     Task<List<Taxon>> GetAllTaxonsWithVernacularName();
 
-    public Task<List<TaxonOptionDTO>> GetTaxonOptions();
+ public Task<List<TaxonOptionDTO>> GetTaxonOptions();
 }

@@ -10,7 +10,7 @@ public interface IUnitOfWork
     public IProposalRepository proposalRepo { get; }
     public ITaxonRepository taxonRepo { get; }
     public IAuthorRepository authorRepository { get;  }
-    
+   
     public void Save();
     public void Add(Observation observation);
 

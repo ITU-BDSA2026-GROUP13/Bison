@@ -16,7 +16,7 @@ public class TaxonRepository : ITaxonRepository
     {
         var taxa = await dbContext.Taxons.ToListAsync();
         return taxa.FirstOrDefault(t => t.dwc_TaxonID == taxonId);
-    }
+   }
 
     public Task<Taxon?> GetTaxonByVernacularName(string vernacularName)
     {
@@ -47,7 +47,6 @@ public class TaxonRepository : ITaxonRepository
         {
             string dwc_TaxonId = t.dwc_TaxonID;
             string vernacularName = t.VernacularName;
-
             taxonOptionDtos.Add(new TaxonOptionDTO(dwc_TaxonId, vernacularName));
         }
 
