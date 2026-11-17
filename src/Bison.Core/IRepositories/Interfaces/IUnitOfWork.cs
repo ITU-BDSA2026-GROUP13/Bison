@@ -1,7 +1,5 @@
 ﻿namespace Bison;
 
-using Repository;
-
 public interface IUnitOfWork
 {
     public IObservationRepository observationRepo { get; }
