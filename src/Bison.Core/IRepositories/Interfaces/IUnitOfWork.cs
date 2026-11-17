@@ -1,8 +1,11 @@
 ﻿namespace Bison;
 
+<<<<<<< HEAD
 using Razor.Services.Interfaces;
 using Repository;
 
+=======
+>>>>>>> bb8a28b (refac:)
 public interface IUnitOfWork
 {
     public IObservationRepository observationRepo { get; }
