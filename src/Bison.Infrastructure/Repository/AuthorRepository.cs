@@ -13,8 +13,8 @@ public class AuthorRepository : IAuthorRepository
     
     public async Task<Author> GetAuthorByID(string? authorId)
     {
-        var author = await dbContext.Authors.ToListAsync();
-        return author.FirstOrDefault(a => a.Id == authorId);
+        var authors = await dbContext.Authors.ToListAsync();
+        return authors.FirstOrDefault(a => a.Id == authorId);
     }
         
 }

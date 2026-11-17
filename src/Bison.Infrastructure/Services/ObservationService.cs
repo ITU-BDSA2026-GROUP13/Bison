@@ -14,7 +14,7 @@ public class ObservationService : IObservationService
     private readonly IAuthorService authorService;
     private readonly ITaxonService taxonService;
 
-    public ObservationService(IUnitOfWork unitOfWork, IObservationFilterService filterService)
+    public ObservationService(IUnitOfWork unitOfWork, IObservationFilterService filterService, IAuthorService authorService, ITaxonService taxonService)
     {
         this.unitOfWork = unitOfWork;
         this.filterService = filterService;
@@ -61,17 +61,19 @@ public class ObservationService : IObservationService
     }
     
     //The method for adding an observation to our databse
-    public async Task CreateObservation(ObservationCreateDTO NewObservation, ClaimsPrincipal user)
+    public async Task CreateObservation(ObservationCreateDTO newObservation, ClaimsPrincipal user)
     {
+        
         Author author = await authorService.GetAuthorByID(user.FindFirstValue(ClaimTypes.NameIdentifier));
-        Taxon taxon = await taxonService.GetTaxonById(NewObservation.TaxonId);
+        Taxon taxon = await taxonService.GetTaxonById(newObservation.TaxonId);
         var observationToAdd = new Observation()
         { 
             //To do get the auther from id exposed in claims and add it to the observation object 
-            Author = author, Taxon = taxon, Text = NewObservation.ObservationText,
+            Author = author, Taxon = taxon, Text = newObservation.ObservationText,
             TimeStamp = DateTime.Parse("2023-08-01 07:12:00")
         };
-
+        unitOfWork.Add(observationToAdd);
+        unitOfWork.Save();
     }
     private List<ObservationDTO> Translater(List<Observation> observations)
     {

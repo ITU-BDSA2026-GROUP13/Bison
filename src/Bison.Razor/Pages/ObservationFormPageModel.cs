@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 public abstract class ObservationFormPageModel : PageModel
 {
@@ -43,9 +44,8 @@ public abstract class ObservationFormPageModel : PageModel
             await LoadPageDataAsync();
             return Page();
         }
-
-        // TODO: IMPLEMENT: await observationService.CreateObservation(NewObservation, User);
-        await observationService.CreateObservation(NewObservation, User);
+        
+        await observationService.CreateObservation(this.NewObservation, this.User);
         
         return RedirectToPage();
     }
