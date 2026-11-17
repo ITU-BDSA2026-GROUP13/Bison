@@ -69,8 +69,10 @@ public class ObservationService : IObservationService
         var observationToAdd = new Observation()
         { 
             //To do get the auther from id exposed in claims and add it to the observation object 
-            Author = author, Taxon = taxon, Text = newObservation.ObservationText,
-            TimeStamp = DateTime.Parse("2023-08-01 07:12:00")
+            Author = author, 
+            Taxon = taxon, 
+            Text = newObservation.ObservationText,
+            TimeStamp = DateTime.Now
         };
         unitOfWork.Add(observationToAdd);
         unitOfWork.Save();

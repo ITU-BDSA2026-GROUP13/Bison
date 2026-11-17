@@ -11,6 +11,9 @@ public class MockIUnitOfWork
         mock.Setup(m => m.observationRepo).Returns(() => MockIObservationRepository.GetMock().Object);
         mock.Setup(m => m.proposalRepo).Returns(() => MockIProposalRepository.GetMock().Object);
         mock.Setup(m => m.commentRepo).Returns(() => MockICommentRepository.GetMock().Object);
+        mock.Setup(m => m.authorRepository).Returns(() => MockICommentRepository.GetMock().Object);
+        
+        //Afventer jacobs taxonservice mock
 
         return mock;
     }
