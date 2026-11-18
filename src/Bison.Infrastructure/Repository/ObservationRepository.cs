@@ -81,6 +81,11 @@ public class ObservationRepository : IObservationRepository
             .ToListAsync();
     }
 
+    public async Task<Author?> GetAuthorById(string authorId)
+    {
+        return await dbContext.Users.FirstOrDefaultAsync(u => u.Id == authorId);
+    }
+
     public Task UpdateObservation(Observation observation)
     {
         throw new NotImplementedException();
