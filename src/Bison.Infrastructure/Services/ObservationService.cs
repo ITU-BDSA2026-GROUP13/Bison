@@ -61,21 +61,25 @@ public class ObservationService : IObservationService
     }
     
     //The method for adding an observation to our databse
-    public async Task CreateObservation(ObservationCreateDTO newObservation, ClaimsPrincipal user)
+    public async Task CreateObservation(ObservationCreateDTO dto, string authorId)
     {
-        
-        Author author = await authorService.GetAuthorByID(user.FindFirstValue(ClaimTypes.NameIdentifier));
-        Taxon taxon = await taxonService.GetTaxonById(newObservation.TaxonId);
-        var observationToAdd = new Observation()
-        { 
-            //To do get the auther from id exposed in claims and add it to the observation object 
-            Author = author, 
-            Taxon = taxon, 
-            Text = newObservation.ObservationText,
-            TimeStamp = DateTime.Now
+        Author author = await authorService.GetAuthorByID(authorId)
+                    ?? throw new ArgumentException("Unknown author", nameof(authorId));
+        Taxon taxon = await taxonService.GetTaxonById(dto.TaxonId)
+                    ?? throw new ArgumentException("Unknown taxon", nameof(dto));
+
+        var observation = new Observation
+        {
+            Author = author,
+            Taxon = taxon,
+            Text = dto.ObservationText,
+            Location = "",                    
+            TimeStamp = DateTime.UtcNow,      
+            ImageFile = dto.ImageFile         
         };
-        unitOfWork.observationRepo.Add(observationToAdd);
-        unitOfWork.Save();
+
+        await unitOfWork.observationRepo.CreateObservation(observation);
+        unitOfWork.Save();                    
     }
     private List<ObservationDTO> Translater(List<Observation> observations)
     {
