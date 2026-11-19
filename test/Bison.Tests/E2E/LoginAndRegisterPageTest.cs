@@ -107,45 +107,53 @@ public class LoginAndRegisterPageTest : PageTest
         // Arrange
         var basePage = await Page.GotoAsync(BaseUrl + "/Obs");
         var baseUrlHeading = Page.Locator("h2"); 
-        await Expect(baseUrlHeading).ToHaveTextAsync("Public Timeline");
+        await Expect(baseUrlHeading).ToHaveTextAsync("Public Timeline"); //Status Checker
+
+        string uniqueId = Guid.NewGuid().ToString("N")[..8]; // Generate a unique user every time.
+        string testLoginUsername = $"TestUser_{uniqueId}";
+        string testLoginEmail = $"testuser_{uniqueId}@example.com";
+        string testLoginPassword = "TestPassword123!";
 
         var registerButton = Page.GetByRole(AriaRole.Link, new() { Name = "Register" }).First;
 
         // Act
         //Register a new test-user
         await registerButton.ClickAsync();
+        await Expect(Page.Locator("h2")).ToHaveTextAsync("Create a new account."); //Status Checker
 
         var usernameInput = Page.GetByLabel("Username");
         var emailInput = Page.GetByLabel("Email");
-        var passwordInput = Page.GetByLabel("Password");
-        var confirmPasswordInput = Page.GetByLabel("Confirm password");
+        var passwordInput = Page.GetByLabel("Password").First;
+        var confirmPasswordInput = Page.GetByLabel("Confirm password").First;
+        await usernameInput.FillAsync(testLoginUsername);
+        await emailInput.FillAsync(testLoginEmail);
+        await passwordInput.FillAsync(testLoginPassword);
+        await confirmPasswordInput.FillAsync(testLoginPassword);
 
-        await usernameInput.FillAsync("TestUser");
-        await emailInput.FillAsync("testuser@example.com");
-        await passwordInput.FillAsync("TestPassword123!");
-        await confirmPasswordInput.FillAsync("TestPassword123!");
-
-        var registerSubmitButton = Page.GetByRole(AriaRole.Button, new() { Name = "Register" }).First;
+        var registerSubmitButton = Page.Locator("div.row #registerSubmit");
         await registerSubmitButton.ClickAsync();
+        await Expect(Page.Locator("div.body h1")).ToHaveTextAsync("Register confirmation"); //Status Checker
 
-        var conformationButton = Page.GetByRole(AriaRole.Link, new() { Name = "Click here to confirm your account" }).First;
+        var conformationButton = Page.Locator("#confirm-link");
         await conformationButton.ClickAsync();
 
         // Login with the newly registered test-user
-        var loginButton = Page.GetByRole(AriaRole.Link, new() { Name = "Log in" }).First;
+        var loginButton = Page.Locator("div.body #login");
         await loginButton.ClickAsync();
+        await Expect(Page.Locator("h2")).ToHaveTextAsync("Use a local account to log in."); //Status Checker
 
         var loginEmailInput = Page.GetByLabel("Email");
         var loginPasswordInput = Page.GetByLabel("Password");
 
-        await loginEmailInput.FillAsync("testuser@example.com");
-        await loginPasswordInput.FillAsync("TestPassword123!");
+        await loginEmailInput.FillAsync(testLoginEmail);
+        await loginPasswordInput.FillAsync(testLoginPassword);
 
-        var loginSubmitButton = Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).First;
+        var loginSubmitButton = Page.Locator("div.row #login-submit");
         await loginSubmitButton.ClickAsync();
 
         // Assert
-        await Expect(Page).ToHaveURLAsync(BaseUrl + "/Obs");
+        await Expect(Page).ToHaveURLAsync(BaseUrl + "/obs"); //Back at obs
+        await Expect(Page.Locator("div.body #logout")).ToBeVisibleAsync(); //Logout button is visible
     }
 
 
