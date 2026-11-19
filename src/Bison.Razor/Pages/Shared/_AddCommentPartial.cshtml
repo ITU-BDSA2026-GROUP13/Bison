@@ -1,0 +1,18 @@
+@using Bison
+
+@inject SignInManager<Author> SignInManager
+@model Bison.DTOs.CommentCreateDTO
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div id="commentInputBox">
+        <form method="post" asp-page-handler="Comment">
+            <textarea asp-for="Text" required></textarea>
+            <button type="submit">Post Comment</button>
+        </form>
+    </div>
+}
+else
+{
+    <p>Login to post comments</p>
+}
