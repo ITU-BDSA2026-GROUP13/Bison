@@ -3,6 +3,7 @@
 using Bison.DTOs;
 using Bison.Repository;
 using Bison.Services.Interfaces;
+using System.Security.Claims;
 
 public class CommentService : ICommentService
 {
@@ -12,6 +13,23 @@ public class CommentService : ICommentService
     public CommentService(IUnitOfWork unitOfWork)
     {
         this.unitOfWork = unitOfWork;
+    }
+
+    public async Task AddComment(long observationId, string authorId, Bison.DTOs.CommentCreateDTO newComment)
+    {
+        
+        var obs = await unitOfWork.observationRepo.ReadObservation(observationId);
+        //var author = await.unitOfWork......... (authorepo?)
+        Comment commentToAdd = new Comment()
+        {
+            Text = newComment.Text,
+            TimeStamp = DateTime.Now,     
+            Observation = obs,
+            //Author = author,
+        };
+
+        await unitOfWork.commentRepo.CreateComment(commentToAdd);
+        unitOfWork.Save();
     }
 
     public async Task<List<CommentDTO>> GetCommentsByObsId(long postId)
