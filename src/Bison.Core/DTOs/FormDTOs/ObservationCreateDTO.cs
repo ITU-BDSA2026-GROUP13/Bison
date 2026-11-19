@@ -11,9 +11,12 @@ public class ObservationCreateDTO
     public string TaxonId { get; set; } = "";
 
     [Required(ErrorMessage = "Write a message")]
-    public string ObservationText { get; set; } = "";
-    
+    public string ObservationText { get; set; } = "";    
     public IFormFile? Image { get; set; }
+
+    [BindNever]
+    public string? ImageFile { get; set; }
+
 
     [BindNever] public IEnumerable<SelectListItem> TaxonOptions { get; set; } = new List<SelectListItem>();
 

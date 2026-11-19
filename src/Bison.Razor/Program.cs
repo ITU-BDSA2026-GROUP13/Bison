@@ -30,7 +30,8 @@ builder.Services.AddDefaultIdentity<Author>(Options =>
 builder.Services.AddAuthentication()
     .AddGitHub(options =>
     {
-        options.ClientId = builder.Configuration["Authentication:GitHub:ClientId"]!;
+        options.ClientId = 
+            builder.Configuration["Authentication:GitHub:ClientId"]!;
         options.ClientSecret =
             builder.Configuration["Authentication:GitHub:ClientSecret"]!;
     });

@@ -51,6 +51,5 @@ public class UserTimelineModel : ObservationFormPageModel
         this.MyPage = currentUserId != null && currentUserId == this.AuthorId;
 
         Observations = await _service.GetObservationByTaxonAndAuthorAndPage(this.FilteredTaxon, this.AuthorId, this.CurrentPage);
-
     }
 }
