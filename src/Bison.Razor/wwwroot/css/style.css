@@ -128,40 +128,44 @@ div.page ul.observations {
 }
 
 div.page ul.observations li {
+  box-sizing: border-box;
+  height: 252px;
   margin: 10px 0;
   padding: 5px;
   background: #F0FAF9;
   border: 1px solid #DBF3F1;
-  border-radius: 2px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  min-height: 48px;
-  display: flow-root;
+  border-radius: 5px;
+  display: flex;             
+  align-items: flex-start;  
+  overflow: hidden;
 }
+
 
 div.page ul.observations p {
   margin: 0;
 }
 
 .observation-image-frame {
-  box-sizing: border-box;
-  width: min(100%, 400px);
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
+  display: inline-block;
+  line-height: 0;
   background: #F0FAF9;
-  border: 1px solid #DBF3F1;
 }
 
 .observation-image-frame img {
   display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+  box-sizing: border-box;
+  width: auto;
+  height: auto;
+  max-width: 240px;
+  max-height: 240px;
+  border: 1px solid #DBF3F1;
 }
 
 div.page ul.observations .observation-image-frame {
-  float: left;
-  margin: 0 10px 5px 0;
+  float: none;               
+  flex-shrink: 0;
+  align-self: center;        
+  margin: 0 10px 0 0;
 }
 
 div.page ul.observations li small {
