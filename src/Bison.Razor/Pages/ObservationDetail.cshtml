@@ -18,9 +18,10 @@
 
         @if (!string.IsNullOrEmpty(Model.Observation.ImageFile))
         {
-            <img src="/images/@Model.Observation.ImageFile"
-             alt="Picture of the observed animal"
-             style="max-width:400px" />
+            <div class="observation-image-frame">
+                <img src="/images/@Model.Observation.ImageFile"
+                     alt="Picture of the observed animal" />
+            </div>
         }
     }
 </div>

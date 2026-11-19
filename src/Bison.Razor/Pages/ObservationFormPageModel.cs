@@ -37,50 +37,46 @@ public abstract class ObservationFormPageModel : PageModel
     }
 
     public async Task<IActionResult> OnPostAsync()
+{
+    if (!(User.Identity?.IsAuthenticated ?? false))
     {
+        return Forbid();
+    }
 
-        //should maybe be in the constructor
+    if (NewObservation.Image is { Length: > 0 })
+    {
+        var ext = Path.GetExtension(NewObservation.Image.FileName).ToLowerInvariant();
+        if (!AllowedExtensions.Contains(ext) || NewObservation.Image.Length > MaxImageBytes)
+        {
+            ModelState.AddModelError("NewObservation.Image", "Only jpg or png, max 15 MB.");
+        }
+    }
+
+    if (!ModelState.IsValid)
+    {
+        await LoadTaxonOptionsAsync();
+        await LoadPageDataAsync();
+        return Page();
+    }
+
+    // Save the file; only the generated name goes to the database
+    if (NewObservation.Image is { Length: > 0 })
+    {
+        var ext = Path.GetExtension(NewObservation.Image.FileName).ToLowerInvariant();
+        var fileName = $"{Guid.NewGuid()}{ext}";   // never reuse the client's file name
+
         var env = HttpContext.RequestServices.GetRequiredService<IWebHostEnvironment>();
         var dir = Path.Combine(env.WebRootPath, "images");
         Directory.CreateDirectory(dir);
 
-        if (!(User.Identity?.IsAuthenticated ?? false)) // this weird construct beacuse the IsAuthenticated returns a bool? not a bool
-        {
-            return Forbid();
-        }
-        
-        if (NewObservation.Image is { Length: > 0 })
-        {
-            var ext = Path.GetExtension(NewObservation.Image.FileName).ToLowerInvariant();
-            if (!AllowedExtensions.Contains(ext) || NewObservation.Image.Length > MaxImageBytes)
-            {
-                ModelState.AddModelError("NewObservation.Image", "Only jpg or png, max 15 MB.");
-            }
-        }
-        
-        if (!ModelState.IsValid)
-        {
-            await LoadTaxonOptionsAsync();
-            await LoadPageDataAsync();
-            return Page();
-        }
+        await using var stream = System.IO.File.Create(Path.Combine(dir, fileName));
+        await NewObservation.Image.CopyToAsync(stream);
 
-        //  save the file
-        if (NewObservation.Image is { Length: > 0 })
-        {
-            var ext = Path.GetExtension(NewObservation.Image.FileName).ToLowerInvariant();
-            var fileName = $"{Guid.NewGuid()}{ext}";          // never reuse the client's file name
-            dir = Path.Combine(env.WebRootPath, "images");
-            Directory.CreateDirectory(dir);
-
-            await using var stream = System.IO.File.Create(Path.Combine(dir, fileName));
-            await NewObservation.Image.CopyToAsync(stream);
-
-            NewObservation.ImageFile = fileName;
-        }
-
-        var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;   // using System.Security.Claims;
-        await observationService.CreateObservation(NewObservation, authorId);
-        return RedirectToPage();
+        NewObservation.ImageFile = fileName;
     }
+
+    var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+    await observationService.CreateObservation(NewObservation, authorId);
+    return RedirectToPage();
+}
 }
