@@ -33,13 +33,6 @@
             @foreach (var ob in Model.Observations)
             {
                 <li>
-                    @if (!string.IsNullOrEmpty(ob.ImageFile))
-                    {
-                        <div class="observation-image-frame">
-                            <img src="/images/@ob.ImageFile"
-                                 alt="Picture of the observed animal" />
-                        </div>
-                    }
                     <p>
                         <strong>
                             <a href="@ob.AuthorId">@ob.AuthorName</a>
@@ -51,6 +44,13 @@
                             <a href="?taxonId=@ob.dwc_TaxonId"> - @ob.TaxonName</a>
                         </small>
                     </p>
+                    @if (!string.IsNullOrEmpty(ob.ImageFile))
+                    {
+                        <div class="observation-image-frame">
+                            <img src="/images/@ob.ImageFile"
+                                 alt="Picture of the observed animal" />
+                        </div>
+                    }
                 </li>
             }
         </ul>
