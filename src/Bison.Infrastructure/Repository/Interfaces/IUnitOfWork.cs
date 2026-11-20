@@ -1,5 +1,6 @@
 ﻿namespace Bison;
 
+using Razor.Services.Interfaces;
 using Repository;
 
 public interface IUnitOfWork
@@ -8,6 +9,9 @@ public interface IUnitOfWork
     public ICommentRepository commentRepo { get; }
     public IProposalRepository proposalRepo { get; }
     public ITaxonRepository taxonRepo { get; }
-    
+    public IAuthorRepository authorRepository { get;  }
+   
     public void Save();
+    public void Add(Observation observation);
+
 }

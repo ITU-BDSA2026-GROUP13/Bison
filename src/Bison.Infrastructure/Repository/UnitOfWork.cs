@@ -10,6 +10,7 @@ public class UnitOfWork : IUnitOfWork
     public ICommentRepository commentRepo { get; }
     public IProposalRepository proposalRepo { get; }
     public ITaxonRepository taxonRepo { get; }
+    public IAuthorRepository authorRepository { get; }
     
     public UnitOfWork(BisonDBContext dbContext)
     {
@@ -19,8 +20,13 @@ public class UnitOfWork : IUnitOfWork
         this.commentRepo = new CommentRepository(dbContext);
         this.proposalRepo = new ProposalRepository(dbContext);
         this.taxonRepo = new TaxonRepository(dbContext);
+        this.authorRepository = new AuthorRepository(dbContext);
     }
 
+    public void Add(Observation observation)
+    {
+        dbContext.Observations.Add(observation);
+    }
     public void Save()
     {
         dbContext.SaveChanges();
