@@ -10,7 +10,7 @@ namespace Bison.Tests.E2E;
 
 public class ObservationDetailPageTest : PageTest
 {
-    private readonly string BaseUrl = "http://localhost:5273";
+    private readonly string BaseUrl = "http://localhost:5274"; // Currently http, due to paywright permissions. (UPDATE LATER)
 
 
     [Fact]

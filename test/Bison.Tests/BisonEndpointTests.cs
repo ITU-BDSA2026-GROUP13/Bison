@@ -9,13 +9,14 @@ public class BisonEndpointTests
 {
     private readonly HttpClient client = new HttpClient();
     
+    private readonly string BaseUrl = "http://localhost:5274";
     
     // General
     [Fact]
     public async Task TestAccesingNonExistingPageRequest()
     {
         //Arrange
-        string nonExistingPageUrl = "http://localhost:5273/67Lars67";
+        string nonExistingPageUrl = BaseUrl + "/67Lars67";
         
         //Act
         var response = await client.GetAsync(nonExistingPageUrl);
@@ -32,7 +33,7 @@ public class BisonEndpointTests
     public async Task TestGetAllObservationsRequest()
     {
         //Arrange
-        string observationsUrl = "http://localhost:5273/obs";
+        string observationsUrl = BaseUrl + "/obs";
         
         //Act
         var response = await client.GetAsync(observationsUrl);
@@ -43,11 +44,13 @@ public class BisonEndpointTests
         Assert.Contains("Public Timeline", content);
     }
 
+    
+
     [Fact]
     public async Task TestGetMultiplePagesOnObservationsRequest()
     {
         // Arrange
-        string observationsUrl = "http://localhost:5273/obs?taxonId=&page=2";
+        string observationsUrl = BaseUrl + "/obs?taxonId=&page=2";
         
         // Act
         var response = await client.GetAsync(observationsUrl);
@@ -62,7 +65,7 @@ public class BisonEndpointTests
     public async Task TestExceedingPageAmountOnObservationsRequest()
     {
         // Arrange
-        string exceedingUrl = "http://localhost:5273/obs?taxonId=&page=999";
+        string exceedingUrl = BaseUrl + "/obs?taxonId=&page=999";
         
         // Act
         var response = await client.GetAsync(exceedingUrl);
@@ -80,7 +83,7 @@ public class BisonEndpointTests
         // THIS TEST FAILS! We somehow redirect back to start when we over-exceed. Is this the intended behavior?
         
         // Arrange
-        string extremeExceedingUrl = "http://localhost:5273/obs?taxonId=&page=9999999999999999999999999";
+        string extremeExceedingUrl = BaseUrl + "/obs?taxonId=&page=9999999999999999999999999";
         
         // Act
         var response = await client.GetAsync(extremeExceedingUrl);
@@ -92,12 +95,13 @@ public class BisonEndpointTests
         Assert.DoesNotContain("There are no observations so far", content); // Page redirects when exceeding the max. 
     }
     
+    
     // All Observations Filtering
     [Fact]
     public async Task TestGetUserTimelineRequest()
     {
         //Arrange
-        string userTimelineUrl = "http://localhost:5273/obs/1";
+        string userTimelineUrl = BaseUrl + "/obs/1";
         string username = "Roger Histand";
         string otherUsername = "Nathan Sirmon";
         
@@ -112,6 +116,8 @@ public class BisonEndpointTests
         Assert.DoesNotContain(otherUsername, content);
     }
     
+    
+    
     [Fact]
     public async Task TestTaxonFilteringOnObservationsRequest()
     {
@@ -119,7 +125,7 @@ public class BisonEndpointTests
         string taxon = "Skestork";
         string taxonId = "MSTSNM:Arter:f3fa2bf9-f785-ea11-aa77-501ac539d1ea";
         string otherTaxon = "Dværghejre";
-        string filteredUrl = "http://localhost:5273/obs?taxonId=" + taxonId;
+        string filteredUrl = BaseUrl + "/obs?taxonId=" + taxonId;
         
         // Act
         var response = await client.GetAsync(filteredUrl);
@@ -141,7 +147,7 @@ public class BisonEndpointTests
         string taxon = "Silkehejre";
         string taxonId = "MSTSNM:Arter:ca4d8cf8-f785-ea11-aa77-501ac539d1ea";
         string otherTaxon = "Dværghejre";
-        string userTimelineUrl = "http://localhost:5273/obs/1?taxonId=" + taxonId;
+        string userTimelineUrl = BaseUrl + "/obs/1?taxonId=" + taxonId;
         
         //Act
         var response = await client.GetAsync(userTimelineUrl);
@@ -157,17 +163,15 @@ public class BisonEndpointTests
         Assert.DoesNotContain(otherTaxon, content);
     }
     
-
-    
     // Single Observation Pages
     [Fact]
     public async Task TestGetSinglePageObservationRequest()
     {
         //Arrange
-        string observationsUrl = "http://localhost:5273/ob/1";
+        string observationUrl = BaseUrl + "/ob/1";
         
         //Act
-        var response = await client.GetAsync(observationsUrl);
+        var response = await client.GetAsync(observationUrl);
         string content = await response.Content.ReadAsStringAsync();
         
         //Assert
@@ -180,7 +184,7 @@ public class BisonEndpointTests
     public async Task TestGetNonExistingSingleObRequest()
     {
         //Arrange
-        string nonExistingSingleObUrl = "http://localhost:5273/ob/9761973649136471923466376617"; //Long non-existing id
+        string nonExistingSingleObUrl = BaseUrl + "/ob/9761973649136471923466376617"; //Long non-existing id
         
         //Act
         var response = await client.GetAsync(nonExistingSingleObUrl);
@@ -191,6 +195,115 @@ public class BisonEndpointTests
         // Same question as wrong endpoint above
     }
     
+    
+    // Login and Registration
+    [Fact]
+    public async Task TestObservationsContainsRegistrationAndLoginRequest()
+    {
+        //Arrange
+        string observationsUrl = BaseUrl + "/obs";
+        
+        //Act
+        var response = await client.GetAsync(observationsUrl);
+        var content =  await response.Content.ReadAsStringAsync();
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        Assert.Contains("Register", content);
+        Assert.Contains("Login", content);
+    }
+    
+    [Fact]
+    public async Task TestUserTimelineContainsRegistrationAndLoginRequest()
+    {
+        //Arrange
+        string userTimelineUrl = BaseUrl + "/obs/1";
+        
+        //Act
+        var response = await client.GetAsync(userTimelineUrl);
+        var content =  await response.Content.ReadAsStringAsync();
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        Assert.Contains("Register", content);
+        Assert.Contains("Login", content);
+    }
+    
+    [Fact]
+    public async Task TestSingleObContainsRegistrationAndLoginRequest()
+    {
+        //Arrange
+        string observationUrl = BaseUrl + "/ob/1";
+        
+        //Act
+        var response = await client.GetAsync(observationUrl);
+        var content =  await response.Content.ReadAsStringAsync();
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        Assert.Contains("Register", content);
+        Assert.Contains("Login", content);
+    }
+    
+    [Fact]
+    public async Task TestLoginPageRequest()
+    {
+        //Arrange
+        string pageUrl = BaseUrl + "/Identity/Account/Login";
+        
+        //Act
+        var response = await client.GetAsync(pageUrl);
+        var content =  await response.Content.ReadAsStringAsync();
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        Assert.Contains("Use a local account to log in.", content);
+    }
+    
+    [Fact]
+    public async Task TestRegisterPageRequest()
+    {
+        //Arrange
+        string pageUrl = BaseUrl + "/Identity/Account/Register";
+        
+        //Act
+        var response = await client.GetAsync(pageUrl);
+        var content =  await response.Content.ReadAsStringAsync();
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        Assert.Contains("Create a new account.", content);
+    }
+    
+    [Fact]
+    public async Task TestForgotPasswordPageRequest()
+    {
+        //Arrange
+        string pageUrl = BaseUrl + "/Identity/Account/ForgotPassword";
+        
+        //Act
+        var response = await client.GetAsync(pageUrl);
+        var content =  await response.Content.ReadAsStringAsync();
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        Assert.Contains("Enter your email.", content);
+    }
+    
+    [Fact]
+    public async Task TestResendEmailConfirmationPageRequest()
+    {
+        //Arrange
+        string pageUrl = BaseUrl + "/Identity/Account/ResendEmailConfirmation";
+        
+        //Act
+        var response = await client.GetAsync(pageUrl);
+        var content =  await response.Content.ReadAsStringAsync();
+        
+        //Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // Access OK?
+        Assert.Contains("Enter your email.", content);
+    }
     
     //TODO: Test POSTING endpoints (All) (If this is how they will be added)
     

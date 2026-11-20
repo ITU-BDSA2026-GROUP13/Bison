@@ -7,7 +7,7 @@ namespace Bison.Tests.E2E;
 
 public class PublicTimePageTest : PageTest
 {
-    private readonly string BaseUrl = "http://localhost:5273/obs";
+    private readonly string BaseUrl = "http://localhost:5274/obs"; // Currently http, due to paywright permissions. (UPDATE LATER)
 
     //Site Loader Test
     [Fact]
@@ -33,7 +33,7 @@ public class PublicTimePageTest : PageTest
             .GetByRole(AriaRole.Link, new() { Name = "Nathan Sirmon" })
             .ClickAsync();
 
-        await Expect(Page).ToHaveURLAsync("http://localhost:5273/obs/4");
+        await Expect(Page).ToHaveURLAsync(BaseUrl + "/4");
     }
     [Fact]
     public async Task False_Author_Is_Not_Displayed()
