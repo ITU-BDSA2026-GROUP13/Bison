@@ -65,7 +65,7 @@ public class ObservationService : IObservationService
     {
         var author = await unitOfWork.observationRepo.GetAuthorById(authorId)
                     ?? throw new ArgumentException("Unknown author", nameof(authorId));
-        var taxon = await unitOfWork.observationRepo.GetTaxonFromId(dto.TaxonId)
+        var taxon = await unitOfWork.taxonRepo.GetTaxonById(dto.TaxonId)
                     ?? throw new ArgumentException("Unknown taxon", nameof(dto));
 
         var observation = new Observation
