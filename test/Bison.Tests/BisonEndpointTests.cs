@@ -9,7 +9,7 @@ public class BisonEndpointTests
 {
     private readonly HttpClient client = new HttpClient();
     
-    private readonly string BaseUrl = "https://localhost:5273";
+    private readonly string BaseUrl = "http://localhost:5274";
     
     // General
     [Fact]

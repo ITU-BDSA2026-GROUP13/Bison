@@ -6,7 +6,7 @@ using Microsoft.Playwright.Xunit;
 
 public class LoginAndRegisterPageTest : PageTest
 {
-    private readonly string BaseUrl = "https://localhost:5273";
+    private readonly string BaseUrl = "http://localhost:5274"; // Currently http, due to paywright permissions. (UPDATE LATER)
 
 
     // Short interaction tests

@@ -7,7 +7,7 @@ namespace Bison.Tests.E2E;
 
 public class PublicTimePageTest : PageTest
 {
-    private readonly string BaseUrl = "https://localhost:5273/obs";
+    private readonly string BaseUrl = "http://localhost:5274/obs"; // Currently http, due to paywright permissions. (UPDATE LATER)
 
     //Site Loader Test
     [Fact]
