@@ -18,6 +18,7 @@ public class TaxonRepository : ITaxonRepository
         return taxa.FirstOrDefault(t => t.dwc_TaxonID == taxonId);
    }
 
+
     public Task<Taxon?> GetTaxonByVernacularName(string vernacularName)
     {
         throw new NotImplementedException();
