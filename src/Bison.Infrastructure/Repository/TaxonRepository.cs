@@ -47,6 +47,7 @@ public class TaxonRepository : ITaxonRepository
         {
             string dwc_TaxonId = t.dwc_TaxonID;
             string vernacularName = t.VernacularName;
+            
             taxonOptionDtos.Add(new TaxonOptionDTO(dwc_TaxonId, vernacularName));
         }
 
