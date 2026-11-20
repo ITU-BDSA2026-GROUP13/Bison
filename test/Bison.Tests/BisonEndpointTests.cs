@@ -9,13 +9,14 @@ public class BisonEndpointTests
 {
     private readonly HttpClient client = new HttpClient();
     
+    private readonly string BaseUrl = "https://localhost:5273";
     
     // General
     [Fact]
     public async Task TestAccesingNonExistingPageRequest()
     {
         //Arrange
-        string nonExistingPageUrl = "http://localhost:5273/67Lars67";
+        string nonExistingPageUrl = BaseUrl + "/67Lars67";
         
         //Act
         var response = await client.GetAsync(nonExistingPageUrl);
@@ -32,7 +33,7 @@ public class BisonEndpointTests
     public async Task TestGetAllObservationsRequest()
     {
         //Arrange
-        string observationsUrl = "http://localhost:5273/obs";
+        string observationsUrl = BaseUrl + "/obs";
         
         //Act
         var response = await client.GetAsync(observationsUrl);
@@ -49,7 +50,7 @@ public class BisonEndpointTests
     public async Task TestGetMultiplePagesOnObservationsRequest()
     {
         // Arrange
-        string observationsUrl = "http://localhost:5273/obs?taxonId=&page=2";
+        string observationsUrl = BaseUrl + "/obs?taxonId=&page=2";
         
         // Act
         var response = await client.GetAsync(observationsUrl);
@@ -64,7 +65,7 @@ public class BisonEndpointTests
     public async Task TestExceedingPageAmountOnObservationsRequest()
     {
         // Arrange
-        string exceedingUrl = "http://localhost:5273/obs?taxonId=&page=999";
+        string exceedingUrl = BaseUrl + "/obs?taxonId=&page=999";
         
         // Act
         var response = await client.GetAsync(exceedingUrl);
@@ -82,7 +83,7 @@ public class BisonEndpointTests
         // THIS TEST FAILS! We somehow redirect back to start when we over-exceed. Is this the intended behavior?
         
         // Arrange
-        string extremeExceedingUrl = "http://localhost:5273/obs?taxonId=&page=9999999999999999999999999";
+        string extremeExceedingUrl = BaseUrl + "/obs?taxonId=&page=9999999999999999999999999";
         
         // Act
         var response = await client.GetAsync(extremeExceedingUrl);
@@ -100,7 +101,7 @@ public class BisonEndpointTests
     public async Task TestGetUserTimelineRequest()
     {
         //Arrange
-        string userTimelineUrl = "http://localhost:5273/obs/1";
+        string userTimelineUrl = BaseUrl + "/obs/1";
         string username = "Roger Histand";
         string otherUsername = "Nathan Sirmon";
         
@@ -124,7 +125,7 @@ public class BisonEndpointTests
         string taxon = "Skestork";
         string taxonId = "MSTSNM:Arter:f3fa2bf9-f785-ea11-aa77-501ac539d1ea";
         string otherTaxon = "Dværghejre";
-        string filteredUrl = "http://localhost:5273/obs?taxonId=" + taxonId;
+        string filteredUrl = BaseUrl + "/obs?taxonId=" + taxonId;
         
         // Act
         var response = await client.GetAsync(filteredUrl);
@@ -146,7 +147,7 @@ public class BisonEndpointTests
         string taxon = "Silkehejre";
         string taxonId = "MSTSNM:Arter:ca4d8cf8-f785-ea11-aa77-501ac539d1ea";
         string otherTaxon = "Dværghejre";
-        string userTimelineUrl = "http://localhost:5273/obs/1?taxonId=" + taxonId;
+        string userTimelineUrl = BaseUrl + "/obs/1?taxonId=" + taxonId;
         
         //Act
         var response = await client.GetAsync(userTimelineUrl);
@@ -167,7 +168,7 @@ public class BisonEndpointTests
     public async Task TestGetSinglePageObservationRequest()
     {
         //Arrange
-        string observationUrl = "http://localhost:5273/ob/1";
+        string observationUrl = BaseUrl + "/ob/1";
         
         //Act
         var response = await client.GetAsync(observationUrl);
@@ -183,7 +184,7 @@ public class BisonEndpointTests
     public async Task TestGetNonExistingSingleObRequest()
     {
         //Arrange
-        string nonExistingSingleObUrl = "http://localhost:5273/ob/9761973649136471923466376617"; //Long non-existing id
+        string nonExistingSingleObUrl = BaseUrl + "/ob/9761973649136471923466376617"; //Long non-existing id
         
         //Act
         var response = await client.GetAsync(nonExistingSingleObUrl);
@@ -195,13 +196,12 @@ public class BisonEndpointTests
     }
     
     
-    
     // Login and Registration
     [Fact]
     public async Task TestObservationsContainsRegistrationAndLoginRequest()
     {
         //Arrange
-        string observationsUrl = "http://localhost:5273/obs";
+        string observationsUrl = BaseUrl + "/obs";
         
         //Act
         var response = await client.GetAsync(observationsUrl);
@@ -217,7 +217,7 @@ public class BisonEndpointTests
     public async Task TestUserTimelineContainsRegistrationAndLoginRequest()
     {
         //Arrange
-        string userTimelineUrl = "http://localhost:5273/obs/1";
+        string userTimelineUrl = BaseUrl + "/obs/1";
         
         //Act
         var response = await client.GetAsync(userTimelineUrl);
@@ -233,7 +233,7 @@ public class BisonEndpointTests
     public async Task TestSingleObContainsRegistrationAndLoginRequest()
     {
         //Arrange
-        string observationUrl = "http://localhost:5273/ob/1";
+        string observationUrl = BaseUrl + "/ob/1";
         
         //Act
         var response = await client.GetAsync(observationUrl);
@@ -249,7 +249,7 @@ public class BisonEndpointTests
     public async Task TestLoginPageRequest()
     {
         //Arrange
-        string pageUrl = "http://localhost:5273/Identity/Account/Login";
+        string pageUrl = BaseUrl + "/Identity/Account/Login";
         
         //Act
         var response = await client.GetAsync(pageUrl);
@@ -264,7 +264,7 @@ public class BisonEndpointTests
     public async Task TestRegisterPageRequest()
     {
         //Arrange
-        string pageUrl = "http://localhost:5273/Identity/Account/Register";
+        string pageUrl = BaseUrl + "/Identity/Account/Register";
         
         //Act
         var response = await client.GetAsync(pageUrl);
@@ -279,7 +279,7 @@ public class BisonEndpointTests
     public async Task TestForgotPasswordPageRequest()
     {
         //Arrange
-        string pageUrl = "http://localhost:5273/Identity/Account/ForgotPassword";
+        string pageUrl = BaseUrl + "/Identity/Account/ForgotPassword";
         
         //Act
         var response = await client.GetAsync(pageUrl);
@@ -294,7 +294,7 @@ public class BisonEndpointTests
     public async Task TestResendEmailConfirmationPageRequest()
     {
         //Arrange
-        string pageUrl = "http://localhost:5273/Identity/Account/ResendEmailConfirmation";
+        string pageUrl = BaseUrl + "/Identity/Account/ResendEmailConfirmation";
         
         //Act
         var response = await client.GetAsync(pageUrl);

@@ -5,7 +5,7 @@ namespace Bison.Tests.E2E;
 
 public class UserTimelinePageTest : PageTest
 {
-    private readonly string BaseUrl = "http://localhost:5273";
+    private readonly string BaseUrl = "https://localhost:5273";
 
 
     [Fact]
