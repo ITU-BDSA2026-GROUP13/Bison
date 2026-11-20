@@ -47,8 +47,10 @@ public class UserTimelineModel : ObservationFormPageModel
             this.FilteredTaxon = taxonId; 
         }
 
-        this.MyPage = User.FindFirstValue(ClaimTypes.NameIdentifier).Equals(this.AuthorId);
+        var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        this.MyPage = currentUserId != null && currentUserId == this.AuthorId;
 
         Observations = await _service.GetObservationByTaxonAndAuthorAndPage(this.FilteredTaxon, this.AuthorId, this.CurrentPage);
+
     }
 }
