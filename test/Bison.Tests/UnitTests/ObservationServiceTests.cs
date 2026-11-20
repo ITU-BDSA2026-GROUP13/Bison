@@ -135,6 +135,8 @@ public class ObservationServiceTests
     private static ObservationService CreateService()
     {
         var unitOfWork = MockIUnitOfWork.GetMock();
-        return new ObservationService(unitOfWork.Object, new ObservationFilterService());
+        var authorService = new AuthorService(unitOfWork.Object);
+        var taxonService = new TaxonService(unitOfWork.Object);
+        return new ObservationService(unitOfWork.Object, new ObservationFilterService(), authorService, taxonService);
     }
 }

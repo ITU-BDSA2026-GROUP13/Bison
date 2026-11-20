@@ -281,6 +281,9 @@ namespace Bison.Razor.Migrations
                 {
                     b.HasBaseType("Bison.Post");
 
+                    b.Property<string>("ImageFile")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Location")
                         .HasColumnType("TEXT");
 

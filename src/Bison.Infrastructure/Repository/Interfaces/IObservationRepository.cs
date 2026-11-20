@@ -12,7 +12,6 @@ public interface IObservationRepository
     
     Task<List<Observation>> GetAllObservations();
     Task<List<Observation>> GetAllObservationsByAuthor(string authorId);
-    Task<Taxon?> GetTaxonFromId(string taxonId);
     
     Task UpdateObservation(Observation observation);
 }

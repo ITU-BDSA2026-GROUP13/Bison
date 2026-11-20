@@ -1,8 +1,10 @@
 ﻿namespace Bison.Services.Interfaces;
 
 using Bison.DTOs;
+using System.Security.Claims;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Security.Claims;
 
 public interface IObservationService
 {
@@ -14,4 +16,6 @@ public interface IObservationService
     public Task<List<ObservationDTO>> GetObservationByTaxonAndPage(string? taxon, int page = 1);
 
     public Task<List<ObservationDTO>> GetObservationByTaxonAndAuthorAndPage(string? taxonId, string authorId, int page);
+
+    public Task CreateObservation(ObservationCreateDTO NewObservation, ClaimsPrincipal user);
 }
