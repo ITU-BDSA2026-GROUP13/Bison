@@ -14,6 +14,16 @@ public class ProposalService : IProposalService
         this.unitOfWork = unitOfWork;
     }
 
+    public async Task AddProposal(ProposalDTO proposalDTO) // Change to ProposalCreateDTO when created
+    {
+        Proposal newProposal = new Proposal(
+            // Create a proposal here. (Make ProposalCreateDTO aswell)
+        );
+
+        await unitOfWork.proposalRepo.CreateProposal(newProposal);
+        unitOfWork.Save();
+    }
+
     public async Task<List<ProposalDTO>> GetProposalsByObsId(long postId)
     {
         List<Proposal> proposals = await unitOfWork.proposalRepo.GetProposalsByObsId(postId);
@@ -28,4 +38,7 @@ public class ProposalService : IProposalService
             p.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss")
         )).ToList();
     }
+
+
+
 }
