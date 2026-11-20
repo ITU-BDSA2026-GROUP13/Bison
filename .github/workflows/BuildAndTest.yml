@@ -37,6 +37,10 @@ jobs:
           Authentication__GitHub__ClientId: ${{ secrets.LOCAL_CLIENT_ID }}
           Authentication__GitHub__ClientSecret: ${{ secrets.LOCAL_CLIENT_SECRET }}
       run: dotnet run --no-build --launch-profile E2E > api.log 2>&1 &
+    - name: Setup dev certificate
+      run: |
+        dotnet dev-certs https
+        dotnet dev-certs https --trust  
     - name: Wait for server to start
       run: |
         for i in {1..30}; do
