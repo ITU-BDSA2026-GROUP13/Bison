@@ -6,5 +6,6 @@ using System.Threading.Tasks;
 
 public interface IProposalService
 {
+    public Task AddProposal(ProposalDTO proposalDTO);
     public Task<List<ProposalDTO>> GetProposalsByObsId(long obsId);
 }
