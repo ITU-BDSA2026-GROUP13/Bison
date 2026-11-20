@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bison.Razor.Migrations
 {
     [DbContext(typeof(BisonDBContext))]
-    [Migration("20261109111332_New migration2")]
+    [Migration("20261109111332_AddPictureFileName")]
     partial class AddPictureFileName
     {
         /// <inheritdoc />
