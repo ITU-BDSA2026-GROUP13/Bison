@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Bison.Razor.Pages;
 
 using Bison.DTOs;
-using Services.Interfaces;
+using Bison.Services.Interfaces;
 using System.Security.Claims;
 
 public class ObservationDetailModel : PageModel
@@ -19,7 +19,7 @@ public class ObservationDetailModel : PageModel
     public List<ProposalDTO> Proposals { get; set; } = new();
 
     [BindProperty]
-    public Bison.DTOs.CommentCreateDTO NewComment { get; set; } = new();
+    public CommentCreateDTO NewComment { get; set; } = new();
 
      public ObservationDetailModel(
           IObservationService serviceob,

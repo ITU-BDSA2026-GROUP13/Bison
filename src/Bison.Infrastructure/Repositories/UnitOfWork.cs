@@ -1,7 +1,5 @@
 ﻿namespace Bison.Repository;
 
-using System.Transactions;
-
 public class UnitOfWork : IUnitOfWork
 {
     
