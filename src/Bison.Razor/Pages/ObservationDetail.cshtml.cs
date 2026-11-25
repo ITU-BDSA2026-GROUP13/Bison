@@ -42,7 +42,7 @@ public class ObservationDetailModel : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPostComment(long id, Bison.DTOs.CommentCreateDTO dto)
+    public async Task<IActionResult> OnPostComment(long id)
     { 
         if (!(User.Identity?.IsAuthenticated ?? false)) // this weird construct beacuse the IsAuthenticated returns a bool? not a bool
         {
@@ -57,7 +57,7 @@ public class ObservationDetailModel : PageModel
         var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrWhiteSpace(authorId)) return Forbid();
 
-        await _serviceco.AddComment(id, authorId, dto);
+        await _serviceco.AddComment(id, authorId, NewComment);
         return RedirectToPage(new { id });
     }
 }

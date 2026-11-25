@@ -16,7 +16,6 @@ public class CommentRepository : ICommentRepository
     public async Task CreateComment(Comment comment)
     {
         await dbContext.Posts.AddAsync(comment);
-        await dbContext.SaveChangesAsync();
     }
 
     public async Task<List<Comment>> ReadComment(long commentId)

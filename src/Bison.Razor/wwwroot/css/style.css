@@ -1,5 +1,5 @@
 body {
-  background: #eccaca;
+  background: #e1f2e8;
   font-family: 'Trebuchet MS', sans-serif;
   font-size: 14px;
 }
@@ -17,19 +17,19 @@ input[type="text"],
 input[type="tel"],
 input[type="password"] {
     background: white;
-    border: 1px solid #e6c0bf;
+    border: 1px solid #b7d9c4;
     padding: 2px;
     font-family: 'Trebuchet MS', sans-serif;
     font-size: 14px;
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-    color: #571010;
+    color: #244b36;
 }
 
 input[type="submit"] {
-  background: #571010;
-  border: 1px solid #3b0707;
+  background: #3e7658;
+  border: 1px solid #2c5b40;
   padding: 1px 3px;
   font-family: 'Trebuchet MS', sans-serif;
   font-size: 14px;
@@ -42,18 +42,18 @@ input[type="submit"] {
 
 div.page {
   background: white;
-  border: 1px solid #cc6e6e;
+  border: 1px solid #89b99a;
   width: 700px;
   margin: 30px auto;
 }
 
 div.page > h1 {
-  background: #cc6e6e;
+  background: #6fae86;
   margin: 0;
   padding: 10px 14px;
   color: white;
   letter-spacing: 1px;
-  text-shadow: 0 0 3px #772424;
+  text-shadow: 0 0 3px #3d7050;
   font-weight: normal;
   font-size: 80px;
 }
@@ -96,7 +96,7 @@ div.page div.navigation form button {
 
 div.page h2 {
   margin: 0 0 15px 0;
-  color: #571010;
+  color: #244b36;
   text-shadow: 0 1px 2px #ccc;
 }
 
@@ -156,7 +156,7 @@ div.page div.observationbox {
   margin: 10px 0;
   padding: 5px;
   background: #F0FAF9;
-  border: 1px solid #e29494;
+  border: 1px solid #b7d9c4;
   border-radius: 2px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -165,7 +165,7 @@ div.page div.observationbox {
 div.page div.observationbox h3 {
   margin: 0;
   font-size: 1em;
-  color: #7e2c2c;
+  color: #3e7658;
 }
 
 div.page div.observationbox p {
@@ -219,7 +219,7 @@ div.topics {
   width: 180px;
   height: 250px;
   background: #ffffff;
-  border: 1px solid #e29494;
+  border: 1px solid #b7d9c4;
   border-radius: 2px;
   position: fixed;
   top: 50%;
@@ -251,7 +251,7 @@ form * {
 }
 
 button {
-    background-color: #cc6e6e;
+    background-color: #6fae86;
     border: none;
     color: white;
     padding: 8px 16px;
@@ -261,7 +261,7 @@ button {
 }
 
 button:hover {
-    background-color: #8b4949;
+    background-color: #4b8965;
 }
 
 ul.nav {
@@ -269,7 +269,7 @@ ul.nav {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #cc6e6e;
+    background-color: #6fae86;
 }
 
 ul.nav li {
@@ -285,5 +285,10 @@ ul.nav li a {
 }
 
 ul.nav li a:hover {
-    background-color: #8b4949;
+    background-color: #4b8965;
+}
+
+#commentInputBox textarea {
+  resize: none;
+  width: 585px;
 }

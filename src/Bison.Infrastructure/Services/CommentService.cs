@@ -13,17 +13,18 @@ public class CommentService : ICommentService
         this.unitOfWork = unitOfWork;
     }
 
-    public async Task AddComment(long observationId, string authorId, Bison.DTOs.CommentCreateDTO newComment)
+    public async Task AddComment(long observationId, string authorId, CommentCreateDTO newComment)
     {
         
         var obs = await unitOfWork.observationRepo.ReadObservation(observationId);
-        //var author = await.unitOfWork......... (authorepo?)
+        if (obs == null) throw new ArgumentException();
+        var author = await unitOfWork.authorRepository.GetAuthorByID(authorId);
         Comment commentToAdd = new Comment()
         {
             Text = newComment.Text,
             TimeStamp = DateTime.Now,     
             Observation = obs,
-            //Author = author,
+            Author = author,
         };
 
         await unitOfWork.commentRepo.CreateComment(commentToAdd);
