@@ -85,4 +85,10 @@ public class ObservationRepository : IObservationRepository
     {
         throw new NotImplementedException();
     }
+
+    public void Add(Observation observation)
+    {
+        dbContext.Observations.Add(observation);
+    }
+
 }

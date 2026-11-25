@@ -74,7 +74,7 @@ public class ObservationService : IObservationService
             Text = newObservation.ObservationText,
             TimeStamp = DateTime.Now
         };
-        unitOfWork.Add(observationToAdd);
+        unitOfWork.observationRepo.Add(observationToAdd);
         unitOfWork.Save();
     }
     private List<ObservationDTO> Translater(List<Observation> observations)

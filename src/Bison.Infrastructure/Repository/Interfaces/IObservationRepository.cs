@@ -14,4 +14,6 @@ public interface IObservationRepository
     Task<List<Observation>> GetAllObservationsByAuthor(string authorId);
     
     Task UpdateObservation(Observation observation);
+    public void Add(Observation observation);
+
 }

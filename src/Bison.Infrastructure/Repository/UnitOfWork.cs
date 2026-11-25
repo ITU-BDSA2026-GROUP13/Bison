@@ -22,11 +22,7 @@ public class UnitOfWork : IUnitOfWork
         this.taxonRepo = new TaxonRepository(dbContext);
         this.authorRepository = new AuthorRepository(dbContext);
     }
-
-    public void Add(Observation observation)
-    {
-        dbContext.Observations.Add(observation);
-    }
+    
     public void Save()
     {
         dbContext.SaveChanges();
