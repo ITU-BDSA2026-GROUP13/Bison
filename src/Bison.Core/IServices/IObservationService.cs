@@ -4,7 +4,6 @@ using Bison.DTOs;
 using System.Security.Claims;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Security.Claims;
 
 public interface IObservationService
 {
