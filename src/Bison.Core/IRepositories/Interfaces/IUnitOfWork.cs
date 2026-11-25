@@ -1,8 +1,5 @@
 ﻿namespace Bison;
 
-using Razor.Services.Interfaces;
-using Repository;
-
 public interface IUnitOfWork
 {
     public IObservationRepository observationRepo { get; }
