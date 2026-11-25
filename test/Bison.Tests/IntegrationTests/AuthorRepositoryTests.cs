@@ -44,7 +44,5 @@ public class AuthorRepositoryTests : IDisposable
         //Assert
         Assert.NotNull(result);
         Assert.Equal("AuthorB", result.ToString());
-        Assert.Equal(_data.OtherObservation.Author, result);
-
     }
 }

@@ -5,7 +5,6 @@ namespace Bison.Razor.Pages;
 
 using Bison.DTOs;
 using Bison.Services.Interfaces;
-using Services.Interfaces;
 using System.Security.Claims;
 
 public class UserTimelineModel : ObservationFormPageModel
