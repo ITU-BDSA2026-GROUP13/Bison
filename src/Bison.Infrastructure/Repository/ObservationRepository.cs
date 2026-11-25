@@ -81,15 +81,14 @@ public class ObservationRepository : IObservationRepository
             .ToListAsync();
     }
 
-    // Loads the whole taxa table so EF fixes up the Parent navigation that isSubTaxon relies on
-    public async Task<Taxon?> GetTaxonFromId(string taxonId)
-    {
-        var taxa = await dbContext.Taxons.ToListAsync();
-        return taxa.FirstOrDefault(t => t.dwc_TaxonID == taxonId);
-    }
-
     public Task UpdateObservation(Observation observation)
     {
         throw new NotImplementedException();
     }
+
+    public void Add(Observation observation)
+    {
+        dbContext.Observations.Add(observation);
+    }
+
 }

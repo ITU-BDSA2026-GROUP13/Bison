@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Bison.Razor.Pages;
 
 using Bison.DTOs;
-using Services.Interfaces;
+using Bison.Services.Interfaces;
 
 public class ObservationDetailModel : PageModel
 {

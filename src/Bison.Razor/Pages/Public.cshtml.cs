@@ -4,25 +4,41 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Bison.Razor.Pages;
 
 using Bison.DTOs;
-using Services.Interfaces;
+using Bison.Services.Interfaces;
 
-public class PublicModel : PageModel
+public class PublicModel : ObservationFormPageModel
 {
     private readonly IObservationService _service;
     public List<ObservationDTO> Observations { get; set; } = new();
     public int CurrentPage { get; set; }
     public string? FilteredTaxon { get; set;  }
 
-    public PublicModel(IObservationService service)
+    public PublicModel(IObservationService service, ITaxonService taxonService) : base(service, taxonService)
     {
         _service = service;
     }
 
-    public async Task<ActionResult> OnGet([FromQuery] int page = 1, string? taxonId = null)
+    public async Task OnGetAsync()
     {
+        await LoadTaxonOptionsAsync();
+        await LoadPageDataAsync();
+    }
+
+    protected override async Task LoadPageDataAsync()
+    {
+        int.TryParse(Request.Query["page"], out var page);
         CurrentPage = Math.Max(page, 1);
-        FilteredTaxon = taxonId;
-        Observations = await _service.GetObservationByTaxonAndPage(taxonId,page);
-        return Page();
+
+        string taxonId = Request.Query["taxonId"];
+        if (taxonId == "")
+        {
+            FilteredTaxon = null;
+        }
+        else
+        {
+            this.FilteredTaxon = taxonId; 
+        }
+
+        Observations = await _service.GetObservationByTaxonAndPage(this.FilteredTaxon, page);
     }
 }

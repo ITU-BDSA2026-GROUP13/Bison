@@ -245,32 +245,7 @@ public class ObservationRepositoryTests : IDisposable
         Assert.NotNull(result.Taxon);
         Assert.Null(result.Taxon.VernacularName);
     }
-
-
-    //Tests for GetTaxonFromId
-    [Fact]
-    public async Task GetTaxonFromId_ReturnedCorrectId()
-    {
-        string expected_dwc_TaxonID = "TEST:heron";
-        using var context = CreateContext();
-        var repo = new ObservationRepository(context);
-
-        var result = await repo.GetTaxonFromId(expected_dwc_TaxonID);
-
-        Assert.NotNull(result);
-        Assert.Equal(expected_dwc_TaxonID, result.dwc_TaxonID);
-    }
-
-    [Fact]
-    public async Task GetTaxonFromId_UsingNonExistingTaxon()
-    {
-        using var context = CreateContext();
-        var repo = new ObservationRepository(context);
-
-        var result = await repo.GetTaxonFromId("lars");
-
-        Assert.Null(result);
-    }
+    
 
     //Tests for GetAllObservations
     [Fact]

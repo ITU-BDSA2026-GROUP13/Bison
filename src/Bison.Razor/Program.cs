@@ -1,4 +1,5 @@
 using Bison;
+using Bison.Razor.Services.Interfaces;
 using Bison.Repository;
 using Bison.Services;
 using Bison.Services.Interfaces;
@@ -48,6 +49,9 @@ builder.Services.AddScoped<IObservationService, ObservationService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IProposalService, ProposalService>();
 builder.Services.AddScoped<IObservationFilterService, ObservationFilterService>();
+builder.Services.AddScoped<ITaxonService, TaxonService>();
+builder.Services.AddScoped<IAuthorService, AuthorService>();
+
 
 
 

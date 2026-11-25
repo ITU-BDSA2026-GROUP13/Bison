@@ -4,27 +4,52 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Bison.Razor.Pages;
 
 using Bison.DTOs;
-using Services.Interfaces;
+using Bison.Services.Interfaces;
+using System.Security.Claims;
 
-public class UserTimelineModel : PageModel
+public class UserTimelineModel : ObservationFormPageModel
 {
     private readonly IObservationService _service;
     public int CurrentPage { get; set; }
     public List<ObservationDTO> Observations { get; set; } = new();
     public string? FilteredTaxon { get; set; }
+    public string? AuthorId { get; set; }
+    public bool MyPage { get; set; }
 
 
-    public UserTimelineModel(IObservationService service)
+    public UserTimelineModel(IObservationService service, ITaxonService taxonService) : base(service, taxonService)
     {
         _service = service;
     }
 
-
-    public async Task<ActionResult> OnGet(string authorId, [FromQuery] string? taxonId = null,  [FromQuery] int page = 1)
+    public async Task OnGetAsync()
     {
+        await LoadTaxonOptionsAsync();
+        await LoadPageDataAsync();
+    }
+
+    protected override async Task LoadPageDataAsync()
+    {
+        this.AuthorId = RouteData.Values["authorId"]?.ToString();
+        
+
+        int.TryParse(Request.Query["page"], out var page);
         CurrentPage = Math.Max(page, 1);
-        FilteredTaxon = taxonId;
-        Observations = await _service.GetObservationByTaxonAndAuthorAndPage(taxonId, authorId, page);
-        return Page();
+
+        string taxonId = Request.Query["taxonId"];
+        if (taxonId == "")
+        {
+            FilteredTaxon = null;
+        }
+        else
+        {
+            this.FilteredTaxon = taxonId; 
+        }
+
+        var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        this.MyPage = currentUserId != null && currentUserId == this.AuthorId;
+
+        Observations = await _service.GetObservationByTaxonAndAuthorAndPage(this.FilteredTaxon, this.AuthorId, this.CurrentPage);
+
     }
 }

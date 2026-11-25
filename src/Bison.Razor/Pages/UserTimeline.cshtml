@@ -1,5 +1,8 @@
 ﻿@page "/obs/{authorId}"
+@using Bison
+@using System.Security.Claims
 @model Bison.Razor.Pages.UserTimelineModel
+@inject SignInManager<Author> SignInManager
 @{
     ViewData["Title"] = "Bison";
     Layout = "Shared/_Layout";
@@ -15,10 +18,17 @@
             <a href="?">(clear filter)</a>
         </p>
     }
-    @if (Model.Observations.Any())
     
+    @if (Model.MyPage)
+    {
+        <h2> My Observations </h2>
+        <partial name="Shared/_AddObservationPartial" for="NewObservation"/>
+    } else if (Model.Observations.Any())
     {
         <h2> @Model.Observations.First().AuthorName Observations </h2>
+    }
+    @if (Model.Observations.Any())
+    {
         <ul id="messagelist" class="observations">
             @foreach (var ob in Model.Observations)
             {
