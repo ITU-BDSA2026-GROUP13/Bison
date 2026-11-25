@@ -100,11 +100,12 @@ public class CommentRepositoryTests : IDisposable
         using var context = CreateContext();
         var repo = new CommentRepository(context);
         Comment emptyComment = new Comment();
-        await repo.CreateComment(emptyComment);
-        // Act
-        var exception = await Assert.ThrowsAsync<DbUpdateException>(async () => context.SaveChanges());
         
+        // Act
+        await repo.CreateComment(emptyComment);
+
         //Assert
+        var exception = await Assert.ThrowsAsync<DbUpdateException>(async () => context.SaveChanges());
         Assert.NotNull(exception);
     }
 
