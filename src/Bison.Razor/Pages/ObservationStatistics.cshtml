@@ -1,5 +1,5 @@
-@page
-@model Bison.Razor.Pages.StatisticsModel
+@page "/stats"
+@model Bison.Razor.Pages.StatsModel
 @{
     ViewData["Title"] = "Stats";
 }
@@ -11,11 +11,11 @@
         <tr><th>Taxon</th><th>Sightings</th></tr>
     </thead>
     <tbody>
-    @foreach (var c in Model.Counts)
+    @foreach (var stat in Model.Stats)
     {
         <tr>
-            <td>@c.TaxonId</td>
-            <td>@c.Count</td>
+            <td>@stat.VernacularName</td>
+            <td>@stat.Count</td>
         </tr>
     }
     </tbody>

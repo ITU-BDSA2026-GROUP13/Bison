@@ -92,12 +92,12 @@ public class ObservationRepository : IObservationRepository
     }
 
     public async Task<Dictionary<string, int>> GetSightingCountsByTaxon()
-{
-    var counts = await dbContext.Observations
-        .GroupBy(o => o.Taxon.TaxonId)
-        .Select(g => new { g.Key, Count = g.Count() })
-        .ToListAsync();
-    return counts.ToDictionary(x => x.Key.ToString(), x => x.Count);
-}
+    {
+        return await dbContext.Observations
+            .GroupBy(o => o.Taxon.dwc_TaxonID)
+            .Select(g => new { dwc_TaxonID = g.Key, Count = g.Count() })
+            .ToDictionaryAsync(x => x.dwc_TaxonID, x => x.Count);
+        
+    }
 
 }
