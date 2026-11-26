@@ -5,6 +5,7 @@ namespace Bison.Razor.Pages;
 
 using Bison.DTOs;
 using Bison.Services.Interfaces;
+using System.Security.Claims;
 
 public class ObservationDetailModel : PageModel
 {
@@ -16,6 +17,9 @@ public class ObservationDetailModel : PageModel
     public ObservationDTO? Observation { get; set; }
     public List<CommentDTO> Comments { get; set; } = new();
     public List<ProposalDTO> Proposals { get; set; } = new();
+
+    [BindProperty]
+    public CommentCreateDTO NewComment { get; set; } = new();
 
      public ObservationDetailModel(
           IObservationService serviceob,
@@ -36,5 +40,24 @@ public class ObservationDetailModel : PageModel
         this.Comments = await _serviceco.GetCommentsByObsId(id.Value);
         this.Proposals = await _servicepro.GetProposalsByObsId(id.Value);   
         return Page();
+    }
+
+    public async Task<IActionResult> OnPostComment(long id)
+    { 
+        if (!(User.Identity?.IsAuthenticated ?? false)) // this weird construct beacuse the IsAuthenticated returns a bool? not a bool
+        {
+            return Forbid();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return RedirectToPage(new { id });
+        }
+
+        var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrWhiteSpace(authorId)) return Forbid();
+
+        await _serviceco.AddComment(id, authorId, NewComment);
+        return RedirectToPage(new { id });
     }
 }

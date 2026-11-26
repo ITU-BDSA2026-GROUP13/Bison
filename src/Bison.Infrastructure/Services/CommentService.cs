@@ -1,7 +1,6 @@
 ﻿namespace Bison.Services;
 
 using Bison.DTOs;
-using Bison.Repository;
 using Bison.Services.Interfaces;
 
 public class CommentService : ICommentService
@@ -12,6 +11,24 @@ public class CommentService : ICommentService
     public CommentService(IUnitOfWork unitOfWork)
     {
         this.unitOfWork = unitOfWork;
+    }
+
+    public async Task AddComment(long observationId, string authorId, CommentCreateDTO newComment)
+    {
+        
+        var obs = await unitOfWork.observationRepo.ReadObservation(observationId);
+        if (obs == null) throw new ArgumentException();
+        var author = await unitOfWork.authorRepository.GetAuthorByID(authorId);
+        Comment commentToAdd = new Comment()
+        {
+            Text = newComment.Text,
+            TimeStamp = DateTime.Now,     
+            Observation = obs,
+            Author = author,
+        };
+
+        await unitOfWork.commentRepo.CreateComment(commentToAdd);
+        unitOfWork.Save();
     }
 
     public async Task<List<CommentDTO>> GetCommentsByObsId(long postId)

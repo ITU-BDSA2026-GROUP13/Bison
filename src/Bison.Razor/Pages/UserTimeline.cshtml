@@ -37,8 +37,7 @@
                         <strong>
                             <a href="@ob.AuthorId">@ob.AuthorName</a>
                         </strong>
-                        @ob.Text
-                        <small>&mdash; @ob.TimeStamp</small>
+                        <a href="/ob/@ob.ObservationId" style="color: inherit; text-decoration: none;">@ob.Text</a> <small>&mdash; @ob.TimeStamp</small>
                         <br>
                         <small>
                             <a href="?taxonId=@ob.dwc_TaxonId"> - @ob.TaxonName</a>

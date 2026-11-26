@@ -85,6 +85,7 @@ public class CommentRepositoryTests : IDisposable
         
         // Act
         await repo.CreateComment(newComment);
+        context.SaveChanges();
         var result =  await repo.ReadComment(newComment.PostId);
         
         //Assert
@@ -101,9 +102,10 @@ public class CommentRepositoryTests : IDisposable
         Comment emptyComment = new Comment();
         
         // Act
-        var exception = await Assert.ThrowsAsync<DbUpdateException>(async () => await repo.CreateComment(emptyComment));
-        
+        await repo.CreateComment(emptyComment);
+
         //Assert
+        var exception = await Assert.ThrowsAsync<DbUpdateException>(async () => context.SaveChanges());
         Assert.NotNull(exception);
     }
 
