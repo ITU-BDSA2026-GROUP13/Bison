@@ -2,6 +2,6 @@ namespace Bison;
 
 public interface IAuthorRepository
 { 
-    public Task<Author> GetAuthorByID(string? authorId);
+    public Task<Author> GetAuthorById(string? authorId);
 
 }

@@ -6,7 +6,7 @@ public interface IUnitOfWork
     public ICommentRepository commentRepo { get; }
     public IProposalRepository proposalRepo { get; }
     public ITaxonRepository taxonRepo { get; }
-    public IAuthorRepository authorRepository { get;  }
+    public IAuthorRepository authorRepo { get;  }
    
     public void Save();
 }

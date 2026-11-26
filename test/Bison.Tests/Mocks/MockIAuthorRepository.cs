@@ -35,7 +35,7 @@ public class MockIAuthorRepository
         };
 
         var mock = new Mock<IAuthorRepository>();
-        mock.Setup(m => m.GetAuthorByID(It.IsAny<string>()))
+        mock.Setup(m => m.GetAuthorById(It.IsAny<string>()))
             .ReturnsAsync((string? id) => authors.FirstOrDefault(a => a.Id == id));
 
         return mock;

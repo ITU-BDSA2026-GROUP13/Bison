@@ -11,9 +11,9 @@ public class AuthorService : IAuthorService
         this.unitOfWork = unitOfWork;
     }
     
-    public async Task<Author> GetAuthorByID(string? authorId)
+    public async Task<Author> GetAuthorById(string? authorId)
     {
-        return await unitOfWork.authorRepository.GetAuthorByID(authorId);
+        return await unitOfWork.authorRepo.GetAuthorById(authorId);
     }
 
 }
