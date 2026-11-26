@@ -18,5 +18,5 @@ public interface IObservationService
 
     public Task CreateObservation(ObservationCreateDTO NewObservation, ClaimsPrincipal user);
 
-    public Task<List<TaxonStatDTO>> GetTaxonStats();
+    public async Task<List<TaxonStatDTO>> GetTaxonStats();
 }
