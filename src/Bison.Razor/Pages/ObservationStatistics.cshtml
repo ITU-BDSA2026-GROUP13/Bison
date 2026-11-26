@@ -18,7 +18,7 @@
         var width = pct.ToString("0.##", CultureInfo.InvariantCulture);
          
         <tr>
-            <td class="shrink">@stat.VernacularName</td>
+            <td class="shrink"><a href="/obs?taxonId=@stat.dwc_TaxonID">@stat.VernacularName</a></td>
             <td class="shrink">@stat.Count</td>
             <td>
                 <div class="statBar-Row">
