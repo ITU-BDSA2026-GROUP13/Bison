@@ -129,7 +129,7 @@ div.page ul.observations {
 
 div.page ul.observations li {
   box-sizing: border-box;
-  height: 252px;
+  min-height: 65px;
   margin: 10px 0;
   padding: 5px;
   background: #F0FAF9;
@@ -164,8 +164,8 @@ div.page ul.observations p {
 div.page ul.observations .observation-image-frame {
   float: none;               
   flex-shrink: 0;
-  align-self: center;        
-  margin: 0 10px 0 0;
+  align-self: flex-start;        
+  margin: 0 0 0 10px;
 }
 
 div.page ul.observations li small {
