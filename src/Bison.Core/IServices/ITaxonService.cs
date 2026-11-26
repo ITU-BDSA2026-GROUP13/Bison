@@ -13,4 +13,6 @@ public interface ITaxonService
     public Task<List<Taxon>> GetAllTaxonsWithVernacularName();
 
     public Task<List<TaxonOptionDTO>> GetTaxonOptions();
+
+    public Task<List<TaxonStatDTO>> GetTaxonStats();
 }

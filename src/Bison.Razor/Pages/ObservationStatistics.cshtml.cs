@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 public class StatsModel : PageModel
 {
-    private readonly IObservationService observationService;
+    private readonly ITaxonService taxonService;
 
-    public StatsModel(IObservationService observationService)
+    public StatsModel(ITaxonService taxonService)
     {
-        this.observationService = observationService;
+        this.taxonService = taxonService;
     }
 
     public List<TaxonStatDTO> Stats { get; private set; } = new();
@@ -18,7 +18,7 @@ public class StatsModel : PageModel
 
     public async Task OnGetAsync()
     {
-        Stats = await observationService.GetTaxonStats();
+        Stats = await taxonService.GetTaxonStats();
         Total = Stats.Sum(s => s.Count);
     }
 
