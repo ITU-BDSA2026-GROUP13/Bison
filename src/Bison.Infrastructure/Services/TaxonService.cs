@@ -37,4 +37,20 @@ public class TaxonService : ITaxonService
     {
         return await unitOfWork.taxonRepo.GetTaxonOptions();
     }
+    
+    public async Task<List<TaxonStatDTO>> GetTaxonStats()
+    {
+        var counts = await unitOfWork.observationRepo.GetSightingCountsByTaxon();
+        var taxa = await GetTaxonOptions();
+
+        // Start from all taxa so birds with 0 sightings are included
+        return taxa
+            .Select(t => new TaxonStatDTO(
+                t.dwc_TaxonId,
+                t.VernacularName,
+                counts.GetValueOrDefault(t.dwc_TaxonId)))
+            .OrderByDescending(s => s.Count)
+            .ThenBy(s => s.VernacularName)
+            .ToList();
+    }
 }

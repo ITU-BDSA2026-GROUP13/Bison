@@ -287,3 +287,43 @@ ul.nav li a {
 ul.nav li a:hover {
     background-color: #8b4949;
 }
+.stats-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.stats-table th, .stats-table td {
+    text-align: left;
+    padding: 4px 10px 4px 0;
+}
+
+/* the non statbar columns */
+.stats-table th:not(:last-child), .stats-table td.shrink {
+    width: 1%;
+    white-space: nowrap;
+}
+
+.statBar-Row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.statBar-Track {
+    flex: 1;
+    height: 15px;
+    background: #6fae86;
+    border: 1px solid #1b382a;
+    /*border-radius: 2px;*/
+}
+
+.statBar-fill {
+    height: 100%;
+    background: #2c5b40;
+    /*border-radius: 2px;*/
+}
+
+.statBar-Label {
+    flex: 0 0 3.5em;
+    text-align: right;
+}

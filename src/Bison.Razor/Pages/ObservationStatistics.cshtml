@@ -1,0 +1,34 @@
+@page "/stats"
+@using System.Globalization
+@model Bison.Razor.Pages.StatsModel
+@{
+    ViewData["Title"] = "Stats";
+}
+
+<h1>Sats on spotted birds</h1>
+
+<table class="stats-table">
+    <thead>
+        <tr><th>Taxon</th><th>Sightings</th><th>% of all sightings</th></tr>
+    </thead>
+    <tbody>
+    @foreach (var stat in Model.Stats)
+    {
+        var pct = Model.Percent(stat.Count);
+        var width = pct.ToString("0.##", CultureInfo.InvariantCulture);
+         
+        <tr>
+            <td class="shrink"><a href="/obs?taxonId=@stat.dwc_TaxonID">@stat.VernacularName</a></td>
+            <td class="shrink">@stat.Count</td>
+            <td>
+                <div class="statBar-Row">
+                    <div class="statBar-Track">
+                        <div class="statBar-fill" style="width: @width%"></div>
+                    </div>
+                    <small class="statBar-Label">@pct.ToString("0.0")%</small>
+                </div>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
