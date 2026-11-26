@@ -15,6 +15,5 @@ public interface IObservationRepository
     
     Task UpdateObservation(Observation observation);
     public void Add(Observation observation);
-    Task<Dictionary<string, int>> GetSightingCountsByTaxon();
 
 }

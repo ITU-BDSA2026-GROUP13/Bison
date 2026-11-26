@@ -90,21 +90,4 @@ public class ObservationService : IObservationService
             o.ImageFile
             )).ToList();
     }
-
-    // dont know if we want to make a new service for it
-    public async Task<List<TaxonStatDTO>> GetTaxonStats()
-{
-    var counts = await observationRepository.GetSightingCountsByTaxon();
-    var taxa = await taxonService.GetTaxonOptions();
-
-    // Start from all taxa so birds with 0 sightings are included
-    return taxa
-        .Select(t => new TaxonStatDTO(
-            t.dwc_TaxonId,
-            t.VernacularName,
-            counts.GetValueOrDefault(t.dwc_TaxonId)))
-        .OrderByDescending(s => s.Count)
-        .ThenBy(s => s.VernacularName)
-        .ToList();
-}
 }
