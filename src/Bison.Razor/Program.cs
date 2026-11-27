@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity;
+// This should make it deploy.
 
 var builder = WebApplication.CreateBuilder(args);
 var dbPath = Environment.GetEnvironmentVariable("BISONDBPATH") ??
