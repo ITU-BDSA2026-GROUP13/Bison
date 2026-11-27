@@ -15,6 +15,14 @@
             @Model.Observation.Text
             <small>&mdash; @Model.Observation.TimeStamp</small>
         </p>
+
+        @if (!string.IsNullOrEmpty(Model.Observation.ImageFileString))
+        {
+            <div class="observation-image-frame">
+                <img src="/images/@Model.Observation.ImageFileString"
+                     alt="Picture of the observed animal" />
+            </div>
+        }
     }
 </div>
 

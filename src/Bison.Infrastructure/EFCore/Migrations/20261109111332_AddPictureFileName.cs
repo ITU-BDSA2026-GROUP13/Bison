@@ -5,7 +5,7 @@
 namespace Bison.Razor.Migrations
 {
     /// <inheritdoc />
-    public partial class Newmigration2 : Migration
+    public partial class AddPictureFileName : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

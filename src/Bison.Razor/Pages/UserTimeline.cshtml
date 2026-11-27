@@ -43,6 +43,13 @@
                             <a href="?taxonId=@ob.dwc_TaxonId"> - @ob.TaxonName</a>
                         </small>
                     </p>
+                    @if (!string.IsNullOrEmpty(ob.ImageFileString))
+                    {
+                        <div class="observation-image-frame">
+                            <img src="/images/@ob.ImageFileString"
+                                 alt="Picture of the observed animal" />
+                        </div>
+                    }
                 </li>
             }
         </ul>

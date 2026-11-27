@@ -3,6 +3,7 @@ namespace Bison.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 public class ObservationCreateDTO
@@ -11,9 +12,12 @@ public class ObservationCreateDTO
     public string TaxonId { get; set; } = "";
 
     [Required(ErrorMessage = "Write a message")]
-    public string ObservationText { get; set; } = "";
-    
+    public string ObservationText { get; set; } = "";    
     public IFormFile? Image { get; set; }
+
+    [BindNever]
+    public string? ImageFile { get; set; }
+
 
     [BindNever] public IEnumerable<SelectListItem> TaxonOptions { get; set; } = new List<SelectListItem>();
 

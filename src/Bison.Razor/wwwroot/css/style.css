@@ -128,23 +128,44 @@ div.page ul.observations {
 }
 
 div.page ul.observations li {
+  box-sizing: border-box;
+  min-height: 65px;
   margin: 10px 0;
   padding: 5px;
   background: #F0FAF9;
   border: 1px solid #DBF3F1;
-  border-radius: 2px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  min-height: 48px;
+  border-radius: 5px;
+  display: flex;             
+  align-items: flex-start;  
+  overflow: hidden;
 }
+
 
 div.page ul.observations p {
   margin: 0;
 }
 
-div.page ul.observations li img {
-  float: left;
-  padding: 0 10px 0 0;
+.observation-image-frame {
+  display: inline-block;
+  line-height: 0;
+  background: #F0FAF9;
+}
+
+.observation-image-frame img {
+  display: block;
+  box-sizing: border-box;
+  width: auto;
+  height: auto;
+  max-width: 240px;
+  max-height: 240px;
+  border: 1px solid #DBF3F1;
+}
+
+div.page ul.observations .observation-image-frame {
+  float: none;               
+  flex-shrink: 0;
+  align-self: flex-start;        
+  margin: 0 0 0 10px;
 }
 
 div.page ul.observations li small {
