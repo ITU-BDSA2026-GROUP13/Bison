@@ -41,6 +41,18 @@ public class ProposalRepository : IProposalRepository
         return response;
     }
 
+    public async Task<List<Proposal>> GetProposalsByAuthor(string authorId)
+    {
+        var query = (from post in dbContext.Proposals
+                where post.Author.Id == authorId
+                select post)
+            .Include(c => c.Author)
+            .Include(c => c.Observation);
+
+        var response = await query.ToListAsync();
+        return response;
+    }
+
     public Task UpdateProposal(Proposal proposal)
     {
         throw new NotImplementedException();

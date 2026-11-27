@@ -7,6 +7,9 @@ public interface ICommentRepository
     Task<List<Comment>> ReadComment(long commentId);
 
     Task<List<Comment>> GetCommentsByObsId(long obsId);
+
+    Task<List<Comment>> GetCommentsByAuthor(string authorId);
+
     
     Task UpdateComment(Comment comment);
 }

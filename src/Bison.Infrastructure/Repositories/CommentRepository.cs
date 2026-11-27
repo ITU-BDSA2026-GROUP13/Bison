@@ -40,6 +40,18 @@ public class CommentRepository : ICommentRepository
         return response;
     }
 
+    public async Task<List<Comment>> GetCommentsByAuthor(string authorId)
+    {
+        var query = (from post in dbContext.Comments
+                where post.Author.Id == authorId
+                select post)
+            .Include(c => c.Author)
+            .Include(c => c.Observation);
+        
+        var response = await query.ToListAsync();
+        return response;
+    }
+
     public Task UpdateComment(Comment comment)
     {
         throw new NotImplementedException();

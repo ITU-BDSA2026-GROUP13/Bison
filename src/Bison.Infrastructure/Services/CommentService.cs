@@ -43,4 +43,17 @@ public class CommentService : ICommentService
             c.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss")
         )).ToList();
     }
+
+    public async Task<List<CommentDTO>> GetCommentsByAuthor(string authorId)
+    {
+        List<Comment> comments = await unitOfWork.commentRepo.GetCommentsByAuthor(authorId);
+
+        return comments.Select(c => new CommentDTO(
+            c.PostId,
+            c.Author.Id,
+            c.Author.UserName ?? "",
+            c.Text,
+            c.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss")
+        )).ToList();
+    }
 }

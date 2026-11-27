@@ -51,9 +51,55 @@
     }
     else
     {
-        <em>There are no Observations so far.</em>
+        <em>You have not made any observations</em>
     }
-    
+
+    <h2>Personal comments</h2>
+    @if (Model.CommentData.Any())
+    {
+        <ul id="commentList" class="comments">
+            @foreach (var cm in Model.CommentData)
+            {
+                <li>
+                    <p>
+                        <strong>
+                            <a href="/obs/@cm.AuthorId">@cm.AuthorName</a>
+                        </strong>
+                        @cm.Text
+                        <small>&mdash; @cm.TimeStamp</small>
+                    </p>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <em>You have not made any comments</em>
+    }
+
+    <h3>Proposals</h3>
+    @* if there are proposals: a <ul> with a foreach; else an <em> message *@
+    @if (Model.ProposalData.Any())
+    {
+        <ul id="proposalList" class="proposal">
+            @foreach (var p in Model.ProposalData)
+            {
+                <li>
+                    <p>
+                        <strong>
+                            <a href="/obs/@p.AuthorId">@p.AuthorName</a>
+                        </strong>
+                        @p.TaxonName
+                        <small>&mdash; @p.TimeStamp</small>
+                    </p>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <em>You have not made any proposals</em>
+    }
 </div>
 </body>
 </html>

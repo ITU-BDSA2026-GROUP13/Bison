@@ -28,4 +28,19 @@ public class ProposalService : IProposalService
             p.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss")
         )).ToList();
     }
+
+    public async Task<List<ProposalDTO>> GetProposalsByAuthor(string authorId)
+    {
+        List<Proposal> proposals = await unitOfWork.proposalRepo.GetProposalsByAuthor(authorId);
+
+        return proposals.Select(p => new ProposalDTO(
+            p.PostId,
+            p.Author.Id,
+            p.Taxon.dwc_TaxonID,
+            p.Taxon.VernacularName ?? p.Taxon.dwc_TaxonID,
+            p.Author.UserName ?? "",
+            p.Text,
+            p.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss")
+        )).ToList();
+    }
 }
