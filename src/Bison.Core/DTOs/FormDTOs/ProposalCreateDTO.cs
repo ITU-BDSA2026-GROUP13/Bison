@@ -10,6 +10,6 @@ public class ProposalCreateDTO
     public string TaxonId { get; set; } = "";
 
     [BindNever] public IEnumerable<SelectListItem> TaxonOptions { get; set; } = new List<SelectListItem>(); 
-    // Do I need taxon options?? :)
+    
 }
 

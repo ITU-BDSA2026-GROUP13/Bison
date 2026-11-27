@@ -12,16 +12,6 @@ public class ProposalService : IProposalService
         this.unitOfWork = unitOfWork;
     }
 
-    public async Task AddProposal(ProposalDTO proposalDTO) // Change to ProposalCreateDTO when created
-    {
-        Proposal newProposal = new Proposal(
-            // Create a proposal here. (Make ProposalCreateDTO aswell)
-        );
-
-        await unitOfWork.proposalRepo.CreateProposal(newProposal);
-        unitOfWork.Save();
-    }
-
     public async Task<List<ProposalDTO>> GetProposalsByObsId(long postId)
     {
         List<Proposal> proposals = await unitOfWork.proposalRepo.GetProposalsByObsId(postId);
@@ -41,22 +31,23 @@ public class ProposalService : IProposalService
     {
         var observation = await unitOfWork.observationRepo.ReadObservation(observationId);
         if (observation == null){throw new KeyNotFoundException("Observation with id: " + observationId + " not found");}
+        
         var author = await unitOfWork.authorRepo.GetAuthorById(authorId);
-        if (author == null){throw new KeyNotFoundException("Author with id: " + authorId + " not found");}
+
         var taxon = await unitOfWork.taxonRepo.GetTaxonById(proposalCreateDTO.TaxonId);
+        if (taxon == null){throw new KeyNotFoundException("Taxon with id: " + proposalCreateDTO.TaxonId + " not found");}
 
         Proposal newProposal = new Proposal()
         {
-            // Taxon related stuff
             Observation = observation,
             Taxon = taxon,
-
-            // Post related stuff
-            // PostId??? (probrably not needed here)
             Author = author,
-            Text = taxon.VernacularName, // Do I get from TaxonOptions???
+            Text = taxon.VernacularName,
             TimeStamp = DateTime.Now
         };
+
+        await unitOfWork.proposalRepo.CreateProposal(newProposal);
+        unitOfWork.Save();
     }
 
 }
