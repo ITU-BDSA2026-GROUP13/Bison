@@ -16,7 +16,6 @@ public class ObservationDetailModel : PageModel
     public ObservationDTO? Observation { get; set; }
     public List<CommentDTO> Comments { get; set; } = new();
     public List<ProposalDTO> Proposals { get; set; } = new();
-    public string? ImageFile { get; set; }
 
      public ObservationDetailModel(
           IObservationService serviceob,

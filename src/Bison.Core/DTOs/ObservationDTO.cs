@@ -10,5 +10,5 @@ public record ObservationDTO
         string TaxonName,
         string Text,
         string TimeStamp,
-        string? ImageFile
+        string? ImageFileString
     ); 

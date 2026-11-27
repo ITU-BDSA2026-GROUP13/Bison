@@ -43,6 +43,8 @@ public abstract class ObservationFormPageModel : PageModel
         return Forbid();
     }
 
+    bool isLoaded = false;
+
     if (NewObservation.Image is { Length: > 0 })
     {
         var ext = Path.GetExtension(NewObservation.Image.FileName).ToLowerInvariant();
@@ -50,19 +52,14 @@ public abstract class ObservationFormPageModel : PageModel
         {
             ModelState.AddModelError("NewObservation.Image", "Only jpg or png, max 15 MB.");
         }
-    }
 
-    if (!ModelState.IsValid)
-    {
-        await LoadTaxonOptionsAsync();
-        await LoadPageDataAsync();
-        return Page();
-    }
-
-    // Save the file; only the generated name goes to the database
-    if (NewObservation.Image is { Length: > 0 })
-    {
-        var ext = Path.GetExtension(NewObservation.Image.FileName).ToLowerInvariant();
+        if (!ModelState.IsValid)
+        {
+            isLoaded = true;
+            await LoadTaxonOptionsAsync();
+            await LoadPageDataAsync();
+            return Page();
+        }
         var fileName = $"{Guid.NewGuid()}{ext}";   // never reuse the client's file name
 
         var env = HttpContext.RequestServices.GetRequiredService<IWebHostEnvironment>();
@@ -73,6 +70,16 @@ public abstract class ObservationFormPageModel : PageModel
         await NewObservation.Image.CopyToAsync(stream);
 
         NewObservation.ImageFile = fileName;
+    }
+    else
+    {
+        if (!ModelState.IsValid && isLoaded)
+        {
+            isLoaded = false;
+            await LoadTaxonOptionsAsync();
+            await LoadPageDataAsync();
+            return Page();
+        }
     }
 
     var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;

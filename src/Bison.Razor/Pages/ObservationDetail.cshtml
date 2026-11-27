@@ -16,10 +16,10 @@
             <small>&mdash; @Model.Observation.TimeStamp</small>
         </p>
 
-        @if (!string.IsNullOrEmpty(Model.Observation.ImageFile))
+        @if (!string.IsNullOrEmpty(Model.Observation.ImageFileString))
         {
             <div class="observation-image-frame">
-                <img src="/images/@Model.Observation.ImageFile"
+                <img src="/images/@Model.Observation.ImageFileString"
                      alt="Picture of the observed animal" />
             </div>
         }
