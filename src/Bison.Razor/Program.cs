@@ -1,4 +1,5 @@
 using Bison;
+using Bison.Core.IServices;
 using Bison.Razor.Services.Interfaces;
 using Bison.Repository;
 using Bison.Services;
@@ -45,12 +46,15 @@ builder.Services.AddDbContext<BisonDBContext>(options => options.UseSqlite(conne
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IObservationRepository, ObservationRepository>();
+builder.Services.AddScoped<IUserDataRepository, UserDataRepository>();
+
 builder.Services.AddScoped<IObservationService, ObservationService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IProposalService, ProposalService>();
 builder.Services.AddScoped<IObservationFilterService, ObservationFilterService>();
 builder.Services.AddScoped<ITaxonService, TaxonService>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
+builder.Services.AddScoped<IUserDataService, UserdataService>();
 
 
 

@@ -1,8 +1,10 @@
-@page
+@page "/aboutme/{authorId}"
 @model Bison.Razor.Pages.AboutMe
 
 @{
     Layout = "Shared/_Layout";
+    var routeName = HttpContext.GetRouteValue("authorId");
+
 }
 
 <!DOCTYPE html>
@@ -13,8 +15,16 @@
 </head>
 <body>
 <div>
-    
     <h1>About me</h1>
+    
+    <h2>Personal data </h2>
+    <ul>
+        @foreach (var property in Model.UserData!.GetType().GetProperties())
+        {
+            <li><b>@property.Name:</b> @property.GetValue(Model.UserData)</li>
+        }
+    </ul>
+    
 </div>
 </body>
 </html>
