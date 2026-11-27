@@ -25,6 +25,35 @@
         }
     </ul>
     
+    <br/>
+    <br/>
+    <h2>Personal observations</h2>
+    @if (Model.ObservationData.Any())
+    {
+        <ul id="messagelist" class="observations">
+            @foreach (var ob in Model.ObservationData)
+            {
+                <li>
+                    <p>
+                        <strong>
+                            <a href="@ob.AuthorId">@ob.AuthorName</a>
+                        </strong>
+                        <a href="/ob/@ob.ObservationId" style="color: inherit; text-decoration: none;">@ob.Text</a>
+                        <small>&mdash; @ob.TimeStamp</small>
+                        <br>
+                        <small>
+                            <a href="?taxonId=@ob.dwc_TaxonId"> - @ob.TaxonName</a>
+                        </small>
+                    </p>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <em>There are no Observations so far.</em>
+    }
+    
 </div>
 </body>
 </html>

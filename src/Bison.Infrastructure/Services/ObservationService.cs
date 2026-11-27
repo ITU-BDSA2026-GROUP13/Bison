@@ -28,6 +28,12 @@ public class ObservationService : IObservationService
         return Translater(observations);
     }
 
+    public async Task<List<ObservationDTO>> GetObservationByAuthor(string authorId)
+    {
+        List<Observation> observations = await unitOfWork.observationRepo.GetAllObservationsByAuthor(authorId);
+        return Translater(observations);
+    }
+
     public async Task<List<ObservationDTO>> GetObservationsFromAuthorAndPage(string authorId, int page = 1)
     {
         List<Observation> observations = await unitOfWork.observationRepo.GetObservationsByAuthorAndPage(authorId, page);

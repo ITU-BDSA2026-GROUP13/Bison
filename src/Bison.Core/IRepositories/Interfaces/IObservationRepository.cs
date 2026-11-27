@@ -9,6 +9,8 @@ public interface IObservationRepository
     Task<List<Observation>> GetObservationsByPage(int page);
     
     Task<List<Observation>> GetObservationsByAuthorAndPage(string authorId, int page);
+    Task<List<Observation>> GetObservationsByAuthor(string authorId);
+
     
     Task<List<Observation>> GetAllObservations();
     Task<List<Observation>> GetAllObservationsByAuthor(string authorId);

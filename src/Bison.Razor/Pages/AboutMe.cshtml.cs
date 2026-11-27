@@ -14,6 +14,7 @@ public class AboutMe : PageModel
     private readonly IObservationService _observationService;
     public string? AuthorId { get; set; }
     public UserDataDTO? UserData { get; set; }
+    public List<ObservationDTO> ObservationData { get; set; }
     public bool MyPage { get; set; }
 
     
@@ -28,17 +29,18 @@ public class AboutMe : PageModel
     public async Task OnGetAsync()
     {
         await LoadPersonalDataAsync();
-        
+        await LoadPersonalObservations();
+
     }
 
     protected async Task LoadPersonalDataAsync()
     {
         
-        this.AuthorId = RouteData.Values["authorId"]?.ToString();
+        this.AuthorId = this.RouteData.Values["authorId"]?.ToString();
 
-        UserData = await _userDataService.GetUserByIdAsync(AuthorId);
+        this.UserData = await _userDataService.GetUserByIdAsync(AuthorId);
 
-        var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
         
         if (currentUserId != null && currentUserId == this.AuthorId)
         {
@@ -49,11 +51,18 @@ public class AboutMe : PageModel
             this.MyPage = false;
         }
         
-        if (UserData == null)
+        if (this.UserData == null)
         {
             throw new Exception("Userdata is null");
         }
     }
+
+    protected async Task LoadPersonalObservations()
+    {
+        this.AuthorId = this.RouteData.Values["authorId"]?.ToString();
+        this.ObservationData = await _observationService.GetObservationByAuthor(AuthorId);
+    }
+
     
 
     

@@ -44,6 +44,20 @@ public class ObservationRepository : IObservationRepository
         return response;
     }
 
+    public async Task<List<Observation>> GetObservationsByAuthor(string authorId)
+    {
+        var query = (from observation in dbContext.Observations
+                where observation.Author.Id == authorId
+                orderby observation.TimeStamp descending
+                select observation)
+            .Include(x => x.Author)
+            .Include(x => x.Taxon);
+
+        var response = await query.ToListAsync();
+        return response;
+    }
+
+
     public async Task<List<Observation>> GetObservationsByAuthorAndPage(string authorId, int page)
     {
         int pageSize = 32;
