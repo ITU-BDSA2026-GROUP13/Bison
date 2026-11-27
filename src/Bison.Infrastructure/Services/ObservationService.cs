@@ -64,7 +64,7 @@ public class ObservationService : IObservationService
     public async Task CreateObservation(ObservationCreateDTO newObservation, ClaimsPrincipal user)
     {
         
-        Author author = await authorService.GetAuthorByID(user.FindFirstValue(ClaimTypes.NameIdentifier));
+        Author author = await authorService.GetAuthorById(user.FindFirstValue(ClaimTypes.NameIdentifier));
         Taxon taxon = await taxonService.GetTaxonById(newObservation.TaxonId);
         var observationToAdd = new Observation()
         { 

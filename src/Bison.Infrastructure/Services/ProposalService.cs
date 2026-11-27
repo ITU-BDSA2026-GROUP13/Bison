@@ -1,9 +1,7 @@
 ﻿namespace Bison.Services;
 
 using Bison.DTOs;
-
-
-using Interfaces;
+using Bison.Services.Interfaces;
 
 public class ProposalService : IProposalService
 {
@@ -28,4 +26,28 @@ public class ProposalService : IProposalService
             p.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss")
         )).ToList();
     }
+
+    public async Task AddProposal(long observationId, string authorId, ProposalCreateDTO proposalCreateDTO)
+    {
+        var observation = await unitOfWork.observationRepo.ReadObservation(observationId);
+        if (observation == null){throw new KeyNotFoundException("Observation with id: " + observationId + " not found");}
+        
+        var author = await unitOfWork.authorRepo.GetAuthorById(authorId);
+
+        var taxon = await unitOfWork.taxonRepo.GetTaxonById(proposalCreateDTO.TaxonId);
+        if (taxon == null){throw new KeyNotFoundException("Taxon with id: " + proposalCreateDTO.TaxonId + " not found");}
+
+        Proposal newProposal = new Proposal()
+        {
+            Observation = observation,
+            Taxon = taxon,
+            Author = author,
+            Text = taxon.VernacularName,
+            TimeStamp = DateTime.Now
+        };
+
+        await unitOfWork.proposalRepo.CreateProposal(newProposal);
+        unitOfWork.Save();
+    }
+
 }

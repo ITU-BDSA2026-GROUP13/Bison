@@ -1,0 +1,21 @@
+@using Bison
+
+@inject SignInManager<Author> SignInManager
+@model Bison.DTOs.ProposalCreateDTO
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div id="proposalInputBox">
+        <form method="post" asp-page-handler="Proposal">
+            <select class="form-select" asp-for="TaxonId" asp-items="Model.TaxonOptions">
+                <option value="">-- Propose Taxon --</option>
+            </select>
+            <span asp-validation-for="TaxonId"></span>
+            <button type="submit">Post Proposal</button>
+        </form>
+    </div>
+}
+else
+{
+    <p>Login to post proposals</p>
+}

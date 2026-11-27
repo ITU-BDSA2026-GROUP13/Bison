@@ -18,7 +18,7 @@ public class CommentService : ICommentService
         
         var obs = await unitOfWork.observationRepo.ReadObservation(observationId);
         if (obs == null) throw new ArgumentException();
-        var author = await unitOfWork.authorRepository.GetAuthorByID(authorId);
+        var author = await unitOfWork.authorRepo.GetAuthorById(authorId);
         Comment commentToAdd = new Comment()
         {
             Text = newComment.Text,

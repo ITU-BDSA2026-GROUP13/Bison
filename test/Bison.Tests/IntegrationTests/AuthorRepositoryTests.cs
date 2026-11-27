@@ -39,7 +39,7 @@ public class AuthorRepositoryTests : IDisposable
         string? authorId = _data.OtherObservation.Author.Id;
 
         //Act
-        var result = await authorRepository.GetAuthorByID(authorId);
+        var result = await authorRepository.GetAuthorById(authorId);
 
         //Assert
         Assert.NotNull(result);
